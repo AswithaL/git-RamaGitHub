@@ -1,0 +1,2678 @@
+
+
+<?xml version="1.0" encoding="US-ASCII" standalone="yes"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+<objectListWrapper>
+    <objects>
+        <objectContainer>
+            <project>
+                <name>Statistics aggregation v2.1 [fixed for 9.1] 02-11-2018</name>
+                <description></description>
+                <author>mprozorov</author>
+                <runs>
+                    <run>
+                        <blockSize>1</blockSize>
+                        <campaign>
+                            <active>true</active>
+                            <businessRules/>
+                            <campaignMaps>
+                                <campaignMap>
+                                    <activateTracking>false</activateTracking>
+                                    <blockSize>1</blockSize>
+                                    <businessRule>
+                                        <content>#RuleContext.APPROVE_ALL_RULE</content>
+                                        <name>Approve All</name>
+                                        <ruleType>WORKFLOW_RULE</ruleType>
+                                        <ruleTypeUI>Composite</ruleTypeUI>
+                                        <uuid>7867be70-4319-427d-b7fd-fb7367fb3f55</uuid>
+                                        <workflowRuleMode>SIMPLE</workflowRuleMode>
+                                    </businessRule>
+                                    <campaign>
+                                        <active>false</active>
+                                        <businessRules/>
+                                        <campaignMaps/>
+                                        <campaigns/>
+                                        <executingType>MACHINE</executingType>
+                                        <goldBucketBlockSize>0</goldBucketBlockSize>
+                                        <goldRatio>0</goldRatio>
+                                        <goldSource>Empty</goldSource>
+                                        <goldType>Percentage</goldType>
+                                        <includeOriginalData>false</includeOriginalData>
+                                        <machineConfig>
+                                            <answers>
+                                                <answer>
+                                                    <allowNA>false</allowNA>
+                                                    <answer>Parameters of ML Sweeping Experiments</answer>
+                                                    <answerCode>multi_config</answerCode>
+                                                    <answerHtml></answerHtml>
+                                                    <answerTypeObject>
+                                                        <answerTypeGroup>UNCONSTRAINED_TEXT</answerTypeGroup>
+                                                        <code>LONG_TEXT</code>
+                                                        <description></description>
+                                                        <optionsAvailable>true</optionsAvailable>
+                                                        <optionsDescription>Please provide number of rows for text area to display by default.</optionsDescription>
+                                                        <showDefaultValue>true</showDefaultValue>
+                                                        <showForFieldScheme>true</showForFieldScheme>
+                                                        <showForHumanTask>true</showForHumanTask>
+                                                        <showForMachineConfig>true</showForMachineConfig>
+                                                        <title>Long Text</title>
+                                                        <valueType>SINGLEVALUE</valueType>
+                                                    </answerTypeObject>
+                                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                    <autocompleteField>false</autocompleteField>
+                                                    <constantable>false</constantable>
+                                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                    <lastModified>2018-09-13T07:11:13Z</lastModified>
+                                                    <letCustomValues>false</letCustomValues>
+                                                    <manualField>false</manualField>
+                                                    <multiValue>false</multiValue>
+                                                    <options>5</options>
+                                                    <percentRequired>false</percentRequired>
+                                                    <range>false</range>
+                                                    <required>true</required>
+                                                    <sequenceNumber>1</sequenceNumber>
+                                                    <useBlocks>false</useBlocks>
+                                                    <useEmptyCell>false</useEmptyCell>
+                                                </answer>
+                                                <answer>
+                                                    <allowNA>false</allowNA>
+                                                    <answer>Human accuracy threshold</answer>
+                                                    <answerCode>threshold</answerCode>
+                                                    <answerHtml></answerHtml>
+                                                    <answerTypeObject>
+                                                        <answerTypeGroup>NUMBERS</answerTypeGroup>
+                                                        <code>NUMBER</code>
+                                                        <description></description>
+                                                        <optionsAvailable>false</optionsAvailable>
+                                                        <showDefaultValue>true</showDefaultValue>
+                                                        <showForFieldScheme>true</showForFieldScheme>
+                                                        <showForHumanTask>true</showForHumanTask>
+                                                        <showForMachineConfig>true</showForMachineConfig>
+                                                        <title>Number</title>
+                                                        <valueType>SINGLEVALUE</valueType>
+                                                    </answerTypeObject>
+                                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                    <autocompleteField>false</autocompleteField>
+                                                    <constantable>false</constantable>
+                                                    <defaultValue>80</defaultValue>
+                                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                    <lastModified>2018-09-13T07:11:13Z</lastModified>
+                                                    <letCustomValues>false</letCustomValues>
+                                                    <manualField>false</manualField>
+                                                    <multiValue>false</multiValue>
+                                                    <percentRequired>false</percentRequired>
+                                                    <range>false</range>
+                                                    <required>false</required>
+                                                    <sequenceNumber>2</sequenceNumber>
+                                                    <useBlocks>false</useBlocks>
+                                                    <useEmptyCell>false</useEmptyCell>
+                                                </answer>
+                                                <answer>
+                                                    <allowNA>false</allowNA>
+                                                    <answer>Model Accuracy Threshold % for cut-off to Human-based processing (AQL)</answer>
+                                                    <answerCode>target_quality</answerCode>
+                                                    <answerHtml></answerHtml>
+                                                    <answerTypeObject>
+                                                        <answerTypeGroup>NUMBERS</answerTypeGroup>
+                                                        <code>NUMBER</code>
+                                                        <description></description>
+                                                        <optionsAvailable>false</optionsAvailable>
+                                                        <showDefaultValue>true</showDefaultValue>
+                                                        <showForFieldScheme>true</showForFieldScheme>
+                                                        <showForHumanTask>true</showForHumanTask>
+                                                        <showForMachineConfig>true</showForMachineConfig>
+                                                        <title>Number</title>
+                                                        <valueType>SINGLEVALUE</valueType>
+                                                    </answerTypeObject>
+                                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                    <autocompleteField>false</autocompleteField>
+                                                    <constantable>false</constantable>
+                                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                    <lastModified>2018-09-13T07:11:13Z</lastModified>
+                                                    <letCustomValues>false</letCustomValues>
+                                                    <manualField>false</manualField>
+                                                    <multiValue>false</multiValue>
+                                                    <percentRequired>false</percentRequired>
+                                                    <range>false</range>
+                                                    <required>false</required>
+                                                    <sequenceNumber>3</sequenceNumber>
+                                                    <useBlocks>false</useBlocks>
+                                                    <useEmptyCell>false</useEmptyCell>
+                                                </answer>
+                                                <answer>
+                                                    <allowNA>false</allowNA>
+                                                    <answer>Statistical Quality Control</answer>
+                                                    <answerCode>sqc_enabled</answerCode>
+                                                    <answerHtml></answerHtml>
+                                                    <answerTypeObject>
+                                                        <answerTypeGroup>MULTIPLE_CHOICE</answerTypeGroup>
+                                                        <code>CHECK_ONE</code>
+                                                        <description></description>
+                                                        <optionsAvailable>true</optionsAvailable>
+                                                        <optionsDescription>Provide options for the answer using key=value format. For example, Option Name1=value1 or Option Name2=value2.</optionsDescription>
+                                                        <showDefaultValue>true</showDefaultValue>
+                                                        <showForFieldScheme>true</showForFieldScheme>
+                                                        <showForHumanTask>true</showForHumanTask>
+                                                        <showForMachineConfig>true</showForMachineConfig>
+                                                        <title>Check One</title>
+                                                        <valueType>SINGLEVALUE</valueType>
+                                                    </answerTypeObject>
+                                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                    <autocompleteField>false</autocompleteField>
+                                                    <constantable>false</constantable>
+                                                    <defaultValue>true</defaultValue>
+                                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                    <lastModified>2018-09-13T07:11:13Z</lastModified>
+                                                    <letCustomValues>false</letCustomValues>
+                                                    <manualField>false</manualField>
+                                                    <multiValue>false</multiValue>
+                                                    <options>Enabled=true|Disabled=false</options>
+                                                    <percentRequired>false</percentRequired>
+                                                    <range>false</range>
+                                                    <required>false</required>
+                                                    <sequenceNumber>4</sequenceNumber>
+                                                    <shuffle>false</shuffle>
+                                                    <useBlocks>false</useBlocks>
+                                                    <useEmptyCell>false</useEmptyCell>
+                                                </answer>
+                                                <answer>
+                                                    <allowNA>false</allowNA>
+                                                    <answer>Retrain the model as more data collected</answer>
+                                                    <answerCode>retrain_count_type</answerCode>
+                                                    <answerHtml></answerHtml>
+                                                    <answerTypeObject>
+                                                        <answerTypeGroup>MULTIPLE_CHOICE</answerTypeGroup>
+                                                        <code>CHECK_ONE</code>
+                                                        <description></description>
+                                                        <optionsAvailable>true</optionsAvailable>
+                                                        <optionsDescription>Provide options for the answer using key=value format. For example, Option Name1=value1 or Option Name2=value2.</optionsDescription>
+                                                        <showDefaultValue>true</showDefaultValue>
+                                                        <showForFieldScheme>true</showForFieldScheme>
+                                                        <showForHumanTask>true</showForHumanTask>
+                                                        <showForMachineConfig>true</showForMachineConfig>
+                                                        <title>Check One</title>
+                                                        <valueType>SINGLEVALUE</valueType>
+                                                    </answerTypeObject>
+                                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                    <autocompleteField>false</autocompleteField>
+                                                    <constantable>false</constantable>
+                                                    <defaultValue>model</defaultValue>
+                                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                    <lastModified>2018-09-13T07:11:13Z</lastModified>
+                                                    <letCustomValues>false</letCustomValues>
+                                                    <manualField>false</manualField>
+                                                    <multiValue>false</multiValue>
+                                                    <options>Model Defined=model|Automatically=auto|User Defined=user</options>
+                                                    <percentRequired>false</percentRequired>
+                                                    <range>false</range>
+                                                    <required>false</required>
+                                                    <sequenceNumber>5</sequenceNumber>
+                                                    <shuffle>false</shuffle>
+                                                    <useBlocks>false</useBlocks>
+                                                    <useEmptyCell>false</useEmptyCell>
+                                                </answer>
+                                                <answer>
+                                                    <allowNA>false</allowNA>
+                                                    <answer>Retrain records count</answer>
+                                                    <answerCode>retrain_count_value</answerCode>
+                                                    <answerHtml></answerHtml>
+                                                    <answerTypeObject>
+                                                        <answerTypeGroup>UNCONSTRAINED_TEXT</answerTypeGroup>
+                                                        <code>FREE_TEXT</code>
+                                                        <description></description>
+                                                        <optionsAvailable>false</optionsAvailable>
+                                                        <showDefaultValue>true</showDefaultValue>
+                                                        <showForFieldScheme>true</showForFieldScheme>
+                                                        <showForHumanTask>true</showForHumanTask>
+                                                        <showForMachineConfig>true</showForMachineConfig>
+                                                        <title>Free Text</title>
+                                                        <valueType>SINGLEVALUE</valueType>
+                                                    </answerTypeObject>
+                                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                    <autocompleteField>false</autocompleteField>
+                                                    <constantable>false</constantable>
+                                                    <defaultValue></defaultValue>
+                                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                    <htmlClasses>expand:on(user)</htmlClasses>
+                                                    <lastModified>2018-09-13T07:11:13Z</lastModified>
+                                                    <letCustomValues>false</letCustomValues>
+                                                    <manualField>false</manualField>
+                                                    <multiValue>false</multiValue>
+                                                    <parentAnswer>
+                                                        <allowNA>false</allowNA>
+                                                        <answer>Retrain the model as more data collected</answer>
+                                                        <answerCode>retrain_count_type</answerCode>
+                                                        <answerHtml></answerHtml>
+                                                        <answerTypeObject>
+                                                            <answerTypeGroup>MULTIPLE_CHOICE</answerTypeGroup>
+                                                            <code>CHECK_ONE</code>
+                                                            <description></description>
+                                                            <optionsAvailable>true</optionsAvailable>
+                                                            <optionsDescription>Provide options for the answer using key=value format. For example, Option Name1=value1 or Option Name2=value2.</optionsDescription>
+                                                            <showDefaultValue>true</showDefaultValue>
+                                                            <showForFieldScheme>true</showForFieldScheme>
+                                                            <showForHumanTask>true</showForHumanTask>
+                                                            <showForMachineConfig>true</showForMachineConfig>
+                                                            <title>Check One</title>
+                                                            <valueType>SINGLEVALUE</valueType>
+                                                        </answerTypeObject>
+                                                        <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                        <autocompleteField>false</autocompleteField>
+                                                        <constantable>false</constantable>
+                                                        <defaultValue>model</defaultValue>
+                                                        <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                        <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                        <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                        <lastModified>2018-09-13T07:11:13Z</lastModified>
+                                                        <letCustomValues>false</letCustomValues>
+                                                        <manualField>false</manualField>
+                                                        <multiValue>false</multiValue>
+                                                        <options>Model Defined=model|Automatically=auto|User Defined=user</options>
+                                                        <percentRequired>false</percentRequired>
+                                                        <range>false</range>
+                                                        <required>false</required>
+                                                        <sequenceNumber>5</sequenceNumber>
+                                                        <shuffle>false</shuffle>
+                                                        <useBlocks>false</useBlocks>
+                                                        <useEmptyCell>false</useEmptyCell>
+                                                    </parentAnswer>
+                                                    <percentRequired>false</percentRequired>
+                                                    <range>false</range>
+                                                    <required>false</required>
+                                                    <sequenceNumber>6</sequenceNumber>
+                                                    <useBlocks>false</useBlocks>
+                                                    <useEmptyCell>false</useEmptyCell>
+                                                </answer>
+                                            </answers>
+                                            <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+
+ 	&lt;var-def name="datastore_name"&gt;dk3&lt;/var-def&gt;
+	&lt;var-def name="filename"&gt;invoice_id&lt;/var-def&gt;
+	&lt;var-def name="gold"&gt;invoice_tagged&lt;/var-def&gt;
+	&lt;var-def name="extracted"&gt;invoice&lt;/var-def&gt;
+
+	&lt;export include-original-data="true"&gt;
+     	&lt;single-column name="datastore_name" value="${datastore_name}"/&gt;
+        &lt;single-column name="documents_count" value="20"/&gt;
+		&lt;single-column name="id" value="${filename}"/&gt;
+		&lt;single-column name="gold" value="${gold}"/&gt;
+		&lt;single-column name="extracted" value="${extracted}"/&gt;
+		&lt;single-column name="s3_bucket_to_save" value="doc-upload"/&gt;
+		&lt;single-column name="s3_folder_to_save" value="statistics-aggregation-demo"/&gt;
+		&lt;single-column name="s3_name_to_save" value="statistics_2018_test_msp"/&gt;
+      	&lt;single-column name="initial_document_link" value="original_document_link"/&gt;
+	&lt;/export&gt;
+&lt;/config&gt;</content>
+                                            <description></description>
+                                            <includedConfigs/>
+                                            <inclusionCode>2ec4650e-3f9e-4fdd-8f8c-e7cc1d6afc4b</inclusionCode>
+                                            <jsonParams>{"datastore_name":"dk3","filename":"invoice_id","gold":"invoice_tagged","extracted":"invoice","documents_count":"20","s3_bucket_to_save":"doc-upload","s3_folder_to_save":"statistics-aggregation-demo","s3_name_to_save":"statistics_2018_test_msp","initial_document_link":"original_document_link"}</jsonParams>
+                                            <machineWorkSetting>
+                                                <category>
+                                                    <automation>false</automation>
+                                                    <description></description>
+                                                    <enabled>true</enabled>
+                                                    <executingType>MACHINE</executingType>
+                                                    <name>ETL</name>
+                                                    <private>false</private>
+                                                    <publicId>0ef23179-3fa8-4750-86ca-f6da84f6e16d</publicId>
+                                                </category>
+                                                <contentType>NORMAL</contentType>
+                                                <description></description>
+                                                <enabled>true</enabled>
+                                                <name>Automation Settings</name>
+                                                <publicId>aaa08b9b-4cd5-4607-9966-d4e32811bf2b</publicId>
+                                                <version>
+                                                    <componentUuid>03885726-1eb5-4e10-b330-edf58dd0256d</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2016-09-26T14:34:37Z</lastModified>
+                                                    <versionUuid>fc7ae3ab-bf8f-46b9-ac73-0c59cf84afef</versionUuid>
+                                                </version>
+                                                <answers>
+                                                    <answer>
+                                                        <allowNA>false</allowNA>
+                                                        <answer>Parameters of ML Sweeping Experiments</answer>
+                                                        <answerCode>multi_config</answerCode>
+                                                        <answerHtml></answerHtml>
+                                                        <answerTypeObject>
+                                                            <answerTypeGroup>UNCONSTRAINED_TEXT</answerTypeGroup>
+                                                            <code>LONG_TEXT</code>
+                                                            <description></description>
+                                                            <optionsAvailable>true</optionsAvailable>
+                                                            <optionsDescription>Please provide number of rows for text area to display by default.</optionsDescription>
+                                                            <showDefaultValue>true</showDefaultValue>
+                                                            <showForFieldScheme>true</showForFieldScheme>
+                                                            <showForHumanTask>true</showForHumanTask>
+                                                            <showForMachineConfig>true</showForMachineConfig>
+                                                            <title>Long Text</title>
+                                                            <valueType>SINGLEVALUE</valueType>
+                                                        </answerTypeObject>
+                                                        <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                        <autocompleteField>false</autocompleteField>
+                                                        <constantable>false</constantable>
+                                                        <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                        <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                        <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                        <lastModified>2010-01-01T00:00:00Z</lastModified>
+                                                        <letCustomValues>false</letCustomValues>
+                                                        <manualField>false</manualField>
+                                                        <multiValue>false</multiValue>
+                                                        <options>5</options>
+                                                        <percentRequired>false</percentRequired>
+                                                        <range>false</range>
+                                                        <required>true</required>
+                                                        <sequenceNumber>1</sequenceNumber>
+                                                        <useBlocks>false</useBlocks>
+                                                        <useEmptyCell>false</useEmptyCell>
+                                                    </answer>
+                                                    <answer>
+                                                        <allowNA>false</allowNA>
+                                                        <answer>Human accuracy threshold</answer>
+                                                        <answerCode>threshold</answerCode>
+                                                        <answerHtml></answerHtml>
+                                                        <answerTypeObject>
+                                                            <answerTypeGroup>NUMBERS</answerTypeGroup>
+                                                            <code>NUMBER</code>
+                                                            <description></description>
+                                                            <optionsAvailable>false</optionsAvailable>
+                                                            <showDefaultValue>true</showDefaultValue>
+                                                            <showForFieldScheme>true</showForFieldScheme>
+                                                            <showForHumanTask>true</showForHumanTask>
+                                                            <showForMachineConfig>true</showForMachineConfig>
+                                                            <title>Number</title>
+                                                            <valueType>SINGLEVALUE</valueType>
+                                                        </answerTypeObject>
+                                                        <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                        <autocompleteField>false</autocompleteField>
+                                                        <constantable>false</constantable>
+                                                        <defaultValue>80</defaultValue>
+                                                        <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                        <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                        <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                        <lastModified>2010-01-01T00:00:00Z</lastModified>
+                                                        <letCustomValues>false</letCustomValues>
+                                                        <manualField>false</manualField>
+                                                        <multiValue>false</multiValue>
+                                                        <percentRequired>false</percentRequired>
+                                                        <range>false</range>
+                                                        <required>false</required>
+                                                        <sequenceNumber>2</sequenceNumber>
+                                                        <useBlocks>false</useBlocks>
+                                                        <useEmptyCell>false</useEmptyCell>
+                                                    </answer>
+                                                    <answer>
+                                                        <allowNA>false</allowNA>
+                                                        <answer>Model Accuracy Threshold % for cut-off to Human-based processing (AQL)</answer>
+                                                        <answerCode>target_quality</answerCode>
+                                                        <answerHtml></answerHtml>
+                                                        <answerTypeObject>
+                                                            <answerTypeGroup>NUMBERS</answerTypeGroup>
+                                                            <code>NUMBER</code>
+                                                            <description></description>
+                                                            <optionsAvailable>false</optionsAvailable>
+                                                            <showDefaultValue>true</showDefaultValue>
+                                                            <showForFieldScheme>true</showForFieldScheme>
+                                                            <showForHumanTask>true</showForHumanTask>
+                                                            <showForMachineConfig>true</showForMachineConfig>
+                                                            <title>Number</title>
+                                                            <valueType>SINGLEVALUE</valueType>
+                                                        </answerTypeObject>
+                                                        <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                        <autocompleteField>false</autocompleteField>
+                                                        <constantable>false</constantable>
+                                                        <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                        <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                        <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                        <lastModified>2010-01-01T00:00:00Z</lastModified>
+                                                        <letCustomValues>false</letCustomValues>
+                                                        <manualField>false</manualField>
+                                                        <multiValue>false</multiValue>
+                                                        <percentRequired>false</percentRequired>
+                                                        <range>false</range>
+                                                        <required>false</required>
+                                                        <sequenceNumber>3</sequenceNumber>
+                                                        <useBlocks>false</useBlocks>
+                                                        <useEmptyCell>false</useEmptyCell>
+                                                    </answer>
+                                                    <answer>
+                                                        <allowNA>false</allowNA>
+                                                        <answer>Statistical Quality Control</answer>
+                                                        <answerCode>sqc_enabled</answerCode>
+                                                        <answerHtml></answerHtml>
+                                                        <answerTypeObject>
+                                                            <answerTypeGroup>MULTIPLE_CHOICE</answerTypeGroup>
+                                                            <code>CHECK_ONE</code>
+                                                            <description></description>
+                                                            <optionsAvailable>true</optionsAvailable>
+                                                            <optionsDescription>Provide options for the answer using key=value format. For example, Option Name1=value1 or Option Name2=value2.</optionsDescription>
+                                                            <showDefaultValue>true</showDefaultValue>
+                                                            <showForFieldScheme>true</showForFieldScheme>
+                                                            <showForHumanTask>true</showForHumanTask>
+                                                            <showForMachineConfig>true</showForMachineConfig>
+                                                            <title>Check One</title>
+                                                            <valueType>SINGLEVALUE</valueType>
+                                                        </answerTypeObject>
+                                                        <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                        <autocompleteField>false</autocompleteField>
+                                                        <constantable>false</constantable>
+                                                        <defaultValue>true</defaultValue>
+                                                        <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                        <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                        <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                        <lastModified>2010-01-01T00:00:00Z</lastModified>
+                                                        <letCustomValues>false</letCustomValues>
+                                                        <manualField>false</manualField>
+                                                        <multiValue>false</multiValue>
+                                                        <options>Enabled=true|Disabled=false</options>
+                                                        <percentRequired>false</percentRequired>
+                                                        <range>false</range>
+                                                        <required>false</required>
+                                                        <sequenceNumber>4</sequenceNumber>
+                                                        <shuffle>false</shuffle>
+                                                        <useBlocks>false</useBlocks>
+                                                        <useEmptyCell>false</useEmptyCell>
+                                                    </answer>
+                                                    <answer>
+                                                        <allowNA>false</allowNA>
+                                                        <answer>Retrain the model as more data collected</answer>
+                                                        <answerCode>retrain_count_type</answerCode>
+                                                        <answerHtml></answerHtml>
+                                                        <answerTypeObject>
+                                                            <answerTypeGroup>MULTIPLE_CHOICE</answerTypeGroup>
+                                                            <code>CHECK_ONE</code>
+                                                            <description></description>
+                                                            <optionsAvailable>true</optionsAvailable>
+                                                            <optionsDescription>Provide options for the answer using key=value format. For example, Option Name1=value1 or Option Name2=value2.</optionsDescription>
+                                                            <showDefaultValue>true</showDefaultValue>
+                                                            <showForFieldScheme>true</showForFieldScheme>
+                                                            <showForHumanTask>true</showForHumanTask>
+                                                            <showForMachineConfig>true</showForMachineConfig>
+                                                            <title>Check One</title>
+                                                            <valueType>SINGLEVALUE</valueType>
+                                                        </answerTypeObject>
+                                                        <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                        <autocompleteField>false</autocompleteField>
+                                                        <constantable>false</constantable>
+                                                        <defaultValue>model</defaultValue>
+                                                        <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                        <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                        <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                        <lastModified>2010-01-01T00:00:00Z</lastModified>
+                                                        <letCustomValues>false</letCustomValues>
+                                                        <manualField>false</manualField>
+                                                        <multiValue>false</multiValue>
+                                                        <options>Model Defined=model|Automatically=auto|User Defined=user</options>
+                                                        <percentRequired>false</percentRequired>
+                                                        <range>false</range>
+                                                        <required>false</required>
+                                                        <sequenceNumber>5</sequenceNumber>
+                                                        <shuffle>false</shuffle>
+                                                        <useBlocks>false</useBlocks>
+                                                        <useEmptyCell>false</useEmptyCell>
+                                                    </answer>
+                                                    <answer>
+                                                        <allowNA>false</allowNA>
+                                                        <answer>Retrain records count</answer>
+                                                        <answerCode>retrain_count_value</answerCode>
+                                                        <answerHtml></answerHtml>
+                                                        <answerTypeObject>
+                                                            <answerTypeGroup>UNCONSTRAINED_TEXT</answerTypeGroup>
+                                                            <code>FREE_TEXT</code>
+                                                            <description></description>
+                                                            <optionsAvailable>false</optionsAvailable>
+                                                            <showDefaultValue>true</showDefaultValue>
+                                                            <showForFieldScheme>true</showForFieldScheme>
+                                                            <showForHumanTask>true</showForHumanTask>
+                                                            <showForMachineConfig>true</showForMachineConfig>
+                                                            <title>Free Text</title>
+                                                            <valueType>SINGLEVALUE</valueType>
+                                                        </answerTypeObject>
+                                                        <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                        <autocompleteField>false</autocompleteField>
+                                                        <constantable>false</constantable>
+                                                        <defaultValue></defaultValue>
+                                                        <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                        <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                        <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                        <htmlClasses>expand:on(user)</htmlClasses>
+                                                        <lastModified>2010-01-01T00:00:00Z</lastModified>
+                                                        <letCustomValues>false</letCustomValues>
+                                                        <manualField>false</manualField>
+                                                        <multiValue>false</multiValue>
+                                                        <parentAnswer>
+                                                            <allowNA>false</allowNA>
+                                                            <answer>Retrain the model as more data collected</answer>
+                                                            <answerCode>retrain_count_type</answerCode>
+                                                            <answerHtml></answerHtml>
+                                                            <answerTypeObject>
+                                                                <answerTypeGroup>MULTIPLE_CHOICE</answerTypeGroup>
+                                                                <code>CHECK_ONE</code>
+                                                                <description></description>
+                                                                <optionsAvailable>true</optionsAvailable>
+                                                                <optionsDescription>Provide options for the answer using key=value format. For example, Option Name1=value1 or Option Name2=value2.</optionsDescription>
+                                                                <showDefaultValue>true</showDefaultValue>
+                                                                <showForFieldScheme>true</showForFieldScheme>
+                                                                <showForHumanTask>true</showForHumanTask>
+                                                                <showForMachineConfig>true</showForMachineConfig>
+                                                                <title>Check One</title>
+                                                                <valueType>SINGLEVALUE</valueType>
+                                                            </answerTypeObject>
+                                                            <appendDataStoreOptions>false</appendDataStoreOptions>
+                                                            <autocompleteField>false</autocompleteField>
+                                                            <constantable>false</constantable>
+                                                            <defaultValue>model</defaultValue>
+                                                            <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                                            <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                                            <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                                            <lastModified>2010-01-01T00:00:00Z</lastModified>
+                                                            <letCustomValues>false</letCustomValues>
+                                                            <manualField>false</manualField>
+                                                            <multiValue>false</multiValue>
+                                                            <options>Model Defined=model|Automatically=auto|User Defined=user</options>
+                                                            <percentRequired>false</percentRequired>
+                                                            <range>false</range>
+                                                            <required>false</required>
+                                                            <sequenceNumber>5</sequenceNumber>
+                                                            <shuffle>false</shuffle>
+                                                            <useBlocks>false</useBlocks>
+                                                            <useEmptyCell>false</useEmptyCell>
+                                                        </parentAnswer>
+                                                        <percentRequired>false</percentRequired>
+                                                        <range>false</range>
+                                                        <required>false</required>
+                                                        <sequenceNumber>6</sequenceNumber>
+                                                        <useBlocks>false</useBlocks>
+                                                        <useEmptyCell>false</useEmptyCell>
+                                                    </answer>
+                                                </answers>
+                                                <machineWorkSettingType>ETL</machineWorkSettingType>
+                                                <template>
+                                                    <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+    &lt;var-def name="threshold"&gt;{{answername}}&lt;/var-def&gt;
+    &lt;var-def name="sqc_enabled"&gt;{{answertype}}&lt;/var-def&gt;
+    &lt;var-def name="targetQuality"&gt;{{target_quality}}&lt;/var-def&gt;
+    &lt;var-def name="sqcSourceId"&gt;local&lt;/var-def&gt;
+    &lt;script&gt;
+        &lt;![CDATA[
+
+          import com.freedomoss.crowdcontrol.webharvest.RunDto;
+          import com.freedomoss.crowdcontrol.webharvest.WebHarvestTaskItem;
+          import com.freedomoss.crowdcontrol.webharvest.plugin.datastore.dto.AnswerInfoDTO;
+  
+          RunDto run = (RunDto) ((WebHarvestTaskItem) item.getWrappedObject()).getRun();
+          List fields = new ArrayList();
+          List requiredFields = new ArrayList();
+          String automationMode = "none";
+          String ieAnswerCode = "NOT_DEFINED";
+          String relationTags = "";
+          String ieGroupAnswerCode = "";
+          String automationUrl = "";
+          if (run.automationInfo != null) {
+              for (AnswerInfoDTO answer : run.automationInfo.answers) {
+                  if (answer.answerType.equals("INFO_EXTRACTION")) {
+                      ieAnswerCode = answer.answerCode;
+                      for (AnswerInfoDTO subAnswer : answer.subAnswers) {
+                          if ("GROUP".equals(subAnswer.answerType)) {
+                              ieGroupAnswerCode = subAnswer.answerCode;
+                              List relationAnswers = subAnswer.subAnswers;
+                              Set relationTagNames = new LinkedHashSet();
+                              for (AnswerInfoDTO answer : relationAnswers) {
+                                  relationTagNames.add(answer.answerCode);
+                              }
+                              relationTags = org.apache.commons.lang3.StringUtils.join(relationTagNames, ',');
+                          }
+                          fields.add(subAnswer.answerCode);
+                          if (subAnswer.required) {
+                              requiredFields.add(subAnswer.answerCode);
+                          }
+                      }
+                      sys.defineVariable("experimentGroup", answer.getAnswerCode() + "_" + run.rootRunUuid, true);
+                      break;
+                  }
+              }
+  
+              if (run.automationInfo.trainingMode) {
+                  automationMode = "training";
+              } else {
+                  automationMode = "production";
+              }
+              automationUrl = run.automationInfo.automationUrl;
+          } 
+          sys.defineVariable("fieldList", fields, true);
+          sys.defineVariable("requiredFieldList", requiredFields, true);
+        ]]&gt;
+    &lt;/script&gt;
+    &lt;export include-original-data="true"&gt;
+        &lt;single-column name="_sys_automation_threshold" value='${"${" + "threshold.toString()" + "}"}'/&gt;
+        &lt;single-column name="_sys_automation_mode" value="${automationMode}"/&gt;
+        &lt;single-column name="_sys_automation_experiment_group" value="${experimentGroup}"/&gt;
+        &lt;single-column name="_sys_automation_ds_doc_batch_size" value="100"/&gt;
+        &lt;single-column name="_sys_automation_url" value="${automationUrl}"/&gt;
+        &lt;single-column name="_sys_automation_relation_tags" value="${relationTags}"/&gt;
+        &lt;single-column name="_sys_automation_relations_subanswer_code" value="${ieGroupAnswerCode}"/&gt;
+
+        &lt;single-column name="_sys_automation_ie_answer_code" value="${ieAnswerCode}"/&gt;
+        &lt;single-column name="_sys_automation_ie_fields" value='${"${" + "fieldList.toString(\"UTF-8\", \",\")" + "}"}'/&gt;
+        &lt;single-column name="_sys_automation_ie_required_fields" value='${"${" + "requiredFieldList.toString(\"UTF-8\", \",\")" + "}"}'/&gt;
+
+        &lt;single-column name="_sys_sqc_source_id" value="${sqcSourceId}"/&gt;
+        &lt;single-column name="_sys_sqc_enabled" value='${"${" + "sqc_enabled" + "}"}'/&gt;
+        &lt;single-column name="_sys_sqc_target_quality" value='${"${" + "targetQuality" + "}"}'/&gt;
+    &lt;/export&gt;
+&lt;/config&gt;</content>
+                                                    <name>Automation Settings</name>
+                                                    <origination>CREATED_MANUALLY</origination>
+                                                    <status>ACTIVE</status>
+                                                    <type>BASE_MACHINE</type>
+                                                    <uuid>a165913e-34a5-4df2-814d-a1cbcec3446d</uuid>
+                                                    <version>
+                                                        <componentUuid>b6f6d5f3-d31f-4786-83e6-73be5e6d268c</componentUuid>
+                                                        <incrementalVersion>1.0</incrementalVersion>
+                                                        <lastInChain>true</lastInChain>
+                                                        <lastModified>2016-09-26T14:34:37Z</lastModified>
+                                                        <versionUuid>25f7fe60-9975-439a-9aad-a4f7074f3ef2</versionUuid>
+                                                    </version>
+                                                </template>
+                                            </machineWorkSetting>
+                                            <machineWorkSettingType>ETL</machineWorkSettingType>
+                                            <name>params</name>
+                                            <machineConfigOptions/>
+                                            <source>
+                                                <availability></availability>
+                                                <deleted>false</deleted>
+                                                <description></description>
+                                                <equallyDistributeLoad>false</equallyDistributeLoad>
+                                                <name>1 Thread</name>
+                                                <prioritizeEarlierRuns>false</prioritizeEarlierRuns>
+                                                <proxySettings>
+                                                    <validationEnabled>true</validationEnabled>
+                                                </proxySettings>
+                                                <threadCount>1</threadCount>
+                                                <threadsPerNode>false</threadsPerNode>
+                                                <timeZone>GMT</timeZone>
+                                                <tps>0</tps>
+                                                <url></url>
+                                                <version>
+                                                    <componentUuid>43766c5f-92e3-4855-86a6-03a0049827eb</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2016-07-21T15:10:52Z</lastModified>
+                                                    <versionUuid>4fbf8c06-173f-4eec-9a2b-d1d73d563e69</versionUuid>
+                                                </version>
+                                            </source>
+                                            <sourceType>MANUAL</sourceType>
+                                            <template>
+                                                <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+
+ 	&lt;var-def name="datastore_name"&gt;{{datastore_name}}&lt;/var-def&gt;
+	&lt;var-def name="filename"&gt;{{filename}}&lt;/var-def&gt;
+	&lt;var-def name="gold"&gt;{{gold}}&lt;/var-def&gt;
+	&lt;var-def name="extracted"&gt;{{extracted}}&lt;/var-def&gt;
+
+	&lt;export include-original-data="true"&gt;
+     	&lt;single-column name="datastore_name" value="${datastore_name}"/&gt;
+        &lt;single-column name="documents_count" value="{{documents_count}}"/&gt;
+		&lt;single-column name="id" value="${filename}"/&gt;
+		&lt;single-column name="gold" value="${gold}"/&gt;
+		&lt;single-column name="extracted" value="${extracted}"/&gt;
+		&lt;single-column name="s3_bucket_to_save" value="{{s3_bucket_to_save}}"/&gt;
+		&lt;single-column name="s3_folder_to_save" value="{{s3_folder_to_save}}"/&gt;
+		&lt;single-column name="s3_name_to_save" value="{{s3_name_to_save}}"/&gt;
+      	&lt;single-column name="initial_document_link" value="{{initial_document_link}}"/&gt;
+	&lt;/export&gt;
+&lt;/config&gt;</content>
+                                                <name>Automation Settings</name>
+                                                <origination>CREATED_AUTOMATICALLY</origination>
+                                                <status>ACTIVE</status>
+                                                <type>MACHINE</type>
+                                                <uuid>55d9c732-b7a8-4a9b-ac0c-ae519d69e76e</uuid>
+                                                <version>
+                                                    <componentUuid>9de7e5f4-2762-4030-bc9f-2ad639df2dd7</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2018-11-02T12:45:20Z</lastModified>
+                                                    <versionUuid>8d3934dc-39a7-4a77-98f5-7238afac5241</versionUuid>
+                                                </version>
+                                            </template>
+                                            <uuid>2ec4650e-3f9e-4fdd-8f8c-e7cc1d6afc4b</uuid>
+                                            <version>
+                                                <componentUuid>d5e6a53d-e2bc-4eb7-b273-f07a1dd8ae2a</componentUuid>
+                                                <incrementalVersion>1.5</incrementalVersion>
+                                                <lastInChain>true</lastInChain>
+                                                <lastModified>2018-11-02T12:48:26Z</lastModified>
+                                                <versionUuid>b83854c3-819c-4bc2-8359-675431c2a53c</versionUuid>
+                                            </version>
+                                        </machineConfig>
+                                        <moderation>false</moderation>
+                                        <origination>CREATED_AUTOMATICALLY</origination>
+                                        <requiresData>true</requiresData>
+                                        <status>ACTIVE</status>
+                                        <streamComplexRunThreshold>1</streamComplexRunThreshold>
+                                        <streamTimeInterval>Immediately</streamTimeInterval>
+                                        <streamTimeIntervalValue>0</streamTimeIntervalValue>
+                                        <streamValueType>Tasks</streamValueType>
+                                        <title>params</title>
+                                        <type>SINGLE</type>
+                                        <uuid>80f32b0a-6000-401f-9be2-863c10cb16b3</uuid>
+                                        <validWorkflow>false</validWorkflow>
+                                        <version>
+                                            <componentUuid>7bab944d-b622-4b85-92bd-77a4bb9a7d6a</componentUuid>
+                                            <incrementalVersion>1.1</incrementalVersion>
+                                            <lastInChain>true</lastInChain>
+                                            <lastModified>2018-11-02T13:00:53Z</lastModified>
+                                            <versionUuid>bf739c22-0dbd-4300-bfc1-f6caa1bdbad0</versionUuid>
+                                        </version>
+                                        <workSettingBase>false</workSettingBase>
+                                    </campaign>
+                                    <deleted>false</deleted>
+                                    <skipForSTPCalculation>false</skipForSTPCalculation>
+                                    <stepIndex>1</stepIndex>
+                                    <stepPosition>START</stepPosition>
+                                    <streamed>false</streamed>
+                                    <uuid>3a9d2afc-96c2-4798-b2c2-2b6138a66522</uuid>
+                                </campaignMap>
+                                <campaignMap>
+                                    <activateTracking>false</activateTracking>
+                                    <blockSize>1</blockSize>
+                                    <businessRule>
+                                        <content># Rule.Definition={"moderationRule":false,"approveAllRule":false,"splitData":false,"splitRule":false,"splitRuleSuffix":"","joinRule":false,"joinRuleSuffix":"","streamingRule":false,"streamingRuleSuffix":"","namedRule":false,"namedRuleName":""}
+package com.freedomoss.requester;
+
+# list any import classes here.
+import java.util.Map;
+import java.util.ArrayList;
+import com.freedomoss.objective.model.CompositeRuleContext;
+import com.freedomoss.objective.model.CompositeRuleDataItemContext;
+import org.slf4j.Logger;
+
+
+# declare any global variables here
+global CompositeRuleContext source
+global Logger log
+global Map params
+
+
+rule "Rule context initialization"
+auto-focus true
+no-loop
+agenda-group "initialization-group"
+    when
+        $ctx:CompositeRuleContext(initialized == false);
+    then
+        # insert processed facts into memory
+        $ctx.updateWorkingMemory();
+        # move to business rules
+        kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("calculation").setFocus();
+end
+
+# RuleOutcome.Definition={"outcomeId":"false","conditional":true,"reworkBySameWorker":false,"assignToSameWorker":false,"anableLogging":false,"sendRejectNotification":false,"assignToAnyWorker":false,"approveRelatedAssignments":false,"rejectRelatedAssignments":false,"renameAutomationAnswerItem":false,"conditions":[{"fieldName":"filter","value":"false","operator":"EQ"}],"customConditions":[]}
+rule "1. Send records to 'false' when filter EQ 'false'"
+agenda-group "calculation"
+dialect "mvel"
+salience 100
+    when
+        $ctx:CompositeRuleContext(initialized == true);
+        $item:CompositeRuleDataItemContext();
+        eval($item.checkValue("filter", "EQ", "false"));
+
+    then
+        $ctx.sendResultTo("false", $item);
+end
+
+# RuleOutcome.Definition={"outcomeId":"true","conditional":true,"reworkBySameWorker":false,"assignToSameWorker":false,"anableLogging":false,"sendRejectNotification":false,"assignToAnyWorker":false,"approveRelatedAssignments":false,"rejectRelatedAssignments":false,"renameAutomationAnswerItem":false,"conditions":[{"fieldName":"filter","value":"true","operator":"EQ"}],"customConditions":[]}
+rule "2. Send records to 'true' when filter EQ 'true'"
+agenda-group "calculation"
+dialect "mvel"
+salience 100
+    when
+        $ctx:CompositeRuleContext(initialized == true);
+        $item:CompositeRuleDataItemContext();
+        eval($item.checkValue("filter", "EQ", "true"));
+
+    then
+        $ctx.sendResultTo("true", $item);
+end
+
+
+
+rule "Send unprocessed result to unconditional outcome(s)"
+agenda-group "calculation"
+dialect "mvel"
+salience 80
+    when
+        $ctx:CompositeRuleContext(initialized == true);
+        $item:CompositeRuleDataItemContext();
+    then
+        $ctx.sendResultToUnconditionalOutcomes($item, true);
+end</content>
+                                        <name>filter</name>
+                                        <ruleType>WORKFLOW_RULE</ruleType>
+                                        <ruleTypeUI>Composite</ruleTypeUI>
+                                        <uuid>d50d6bcd-4105-4de5-963a-1fd9ee308965</uuid>
+                                        <workflowRuleMode>SIMPLE</workflowRuleMode>
+                                    </businessRule>
+                                    <campaign>
+                                        <active>false</active>
+                                        <businessRules/>
+                                        <campaignMaps/>
+                                        <campaigns/>
+                                        <executingType>MACHINE</executingType>
+                                        <goldBucketBlockSize>0</goldBucketBlockSize>
+                                        <goldRatio>0</goldRatio>
+                                        <goldSource>Empty</goldSource>
+                                        <goldType>Percentage</goldType>
+                                        <includeOriginalData>false</includeOriginalData>
+                                        <machineConfig>
+                                            <answers/>
+                                            <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config"
+	scriptlang="groovy"&gt;
+
+	&lt;script&gt;
+		&lt;![CDATA[
+		import com.freedomoss.crowdcontrol.webharvest.RunDto
+		import com.freedomoss.crowdcontrol.webharvest.WebHarvestTaskItem
+		import org.apache.commons.io.IOUtils
+
+		RunDto run = (RunDto) ((WebHarvestTaskItem)item.getWrappedObject()).getRun();
+		runUUID = run.getRootRunUuid();
+		Map tripletMap = new HashMap();
+		Map linksMap = new HashMap();
+
+		goldValueResult=""
+		goldValue = getBinding().hasVariable(gold.getWrappedObject().toLowerCase()) ? getBinding().getVariable(gold.getWrappedObject().toLowerCase()).toString() : "";
+		//goldValueLink = getBinding().hasVariable(gold_link.getWrappedObject().toLowerCase()) ? getBinding().getVariable(gold_link.getWrappedObject().toLowerCase()).toString() : "";
+
+		if(!goldValue.equals("")){
+			log.info("gold: "+ goldValue)
+			if(goldValue.startsWith("http")){
+				goldValueResult=IOUtils.toString(new URL(goldValue).toURI())
+			} else {
+				goldValueResult=goldValue;
+			}	
+		} else {
+			log.info("no column names provided for gold data")
+		}
+
+		extractedValueResult=""
+		extractedValue = getBinding().hasVariable(extracted.getWrappedObject().toLowerCase()) ? getBinding().getVariable(extracted.getWrappedObject().toLowerCase()).toString() : "";
+		//extractedValueLink = getBinding().hasVariable(extracted_link.getWrappedObject().toLowerCase()) ? getBinding().getVariable(extracted_link.getWrappedObject().toLowerCase()).toString() : "";
+		
+		if(!extractedValue.equals("")){
+			log.info("extracted: " + extractedValue)
+			if(extractedValue.startsWith("http")){
+				extractedValueResult=IOUtils.toString(new URL(extractedValue).toURI())
+			} else {
+				extractedValueResult=extractedValue;
+			}	
+		} else {
+			log.info("no column names provided for extracted data")
+		}
+
+		tripletMap.put("id", getBinding().getVariable(id.getWrappedObject().toLowerCase()).toString());
+		tripletMap.put("gold", goldValueResult);
+		tripletMap.put("extracted", extractedValueResult);
+		tripletMap.put("runUUID", runUUID);
+
+
+		linksMap.put("id", getBinding().getVariable(id.getWrappedObject().toLowerCase()).toString())
+		initialDocumentLink = getBinding().hasVariable(initial_document_link.getWrappedObject().toLowerCase()) ? getBinding().getVariable(initial_document_link.getWrappedObject().toLowerCase()).toString() : "no valid data in input provided";
+		//documentWithGoldLink = getBinding().hasVariable(document_with_gold_link.getWrappedObject().toLowerCase()) ? getBinding().getVariable(document_with_gold_link.getWrappedObject().toLowerCase()).toString() : "no valid data in input provided";
+		//documentWithExtractedLink = getBinding().hasVariable(document_with_extracted_link.getWrappedObject().toLowerCase()) ? getBinding().getVariable(document_with_extracted_link.getWrappedObject().toLowerCase()).toString() : "no valid data in input provided";
+		linksMap.put("initial", initialDocumentLink)
+		//linksMap.put("gold", documentWithGoldLink)
+		//linksMap.put("extracted", documentWithExtractedLink)
+		linksMap.put("runUUID", runUUID);
+		
+		jsonValueMap = new com.google.gson.Gson().toJson(tripletMap);
+		linksValueMap = new com.google.gson.Gson().toJson(linksMap);
+	]]&gt;
+	&lt;/script&gt;
+
+	&lt;insert-datastore datastore-name="${datastore_name}"
+		create="true" json-value-map="${jsonValueMap}" /&gt;
+    &lt;insert-datastore datastore-name="links_datastore"
+		create="true" json-value-map="${linksValueMap}" /&gt;
+
+	&lt;var-def name='count'&gt;
+		&lt;xpath expression='row/c/text()'&gt;
+			&lt;datastore name='${datastore_name}'&gt;
+				&lt;template&gt;select count(*) as c from @this where runuuid = '${runUUID}'&lt;/template&gt;
+			&lt;/datastore&gt;
+		&lt;/xpath&gt;
+	&lt;/var-def&gt;
+
+	&lt;export include-original-data="true"&gt;
+		&lt;case&gt;
+			&lt;if condition="${count.toInt() == documents_count.toInt()}"&gt;
+				&lt;single-column name="filter" value="false"/&gt;
+			&lt;/if&gt;
+			&lt;else&gt;
+				&lt;single-column name="filter" value="true"/&gt;
+			&lt;/else&gt;
+		&lt;/case&gt;
+      &lt;single-column name="runuuid" value="${runUUID}"/&gt;
+	&lt;/export&gt;
+
+&lt;/config&gt;</content>
+                                            <description></description>
+                                            <includedConfigs/>
+                                            <inclusionCode>8581829c-e190-4820-b817-663ccc7e7fb8</inclusionCode>
+                                            <jsonParams>{"configXMLModified":"true"}</jsonParams>
+                                            <machineWorkSetting>
+                                                <category>
+                                                    <automation>false</automation>
+                                                    <description></description>
+                                                    <enabled>true</enabled>
+                                                    <executingType>MACHINE</executingType>
+                                                    <name>Other</name>
+                                                    <private>false</private>
+                                                    <publicId>dd92f240-144b-4fef-8476-4ec0acbc1105</publicId>
+                                                </category>
+                                                <contentType>BLANK</contentType>
+                                                <description></description>
+                                                <enabled>true</enabled>
+                                                <name>Miscellaneous Tasks</name>
+                                                <publicId>26e6e095-00bb-43fa-8c34-af0b18e71ac9</publicId>
+                                                <version>
+                                                    <componentUuid>26e6e095-00bb-43fa-8c34-af0b18e71ac9</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2018-10-18T13:29:49Z</lastModified>
+                                                    <versionUuid>26e6e095-00bb-43fa-8c34-af0b18e71ac9</versionUuid>
+                                                </version>
+                                                <answers/>
+                                                <machineWorkSettingType>BASIC</machineWorkSettingType>
+                                                <template>
+                                                    <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+	&lt;export include-original-data="true"&gt;
+	&lt;/export&gt;
+&lt;/config&gt;</content>
+                                                    <name>Blank</name>
+                                                    <origination>CREATED_MANUALLY</origination>
+                                                    <status>ACTIVE</status>
+                                                    <type>BASE_MACHINE</type>
+                                                    <uuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</uuid>
+                                                    <version>
+                                                        <componentUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</componentUuid>
+                                                        <incrementalVersion>1.0</incrementalVersion>
+                                                        <lastInChain>true</lastInChain>
+                                                        <lastModified>2012-12-27T00:00:00Z</lastModified>
+                                                        <versionUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</versionUuid>
+                                                    </version>
+                                                </template>
+                                            </machineWorkSetting>
+                                            <machineWorkSettingType>BASIC</machineWorkSettingType>
+                                            <name>put_to_datastore</name>
+                                            <machineConfigOptions/>
+                                            <source>
+                                                <availability></availability>
+                                                <deleted>false</deleted>
+                                                <description></description>
+                                                <equallyDistributeLoad>false</equallyDistributeLoad>
+                                                <name>1 Thread</name>
+                                                <prioritizeEarlierRuns>false</prioritizeEarlierRuns>
+                                                <proxySettings>
+                                                    <validationEnabled>true</validationEnabled>
+                                                </proxySettings>
+                                                <threadCount>1</threadCount>
+                                                <threadsPerNode>false</threadsPerNode>
+                                                <timeZone>GMT</timeZone>
+                                                <tps>0</tps>
+                                                <url></url>
+                                                <version>
+                                                    <componentUuid>43766c5f-92e3-4855-86a6-03a0049827eb</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2016-07-21T15:10:52Z</lastModified>
+                                                    <versionUuid>4fbf8c06-173f-4eec-9a2b-d1d73d563e69</versionUuid>
+                                                </version>
+                                            </source>
+                                            <sourceType>MANUAL</sourceType>
+                                            <template>
+                                                <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+	&lt;export include-original-data="true"&gt;
+	&lt;/export&gt;
+&lt;/config&gt;</content>
+                                                <name>Blank</name>
+                                                <origination>CREATED_MANUALLY</origination>
+                                                <status>ACTIVE</status>
+                                                <type>BASE_MACHINE</type>
+                                                <uuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</uuid>
+                                                <version>
+                                                    <componentUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2012-12-27T00:00:00Z</lastModified>
+                                                    <versionUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</versionUuid>
+                                                </version>
+                                            </template>
+                                            <uuid>8581829c-e190-4820-b817-663ccc7e7fb8</uuid>
+                                            <version>
+                                                <componentUuid>01141a3e-1ef8-41eb-8c85-926e7c26f7c4</componentUuid>
+                                                <incrementalVersion>1.0</incrementalVersion>
+                                                <lastInChain>true</lastInChain>
+                                                <lastModified>2018-10-29T18:46:52Z</lastModified>
+                                                <versionUuid>e99ca788-21b9-4b0c-8991-081adf25ebd0</versionUuid>
+                                            </version>
+                                        </machineConfig>
+                                        <moderation>false</moderation>
+                                        <origination>CREATED_AUTOMATICALLY</origination>
+                                        <requiresData>true</requiresData>
+                                        <status>ACTIVE</status>
+                                        <streamComplexRunThreshold>1</streamComplexRunThreshold>
+                                        <streamTimeInterval>Immediately</streamTimeInterval>
+                                        <streamTimeIntervalValue>0</streamTimeIntervalValue>
+                                        <streamValueType>Tasks</streamValueType>
+                                        <title>put_to_datastore</title>
+                                        <type>SINGLE</type>
+                                        <uuid>eb786a47-e56d-4fd5-b39e-4ffc85eae190</uuid>
+                                        <validWorkflow>false</validWorkflow>
+                                        <version>
+                                            <componentUuid>6b8dfdd6-c1eb-4fa6-b228-859bc09022ce</componentUuid>
+                                            <incrementalVersion>1.0</incrementalVersion>
+                                            <lastInChain>true</lastInChain>
+                                            <lastModified>2018-10-29T18:46:52Z</lastModified>
+                                            <versionUuid>1a763ee0-4501-4b01-bc01-7ad224e3d7c2</versionUuid>
+                                        </version>
+                                        <workSettingBase>false</workSettingBase>
+                                    </campaign>
+                                    <deleted>false</deleted>
+                                    <skipForSTPCalculation>false</skipForSTPCalculation>
+                                    <stepIndex>2</stepIndex>
+                                    <stepPosition>INTERMEDIATE</stepPosition>
+                                    <streamed>false</streamed>
+                                    <uuid>ce4dbed4-4c00-46e6-b76c-e7ddbdf59341</uuid>
+                                </campaignMap>
+                                <campaignMap>
+                                    <activateTracking>false</activateTracking>
+                                    <blockSize>1</blockSize>
+                                    <businessRule>
+                                        <content>#RuleContext.APPROVE_ALL_RULE</content>
+                                        <name>Approve All</name>
+                                        <ruleType>WORKFLOW_RULE</ruleType>
+                                        <ruleTypeUI>Composite</ruleTypeUI>
+                                        <uuid>da823243-4363-406d-a6c0-c7842c9e19f0</uuid>
+                                        <workflowRuleMode>SIMPLE</workflowRuleMode>
+                                    </businessRule>
+                                    <campaign>
+                                        <active>false</active>
+                                        <businessRules/>
+                                        <campaignMaps/>
+                                        <campaigns/>
+                                        <executingType>MACHINE</executingType>
+                                        <goldBucketBlockSize>0</goldBucketBlockSize>
+                                        <goldRatio>0</goldRatio>
+                                        <goldSource>Empty</goldSource>
+                                        <goldType>Percentage</goldType>
+                                        <includeOriginalData>false</includeOriginalData>
+                                        <machineConfig>
+                                            <answers/>
+                                            <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config"
+	scriptlang="groovy"&gt;
+
+	&lt;script&gt;
+		&lt;![CDATA[
+		//import org.opengis.metadata.constraint.Classification;
+		import org.apache.commons.io.IOUtils
+		import java.nio.charset.StandardCharsets
+		import javafx.util.Pair;
+		import javax.xml.transform.OutputKeys;
+		import javax.xml.transform.Transformer;
+		import javax.xml.transform.TransformerException;
+		import javax.xml.transform.TransformerFactory;
+		import javax.xml.transform.dom.DOMSource;
+		import javax.xml.transform.stream.StreamResult;
+
+		import com.google.gson.Gson;
+
+		class Triplet&lt;U, V, T&gt; implements Comparable&lt;Triplet&lt;U, V, T&gt;&gt; {
+			public final U first;   	// first field of a Triplet
+			public final V second;  	// second field of a Triplet
+			public final T third;   	// third field of a Triplet
+
+			// Constructs a new Triplet with the given values
+			private Triplet(U first, V second, T third)
+			{
+				this.first = first;
+				this.second = second;
+				this.third = third;
+			}
+
+			@Override
+			public String toString()
+			{
+				return "(" + first + ", " + second + ", " + third + ")";
+			}
+
+			// Factory method for creating a Typed immutable instance of Triplet
+			public static &lt;U, V, T&gt; Triplet &lt;U, V, T&gt; of(U a, V b, T c)
+			{
+				return new Triplet &lt;&gt;(a, b, c);
+			}
+			@Override
+			public int compareTo(Triplet triplet) {				
+				return this.first.compareTo(triplet.first);
+			}
+		}
+
+		htmlListGold = [:]
+		htmlListResult = [:]
+		columns = ["id", "gold", "extracted"];
+		
+		linksListInitial = [:]
+		//linksListGold = [:]
+		//linksListExtracted = [:]
+		linksColumns = ["id", "initial"/*, "gold", "extracted"*/];
+	]]&gt;
+	&lt;/script&gt;
+
+	&lt;loop item="row"&gt;
+		&lt;list&gt;
+			&lt;datastore name="${datastore_name}"&gt;
+				select * from @this where runuuid = '${runuuid}';
+			&lt;/datastore&gt;
+		&lt;/list&gt;
+		&lt;body&gt;
+			&lt;script&gt;
+				&lt;![CDATA[
+				id = ""
+				gold = ""
+				extracted = ""
+				for (column in columns) {
+
+					if(column.toString().equals("id")){
+						id= row.get(column).toString()
+					}
+					else if(column.toString().equals("gold")){
+						gold= row.get(column).toString()
+					}
+					else if(column.toString().equals("extracted")){
+						extracted= row.get(column).toString()
+					}
+				}
+
+				htmlListGold.put(id, gold);
+				htmlListResult.put(id, extracted);
+			]]&gt;
+			&lt;/script&gt;
+		&lt;/body&gt;
+	&lt;/loop&gt;
+
+  	&lt;loop item="row"&gt;
+		&lt;list&gt;
+			&lt;datastore name="links_datastore"&gt;
+				select * from @this where runuuid = '${runuuid}';
+			&lt;/datastore&gt;
+		&lt;/list&gt;
+		&lt;body&gt;
+			&lt;script&gt;
+				&lt;![CDATA[
+				id = ""
+				initial = ""
+				gold = ""
+				extracted = ""
+				for (column in linksColumns) {
+					if(column.toString().equals("id")){
+						id = row.get(column).toString()
+					}
+					else if(column.toString().equals("initial")){
+						initial = row.get(column).toString()						
+					}
+					/*else if(column.toString().equals("gold")){
+						gold = row.get(column).toString()
+					}
+					else if(column.toString().equals("extracted")){
+						extracted = row.get(column).toString()
+					}*/
+				}
+
+				linksListInitial.put(id, initial);
+				//linksListGold.put(id, gold);
+				//linksListExtracted.put(id, extracted);
+			]]&gt;
+			&lt;/script&gt;
+		&lt;/body&gt;
+	&lt;/loop&gt;
+   
+	&lt;script&gt;
+		&lt;![CDATA[
+		import org.jsoup.Jsoup;
+		import org.jsoup.nodes.Element;
+		import org.jsoup.select.Elements;
+		
+		void collectNodes (org.jsoup.nodes.Document doc, Map valuesToExtract){
+			Elements elements = doc.getElementsByAttribute("data-value");
+			for (Element e : elements) {
+				String initialText = e.attr("data-value");
+				String tagName = e.nodeName();
+				def tabNumber = e.attr("tabnumber");
+				if(!"".equals(tabNumber)){
+					tagName = tagName +"_tab_" +tabNumber;
+				}
+				valuesToExtract.put(tagName, initialText.trim().replaceAll(" +", " "))
+			}
+		}
+
+		def fields = []
+		List&lt;Triplet&lt;String, Map, Map&gt;&gt; triplet = new ArrayList&lt;Triplet&lt;String, HashMap, HashMap&gt;&gt;();
+		//linksTriplet = new HashMap&lt;String,Triplet&lt;String, String, String&gt;&gt;();
+		linksTriplet = new HashMap&lt;String,String&gt;();
+
+		for(String key : htmlListGold.keySet()){
+			def valuesToExtractGold = [:]
+			def valuesToExtractResult = [:]
+			def pD = htmlListGold[key];
+			collectNodes(Jsoup.parse(pD), valuesToExtractGold)
+
+			for(String keyField : valuesToExtractGold.keySet()){
+				if(!fields.contains(keyField)){
+					fields.add(keyField)
+				}
+			}
+
+			def pD2 = htmlListResult[key];
+			collectNodes(Jsoup.parse(pD2), valuesToExtractResult)
+
+			triplet.add(Triplet.of(key, valuesToExtractGold, valuesToExtractResult))
+			//linksTriplet.put(key, Triplet.of(linksListInitial.get(key), linksListGold.get(key), linksListExtracted.get(key)))
+			linksTriplet.put(key, linksListInitial.get(key))
+		}
+
+		classification = new HashMap&lt;String, ArrayList&lt;Triplet&lt;String, String, String&gt;&gt;&gt;();
+
+		fields2 =[]
+		fields2group =[]
+		for(String field:fields){
+			groupField = field.indexOf("_tab")&gt;0
+			def fieldName = field.substring(0, groupField?field.indexOf("_tab"):field.size())
+			if(!fields2.contains(fieldName) &amp;&amp; !groupField){
+				fields2.add(fieldName)
+			}
+			else{
+				fields2group.add(fieldName)
+			}
+
+			if(!classification.keySet().contains(fieldName)){
+				List&lt;Triplet&lt;String, String, String&gt;&gt; array = new ArrayList&lt;Triplet&lt;String, String, String&gt;&gt;();
+				classification.putAt(fieldName, array);
+			}
+
+			for(Triplet&lt;String, Map, Map&gt; vals: triplet.sort()){
+				gold = vals.second[field];
+				extracted = vals.third[field];
+				classification[fieldName].add(Triplet.of(vals.first, gold, extracted))
+			}
+		}
+
+		fields2.sort()
+		fields2group.sort()
+		for(String field:fields2group){
+			fields2.add(field)
+		}
+
+		xlsHeader = [
+			"Field",
+			"Extracted",
+			"Gold",
+			"Correct",
+			"Accuracy (Precision)",
+			"Automation Rate (Recall)",
+			"Rework",
+			"Automation Efficiency",
+			"TP",
+			"FP",
+			"FN",
+			"FPFN"
+		]
+		stats = ["TP", "TN", "FP", "FN", "FPFN"];
+		prVals = ["Precision", "Recall"];
+	]]&gt;
+	&lt;/script&gt;
+
+	&lt;script&gt;
+		&lt;![CDATA[
+		import org.apache.poi.hssf.usermodel.HSSFCell;
+		import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+		import org.apache.poi.hssf.util.CellReference;
+		import org.apache.poi.ss.usermodel.Cell;
+		import org.apache.poi.ss.usermodel.CellStyle;
+		import org.apache.poi.ss.usermodel.DateUtil;
+		import org.apache.poi.ss.usermodel.FillPatternType;
+		import org.apache.poi.ss.usermodel.Font;
+		import org.apache.poi.ss.usermodel.Row;
+		import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+		import org.apache.poi.xssf.usermodel.XSSFColor;
+		import org.apache.poi.xssf.usermodel.XSSFRow;
+		import org.apache.poi.xssf.usermodel.XSSFSheet;
+		import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+		import org.apache.poi.xssf.usermodel.XSSFHyperlink;
+		import org.apache.poi.ss.usermodel.Hyperlink;
+		import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
+		import org.apache.poi.ss.usermodel.ComparisonOperator;
+		import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+		import org.apache.poi.ss.usermodel.PatternFormatting;
+		import org.apache.poi.ss.util.CellRangeAddress;
+		
+		import org.apache.poi.common.usermodel.HyperlinkType;
+		import org.apache.poi.ss.usermodel.HorizontalAlignment;
+
+		int WriteInfoTable(int rowNum, XSSFWorkbook workbook, XSSFSheet deliverablesSheet, Font emphasiseFont) {
+			Row infoRow = deliverablesSheet.createRow(rowNum++);
+			Cell infoRowCell = infoRow.createCell(0);
+			infoRowCell.setCellValue("Definitions");
+			XSSFCellStyle cellStyle = workbook.createCellStyle();
+			cellStyle.setFont(emphasiseFont);
+			infoRowCell.setCellStyle(cellStyle)
+			//Extracted
+			rowNum = WriteInfoRow(rowNum, workbook, deliverablesSheet, "Extracted", "Count of ALL values \n extracted by Machine", false);
+
+			//Gold
+			rowNum = WriteInfoRow(rowNum, workbook, deliverablesSheet, "Gold", "Count of values tagged by SME", true);
+
+			//Correct
+			rowNum = WriteInfoRow(rowNum, workbook, deliverablesSheet, "Correct", "Count of correct values extracted by Machine", false);
+
+			//Accuracy (Precision)
+			rowNum = WriteInfoRow(rowNum, workbook, deliverablesSheet, "Accuracy (Precision) %", "Count of values classified correctly " +
+					"vs count of all values classified by Machine", true);
+
+			//Automation Rate (Recall)
+			rowNum = WriteInfoRow(rowNum, workbook, deliverablesSheet, "Automation Rate (Recall) %", "Count of correct values " +
+					"classified by Machine vs count of Golds (values classified by SMEs)", false);
+
+			//Rework
+			rowNum = WriteInfoRow(rowNum, workbook, deliverablesSheet, "Rework %", "Count of incorrect values classified by Machine vs" +
+					"count of Golds (values classified by SMEs)", true);
+
+			//Automation Efficiency
+			rowNum = WriteInfoRow(rowNum, workbook, deliverablesSheet, "Automation Efficiency %", "Percentage of useful work done by Machine", false);
+
+			deliverablesSheet.createRow(rowNum++);
+			return rowNum;
+		}
+
+		int WriteInfoRow(int rowNum, XSSFWorkbook workbook, XSSFSheet deliverablesSheet, String key, String value, boolean even) {
+			Row infoRow;
+			Cell infoRowCellKey;
+			Cell infoRowCellValue;
+
+			XSSFCellStyle keyCellStyle = workbook.createCellStyle();
+			XSSFColor color = new XSSFColor(new java.awt.Color(210, 206, 204));
+			keyCellStyle.setFillForegroundColor(color);
+			keyCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			keyCellStyle.setAlignment(HorizontalAlignment.LEFT);
+
+			XSSFCellStyle valueCellStyle = workbook.createCellStyle();
+			XSSFColor color2 = new XSSFColor(new java.awt.Color(242, 242, 242));
+			valueCellStyle.setFillForegroundColor(color2);
+			valueCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+			XSSFCellStyle blankCellStyle = workbook.createCellStyle();
+			XSSFColor color3 = new XSSFColor(new java.awt.Color(255, 255, 255));
+			blankCellStyle.setFillForegroundColor(color3);
+			blankCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+			infoRow = deliverablesSheet.createRow(rowNum++);
+			infoRowCellKey = infoRow.createCell(0);
+			infoRowCellKey.setCellValue(key);
+			even?infoRowCellKey.setCellStyle(blankCellStyle):infoRowCellKey.setCellStyle(keyCellStyle);
+
+			for(int i=2;i&lt;12;i++){
+				infoRowCell = infoRow.createCell(i);
+				infoRowCell.setCellValue("");
+				even?infoRowCell.setCellStyle(blankCellStyle):infoRowCell.setCellStyle(valueCellStyle);
+			}
+
+			infoRowCellValue = infoRow.createCell(1);
+			infoRowCellValue.setCellValue(value);
+			even?infoRowCellValue.setCellStyle(blankCellStyle):infoRowCellValue.setCellStyle(valueCellStyle);
+			
+			deliverablesSheet.addMergedRegion(new CellRangeAddress(rowNum-1,rowNum-1,1,11));
+
+			return rowNum;
+
+		}
+
+		void ApplyConditionalFormatting(XSSFSheet rawDataSheet, CellRangeAddress[] regions) {
+			SheetConditionalFormatting sheetCF = rawDataSheet.getSheetConditionalFormatting();
+
+			ConditionalFormattingRule rule1 = CreateConditionalFormattingRule(sheetCF, "\"TP\"", 218, 246, 210);
+			ConditionalFormattingRule rule2 = CreateConditionalFormattingRule(sheetCF, "\"FPFN\"", 217, 217, 217);
+			ConditionalFormattingRule rule3 = CreateConditionalFormattingRule(sheetCF, "\"FP\"", 255, 213, 213);
+			ConditionalFormattingRule rule4 = CreateConditionalFormattingRule(sheetCF, "\"FN\"", 211, 235, 241);
+			ConditionalFormattingRule rule5 = CreateConditionalFormattingRule(sheetCF, "\"TN\"", 255, 255, 183);
+
+			org.apache.poi.ss.usermodel.ConditionalFormattingRule[] rules = [rule1, rule2, rule3].toArray();
+			org.apache.poi.ss.usermodel.ConditionalFormattingRule[] rules2 = [rule4, rule5].toArray();
+
+			sheetCF.addConditionalFormatting(regions, rules);
+			sheetCF.addConditionalFormatting(regions, rules2);
+		}
+
+		ConditionalFormattingRule CreateConditionalFormattingRule(SheetConditionalFormatting sheetCF, String value, int red, int green, int blue) {
+			ConditionalFormattingRule rule = sheetCF.createConditionalFormattingRule(ComparisonOperator.EQUAL, value);
+			PatternFormatting fill = rule.createPatternFormatting();
+			XSSFColor color = new XSSFColor(new java.awt.Color(red, green, blue));
+			fill.setFillBackgroundColor(color);
+			fill.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+			return rule;
+		}
+
+		Font CreateItalicFont(XSSFWorkbook workbook) {
+			// Create a Font for italic cells
+			Font italicFont = workbook.createFont();
+			italicFont.setItalic(true);
+			italicFont.setFontHeightInPoints((short) 11);
+			italicFont.setFontName("Calibri Light");
+			return italicFont;
+		}
+
+		Font CreateBoldFont(XSSFWorkbook workbook) {
+			// Create a Font for emphasis cells
+			Font emphasiseFont = workbook.createFont();
+			emphasiseFont.setBold(true);
+			emphasiseFont.setFontHeightInPoints((short) 11);
+			emphasiseFont.setFontName("Calibri Light");
+			return emphasiseFont;
+		}
+
+		String getCellColumnNameByValue(XSSFRow row, String value) {
+			String columnLetter = "";
+			for (Cell cell : row) {
+				if (value.equals(cell.getStringCellValue())) {
+					columnLetter = CellReference.convertNumToColString(cell.getColumnIndex()+1);
+					break;
+				}
+			}
+			return columnLetter;
+		}
+
+		CellStyle CreateLinkCellStyle(XSSFWorkbook workbook){
+			CellStyle hlinkStyle = workbook.createCellStyle();
+			Font hlinkFont = workbook.createFont();
+			hlinkFont.setUnderline(Font.U_SINGLE);			
+			XSSFColor color = new XSSFColor(new java.awt.Color(5, 99, 193));
+			hlinkFont.setColor(color);
+			hlinkStyle.setFont(hlinkFont);
+			return hlinkStyle
+		}
+
+		/*void WriteLinksDataRows(XSSFWorkbook workbook, XSSFSheet sheet, Map&lt;String, Triplet&lt;String, String, String&gt;&gt; links, Font emphasiseFont, CellStyle hlinkStyle) {
+			int columnNumber = 0;
+			int rowNum = 0;
+			
+			Row dataRow = sheet.createRow(rowNum++);
+
+			XSSFCellStyle headerCellStyle = workbook.createCellStyle();
+			headerCellStyle.setFont(emphasiseFont);
+			XSSFColor color = new XSSFColor(new java.awt.Color(254, 218, 207));
+			headerCellStyle.setFillForegroundColor(color);
+			headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+
+			Cell dataRowCell = dataRow.createCell(columnNumber++);
+			dataRowCell.setCellValue("Filename");
+    		dataRowCell.setCellStyle(headerCellStyle);
+
+			dataRowCell = dataRow.createCell(columnNumber++);
+			dataRowCell.setCellValue("Original document link");
+			dataRowCell.setCellStyle(headerCellStyle);
+
+   			dataRowCell = dataRow.createCell(columnNumber++);
+   			dataRowCell.setCellValue("Document with gold data");
+			dataRowCell.setCellStyle(headerCellStyle);
+
+			dataRowCell = dataRow.createCell(columnNumber);
+    		dataRowCell.setCellValue("Document with extracted data");
+    		dataRowCell.setCellStyle(headerCellStyle);
+
+			columnNumber=0;
+			sheet.autoSizeColumn(0);
+			sheet.autoSizeColumn(1);
+			sheet.autoSizeColumn(2);
+			sheet.autoSizeColumn(3);
+
+			for(def value:links.keySet().sort())
+			{
+				XSSFHyperlink  href1 = workbook.getCreationHelper().createHyperlink(HyperlinkType.URL)
+				XSSFHyperlink  href2 = workbook.getCreationHelper().createHyperlink(HyperlinkType.URL)
+				XSSFHyperlink  href3 = workbook.getCreationHelper().createHyperlink(HyperlinkType.URL)
+
+				Triplet&lt;String, Object, Object&gt; triplet = links.get(value);
+				dataRow = sheet.createRow(rowNum++);
+
+				dataRowCell = dataRow.createCell(columnNumber++);
+				dataRowCell.setCellValue(value);
+
+				dataRowCell = dataRow.createCell(columnNumber++);
+				dataRowCell.setCellValue(triplet.first);
+				if(!triplet.first.equals("no valid data in input provided")){
+					href1.setAddress(triplet.first);
+					dataRowCell.setHyperlink(href1);
+					dataRowCell.setCellStyle(hlinkStyle)
+				}
+
+				dataRowCell = dataRow.createCell(columnNumber++);
+				dataRowCell.setCellValue(triplet.second);
+				if(!triplet.second.equals("no valid data in input provided")){
+					href2.setAddress(triplet.second);
+					dataRowCell.setHyperlink(href2);
+					dataRowCell.setCellStyle(hlinkStyle)
+				}
+
+				dataRowCell = dataRow.createCell(columnNumber);
+				dataRowCell.setCellValue(triplet.third);
+				if(!triplet.third.equals("no valid data in input provided")){
+					href3.setAddress(triplet.third);
+					dataRowCell.setHyperlink(href3);
+					dataRowCell.setCellStyle(hlinkStyle)
+				}
+				columnNumber=0
+
+			}
+		}
+*/
+
+		void WriteLinksDataRows(XSSFWorkbook workbook, XSSFSheet sheet, Map&lt;String, String&gt; links, Font emphasiseFont, CellStyle hlinkStyle) {
+			int columnNumber = 0;
+			int rowNum = 0;
+			
+			Row dataRow = sheet.createRow(rowNum++);
+
+			XSSFCellStyle headerCellStyle = workbook.createCellStyle();
+			headerCellStyle.setFont(emphasiseFont);
+			XSSFColor color = new XSSFColor(new java.awt.Color(254, 218, 207));
+			headerCellStyle.setFillForegroundColor(color);
+			headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+
+			Cell dataRowCell = dataRow.createCell(columnNumber++);
+			dataRowCell.setCellValue("Filename");
+    		dataRowCell.setCellStyle(headerCellStyle);
+
+			dataRowCell = dataRow.createCell(columnNumber++);
+			dataRowCell.setCellValue("Original document link");
+			dataRowCell.setCellStyle(headerCellStyle);
+
+   		
+
+			columnNumber=0;
+			sheet.autoSizeColumn(0);
+			sheet.autoSizeColumn(1);
+
+			for(def value:links.keySet().sort())
+			{
+				XSSFHyperlink  href1 = workbook.getCreationHelper().createHyperlink(HyperlinkType.URL)
+
+				triplet = links.get(value);
+				dataRow = sheet.createRow(rowNum++);
+
+				dataRowCell = dataRow.createCell(columnNumber++);
+				dataRowCell.setCellValue(value);
+
+				dataRowCell = dataRow.createCell(columnNumber++);
+				dataRowCell.setCellValue(triplet);
+				if(!triplet.equals("no valid data in input provided")){
+					href1.setAddress(triplet);
+					dataRowCell.setHyperlink(href1);
+					dataRowCell.setCellStyle(hlinkStyle)
+				}
+				columnNumber=0
+
+			}
+		}
+
+
+
+		void WriteAggregatedRows(int rowNum, List&lt;String&gt; fields, XSSFWorkbook workbook, XSSFSheet rawDataSheet, XSSFSheet deliverablesSheet, int initialRowNum, int tableWidth, Font emphasiseFont, String sheetName) {
+			//Write table
+			for (String field : fields) {
+				Row tableRow = deliverablesSheet.createRow(rowNum++);
+				int correctColumnNumber = -1;
+				int goldColumnNumber = -1;
+				int extractedColumnNumber = -1;
+				for (int i = 0; i &lt; tableWidth; i++) {
+					String key = deliverablesSheet.getRow(initialRowNum).getCell(i).getStringCellValue();
+					Cell tableRowCell = tableRow.createCell(i);
+					XSSFCellStyle tableCellStyle = workbook.createCellStyle();
+					tableCellStyle.setWrapText(true);
+					switch (key) {
+						case "Field": f:{
+							Cell fieldCell = tableRow.createCell(i);
+							fieldCell.setCellValue(field);
+							break;
+						}
+						case "Extracted": e:{
+							XSSFRow row = rawDataSheet.getRow(0);
+							String columnLetter = getCellColumnNameByValue(row, field);
+							extractedColumnNumber = extractedColumnNumber == -1 ? tableRowCell.getColumnIndex() : extractedColumnNumber;
+							Cell extractedCell = tableRow.createCell(i);
+							String formula = "'"+sheetName+"'!" + columnLetter + "2+'"+sheetName+"'!" + columnLetter + "4+'"+sheetName+"'!" + columnLetter + "6";
+							extractedCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							extractedCell.setCellFormula(formula);
+							break;
+						}
+						case "Gold": g:{
+							XSSFRow row = rawDataSheet.getRow(0);
+							String columnLetter = getCellColumnNameByValue(row, field);
+							goldColumnNumber = goldColumnNumber == -1 ? tableRowCell.getColumnIndex() : goldColumnNumber;
+							Cell goldCell = tableRow.createCell(i);
+							String formula = "'"+sheetName+"'!" + columnLetter + "2+'"+sheetName+"'!" + columnLetter + "5+'"+sheetName+"'!" + columnLetter + "6";
+							goldCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							goldCell.setCellFormula(formula);
+							break;
+						}
+						case "Correct":
+							case "TP": ctp:{
+								XSSFRow row = rawDataSheet.getRow(0);
+								String columnLetter = getCellColumnNameByValue(row, field);
+								correctColumnNumber = correctColumnNumber == -1 ? tableRowCell.getColumnIndex() : correctColumnNumber;
+								Cell correctCell = tableRow.createCell(i);
+								String formula = "'"+sheetName+"'!" + columnLetter + "2";
+								correctCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+								correctCell.setCellFormula(formula);
+								break;
+							}
+						case "Accuracy (Precision)": ap:{
+							String correctColumnLetter = CellReference.convertNumToColString(correctColumnNumber);
+							String extractedColumnLetter = CellReference.convertNumToColString(extractedColumnNumber);
+							String formula = "IF("+extractedColumnLetter + rowNum+"=0,0,"+ correctColumnLetter + rowNum + "/" + extractedColumnLetter + rowNum+")";
+
+							tableRowCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							tableCellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+							tableRowCell.setCellFormula(formula);
+							break;
+						}
+						case "Automation Rate (Recall)": arr:{
+							String correctColumnLetter = CellReference.convertNumToColString(correctColumnNumber);
+							String goldColumnLetter = CellReference.convertNumToColString(goldColumnNumber);
+							String formula ="IF("+goldColumnLetter + rowNum+"=0,0,"+ correctColumnLetter + rowNum + "/" + goldColumnLetter + rowNum+")";
+
+							tableRowCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							tableCellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+							tableRowCell.setCellFormula(formula);
+							break;
+						}
+						case "Rework": r:{
+							String correctColumnLetter = CellReference.convertNumToColString(correctColumnNumber);
+							String extractedColumnLetter = CellReference.convertNumToColString(extractedColumnNumber);
+
+							String goldColumnLetter = CellReference.convertNumToColString(goldColumnNumber);
+							String formula = "IF("+goldColumnLetter + rowNum+"=0,0,"+ "(" + extractedColumnLetter + rowNum + "-" + correctColumnLetter + rowNum + ")/" + goldColumnLetter + rowNum+")";
+
+							tableRowCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							tableCellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+							tableRowCell.setCellFormula(formula);
+							break;
+						}
+						case "Automation Efficiency": ae:{
+							String correctColumnLetter = CellReference.convertNumToColString(correctColumnNumber);
+							String extractedColumnLetter = CellReference.convertNumToColString(extractedColumnNumber);
+
+							String goldColumnLetter = CellReference.convertNumToColString(goldColumnNumber);
+							String formula = "IF("+goldColumnLetter + rowNum+"=0,0,"+ "(2*" + correctColumnLetter + rowNum + "-" + extractedColumnLetter + rowNum + ")/" + goldColumnLetter + rowNum+")";
+
+							tableRowCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							tableCellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+							tableRowCell.setCellFormula(formula);
+							break;
+						}
+						case "FP": fp:{
+							XSSFRow row = rawDataSheet.getRow(0);
+							String columnLetter = getCellColumnNameByValue(row, field);
+							Cell correctCell = tableRow.createCell(i);
+							String formula = "'"+sheetName+"'!" + columnLetter + "4";
+							correctCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							correctCell.setCellFormula(formula);
+							break;
+						}
+						case "FN": fn:{
+							XSSFRow row = rawDataSheet.getRow(0);
+							String columnLetter = getCellColumnNameByValue(row, field);
+							Cell correctCell = tableRow.createCell(i);
+							String formula = "'"+sheetName+"'!" + columnLetter + "5";
+							correctCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							correctCell.setCellFormula(formula);
+							break;
+						}
+						case "FPFN": fpfn:{
+							XSSFRow row = rawDataSheet.getRow(0);
+							String columnLetter = getCellColumnNameByValue(row, field);
+							Cell correctCell = tableRow.createCell(i);
+							String formula = "'"+sheetName+"'!" + columnLetter + "6";
+							correctCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+							correctCell.setCellFormula(formula);
+							break;
+						}
+					}
+
+					if (i == 0) {
+						/* tableCellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+						tableCellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); */
+						tableCellStyle.setFont(emphasiseFont);
+						deliverablesSheet.autoSizeColumn(i);
+					}
+
+					tableRowCell.setCellStyle(tableCellStyle);
+				}
+			}
+		}
+
+		int WriteDeliverablesHeaderRow(int rowNum, XSSFWorkbook workbook, XSSFSheet deliverablesSheet, List&lt;String&gt; xlsHeader, int tableWidth, Font emphasiseFont) {
+			Row headerRow = deliverablesSheet.createRow(rowNum++);
+			for (int i = 0; i &lt; tableWidth; i++) {
+				Cell headerRowCell = headerRow.createCell(i);
+				headerRowCell.setCellValue(xlsHeader.get(i));
+
+				XSSFCellStyle headerCellStyle = workbook.createCellStyle();
+				headerCellStyle.setFont(emphasiseFont);
+				XSSFColor color = new XSSFColor(new java.awt.Color(254, 218, 207));
+				headerCellStyle.setFillForegroundColor(color);
+				headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+				headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+				headerRowCell.setCellStyle(headerCellStyle);
+				deliverablesSheet.autoSizeColumn(i);
+				deliverablesSheet.setColumnWidth(1, 20 * 256);
+			}
+			return rowNum;
+		}
+
+		void WriteDataRows(XSSFWorkbook workbook, Boolean intellectualComparison, int rowNum, XSSFSheet sheet, List&lt;String&gt; fields, Map&lt;String, List&lt;Triplet&lt;String, Object, Object&gt;&gt;&gt; classification) {
+			int columnNumber = 0;
+			for (String field : fields) {
+				int dataRowNum = rowNum;
+				List&lt;Triplet&lt;String, Object, Object&gt;&gt; triplets = classification.get(field);
+				for (Triplet&lt;String, Object, Object&gt; triplet : triplets) {
+					
+					Row dataRow = sheet.getRow(dataRowNum) == null ? sheet.createRow(dataRowNum++) : sheet.getRow(dataRowNum++);
+					int columnNumberInner = columnNumber;
+
+					Cell dataRowCell = dataRow.createCell(columnNumberInner++);
+					dataRowCell.setCellValue(triplet.first);
+					Hyperlink link = workbook.getCreationHelper().createHyperlink(HyperlinkType.DOCUMENT);
+					link.setAddress("'Data links'!A"+(dataRowNum-11).toString());
+					dataRowCell.setHyperlink(link);
+
+					if (intellectualComparison) {
+						columnNumberInner = AddCellValueWithTypeDetection(triplet.second, dataRow, columnNumberInner);
+						columnNumberInner = AddCellValueWithTypeDetection(triplet.third, dataRow, columnNumberInner);
+					} else {
+						dataRowCell = dataRow.createCell(columnNumberInner++);
+						dataRowCell.setCellValue((triplet.second==null?"":triplet.second).toString());
+
+						dataRowCell = dataRow.createCell(columnNumberInner++);
+						dataRowCell.setCellValue((triplet.third==null?"":triplet.third).toString());
+					}
+
+					dataRowCell = dataRow.createCell(columnNumberInner);
+
+					String columnLetterGold = CellReference.convertNumToColString(columnNumberInner - 2);
+					String columnLetterExtracted = CellReference.convertNumToColString(columnNumberInner - 1);
+
+					String formula = "IF(AND(" + columnLetterGold + dataRowNum + "=" + columnLetterExtracted + dataRowNum + "," + columnLetterExtracted + dataRowNum + "&lt;&gt;\"\"),\"TP\"," +
+							"IF(AND(" + columnLetterGold + dataRowNum + "=\"\"," + columnLetterExtracted + dataRowNum + "&lt;&gt;\"\"),\"FP\"," +
+							"IF(AND(" + columnLetterGold + dataRowNum + "=\"\"," + columnLetterExtracted + dataRowNum + "=\"\"),\"TN\"," +
+							"IF(AND(" + columnLetterGold + dataRowNum + "&lt;&gt;\"\"," + columnLetterExtracted + dataRowNum + "=\"\"),\"FN\"," +
+							"IF(AND(" + columnLetterGold + dataRowNum + "&lt;&gt;\"\"," + columnLetterExtracted + dataRowNum + "&lt;&gt;\"\"," + columnLetterGold + dataRowNum + "&lt;&gt;" + columnLetterExtracted + dataRowNum + "),\"FPFN\")))))";
+
+					dataRowCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+					dataRowCell.setCellFormula(formula);
+					
+				}
+				columnNumber += 4;
+			}
+		}
+
+		int AddCellValueWithTypeDetection(Object value, Row dataRow, int columnNumberInner) {
+			Cell dataRowCell;
+			dataRowCell = dataRow.createCell(columnNumberInner++);
+
+			if(value?.isInteger()){
+				dataRowCell.setCellValue(value as Integer);
+			}
+			else if(value?.isDouble()){
+				dataRowCell.setCellValue(value as Double);
+			}
+			else{
+				dataRowCell.setCellValue((value==null?"":value) as String);
+			}
+
+			return columnNumberInner;
+		}
+
+		int WriteHeaderRow(int rowNum, XSSFWorkbook workbook, XSSFSheet sheet, List&lt;String&gt; fields, int columnsPerField, Font emphasiseFont) {
+			Row headerRow = sheet.createRow(rowNum++);
+			for (int i = 0; i &lt; fields.size() * columnsPerField; i++) {
+
+				XSSFCellStyle statsCellStyle = workbook.createCellStyle();
+				statsCellStyle.setFont(emphasiseFont);
+				XSSFColor color = new XSSFColor(new java.awt.Color(254, 218, 207));
+				statsCellStyle.setFillForegroundColor(color);
+				statsCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+				if (i % columnsPerField == 0) {
+					Cell headerCell = headerRow.createCell(i);
+					headerCell.setCellValue("Document");
+					headerCell.setCellStyle(statsCellStyle);
+					sheet.autoSizeColumn(i);
+				}
+
+				if (i % columnsPerField == 1) {
+					Cell headerCell = headerRow.createCell(i);
+					headerCell.setCellValue("Gold");
+					headerCell.setCellStyle(statsCellStyle);
+					sheet.autoSizeColumn(i);
+				}
+				if (i % columnsPerField == 2) {
+					Cell headerCell = headerRow.createCell(i);
+					headerCell.setCellValue("Extracted");
+					headerCell.setCellStyle(statsCellStyle);
+
+					sheet.autoSizeColumn(i);
+				}
+				if (i % columnsPerField == 3) {
+					Cell headerCell = headerRow.createCell(i);
+					headerCell.setCellValue("Desicion");
+					headerCell.setCellStyle(statsCellStyle);
+					sheet.autoSizeColumn(i);
+				}
+			}
+
+			return rowNum;
+		}
+
+		int WritePRows(int rowNum, XSSFWorkbook workbook, XSSFSheet sheet, List&lt;String&gt; fields, List&lt;String&gt; prVals, int columnsPerField, Font emphasiseFont) {
+			for (int pr = 0; pr &lt; prVals.size(); pr++) {
+				Row prRow = sheet.createRow(rowNum++);
+				for (int i = 0; i &lt; fields.size() * columnsPerField; i++) {
+
+					XSSFCellStyle prCellStyle = workbook.createCellStyle();
+					prCellStyle.setFont(emphasiseFont);
+					XSSFColor color = new XSSFColor(new java.awt.Color(210, 206, 204));
+					prCellStyle.setFillForegroundColor(color);
+					prCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+					if (i % columnsPerField == 0 || i % columnsPerField == 3) {
+						prRow.createCell(i);
+					}
+					if (i % columnsPerField == 1) {
+						Cell statsRowCell = prRow.createCell(i);
+						statsRowCell.setCellValue(prVals.get(pr));
+						statsRowCell.setCellStyle(prCellStyle);
+						sheet.autoSizeColumn(i);
+					}
+					if (i % columnsPerField == 2) {
+						Cell statsRowCell = prRow.createCell(i);
+						String columnLetter = CellReference.convertNumToColString(statsRowCell.getColumnIndex());
+						String formula = "";
+
+						switch (prVals.get(pr)) {
+							case "Precision":
+								formula = "IF(("+columnLetter + "2+" + columnLetter + "4+" + columnLetter + "6)=0,0,"+columnLetter + "2/(" + columnLetter + "2+" + columnLetter + "4+" + columnLetter + "6))";
+								break;
+							case "Recall":
+								formula = "IF(("+columnLetter + "2+" + columnLetter + "5+" + columnLetter + "6)=0,0,"+columnLetter + "2/(" + columnLetter + "2+" + columnLetter + "5+" + columnLetter + "6))";
+								break;
+						}
+						statsRowCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+						statsRowCell.setCellFormula(formula);
+						prCellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+						statsRowCell.setCellStyle(prCellStyle);
+					}
+				}
+			}
+			return rowNum;
+		}
+
+		int WriteTotalRow(int rowNum, XSSFWorkbook workbook, XSSFSheet sheet, List&lt;String&gt; fields, int columnsPerField, Font italicFont) {
+			Row totalRow = sheet.createRow(rowNum++);
+			for (int i = 0; i &lt; fields.size() * columnsPerField; i++) {
+
+				XSSFCellStyle totalCellStyle = workbook.createCellStyle();
+				totalCellStyle.setFont(italicFont);
+				XSSFColor color = new XSSFColor(new java.awt.Color(255, 255, 255));
+				totalCellStyle.setFillForegroundColor(color);
+				totalCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+				if (i % columnsPerField == 0 || i % columnsPerField == 3) {
+					totalRow.createCell(i);
+				}
+				if (i % columnsPerField == 1) {
+					Cell totalRowCell = totalRow.createCell(i);
+					totalRowCell.setCellValue("Total documents");
+					totalRowCell.setCellStyle(totalCellStyle);
+					sheet.autoSizeColumn(i);
+				}
+				if (i % columnsPerField == 2) {
+					Cell totalRowCell = totalRow.createCell(i);
+					String columnLetter = CellReference.convertNumToColString(totalRowCell.getColumnIndex());
+					String formula = columnLetter + "2+" + columnLetter + "5+" + columnLetter + "6";
+
+					totalRowCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+					totalRowCell.setCellFormula(formula);
+					totalRowCell.setCellStyle(totalCellStyle);
+				}
+			}
+			return rowNum;
+		}
+
+		int WriteStatsRows(int rowNum, XSSFWorkbook workbook, XSSFSheet sheet, List&lt;String&gt; fields, List&lt;String&gt; stats, int columnsPerField, Font emphasiseFont) {
+			for (int st = 0; st &lt; stats.size(); st++) {
+				Row statsRow = sheet.createRow(rowNum++);
+				for (int i = 0; i &lt; fields.size() * columnsPerField; i++) {
+
+					XSSFCellStyle statsCellStyle = workbook.createCellStyle();
+					statsCellStyle.setFont(emphasiseFont);
+					XSSFColor color = new XSSFColor(new java.awt.Color(242, 242, 242));
+					statsCellStyle.setFillForegroundColor(color);
+					statsCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+					if (i % columnsPerField == 0 || i % columnsPerField == 3) {
+						statsRow.createCell(i);
+					}
+					if (i % columnsPerField == 1) {
+						Cell statsRowCell = statsRow.createCell(i);
+						statsRowCell.setCellValue(stats.get(st));
+						statsRowCell.setCellStyle(statsCellStyle);
+						sheet.autoSizeColumn(i);
+					}
+					if (i % columnsPerField == 2) {
+						Cell statsRowCell = statsRow.createCell(i);
+						String columnLetter = CellReference.convertNumToColString(statsRowCell.getColumnIndex() + 1);
+						String formula = "";
+
+						switch (stats.get(st)) {
+							case "TP":
+								formula = "COUNTIF(" + columnLetter + "13:" + columnLetter + "100000,\"TP\")";
+								break;
+							case "TN":
+								formula = "COUNTIF(" + columnLetter + "13:" + columnLetter + "100000,\"TN\")";
+								break;
+							case "FP":
+								formula = "COUNTIF(" + columnLetter + "13:" + columnLetter + "100000,\"FP\")";
+								break;
+							case "FN":
+								formula = "COUNTIF(" + columnLetter + "13:" + columnLetter + "100000,\"FN\")";
+								break;
+							case "FPFN":
+								formula = "COUNTIF(" + columnLetter + "13:" + columnLetter + "100000,\"FPFN\")";
+								break;
+						}
+						statsRowCell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+						statsRowCell.setCellFormula(formula);
+						statsRowCell.setCellStyle(statsCellStyle);
+					}
+				}
+			}
+			return rowNum;
+		}
+
+		int WriteFieldRow(int rowNum, XSSFWorkbook workbook, XSSFSheet sheet, List&lt;String&gt; fields, int columnsPerField, Font emphasiseFont, boolean top) {
+			Row firstRow = sheet.createRow(rowNum++);
+			int iter = 0;
+			for (int i = 0; i &lt; fields.size() * columnsPerField; i++) {
+				if (i % columnsPerField == 0 || i % columnsPerField == 2 || i % columnsPerField == 3) {
+					firstRow.createCell(i);
+				}
+				if (i % columnsPerField == 1) {
+					Cell firstRowCell = firstRow.createCell(i);
+					firstRowCell.setCellValue(fields.get(iter++));
+					XSSFCellStyle fieldNameStyle = workbook.createCellStyle();
+					fieldNameStyle.setFont(emphasiseFont);
+					XSSFColor color = new XSSFColor(top?new java.awt.Color(254, 218, 207):new java.awt.Color(242, 242, 242));
+					fieldNameStyle.setFillForegroundColor(color);
+					fieldNameStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+					fieldNameStyle.setAlignment(HorizontalAlignment.CENTER);
+					firstRowCell.setCellStyle(fieldNameStyle);
+					sheet.autoSizeColumn(i);
+				}
+			}
+			return rowNum;
+		}
+
+		XSSFWorkbook workbook = new XSSFWorkbook();
+
+		//Fonts
+		Font emphasiseFont = CreateBoldFont(workbook);
+		Font italicFont = CreateItalicFont(workbook);
+		
+		//Links style
+		hlinkStyle = CreateLinkCellStyle(workbook);
+
+		// Create Data links
+		XSSFSheet linksSheet = workbook.createSheet("Data links");
+		WriteLinksDataRows(workbook, linksSheet, linksTriplet, emphasiseFont, hlinkStyle);
+
+		//columns per field in raw data sheets
+		int columnsPerField = 4;
+		// Create Raw Data sheet
+		int rowNum = 0;
+		XSSFSheet rawDataSheet = workbook.createSheet("Raw Data");
+		rowNum = WriteFieldRow(rowNum, workbook, rawDataSheet, fields2, columnsPerField, emphasiseFont, true);
+		rowNum = WriteStatsRows(rowNum, workbook, rawDataSheet, fields2, stats, columnsPerField, emphasiseFont);
+		rowNum = WriteTotalRow(rowNum, workbook, rawDataSheet, fields2, columnsPerField, italicFont);
+		rowNum = WritePRows(rowNum, workbook, rawDataSheet, fields2, prVals, columnsPerField, emphasiseFont);
+		rawDataSheet.createRow(rowNum++);
+		rowNum = WriteFieldRow(rowNum, workbook, rawDataSheet, fields2, columnsPerField, emphasiseFont, false);
+		rowNum = WriteHeaderRow(rowNum, workbook, rawDataSheet, fields2, columnsPerField, emphasiseFont);
+		WriteDataRows(workbook, false, rowNum, rawDataSheet, fields2, classification);
+
+		/*// Create Raw Data (Accessible after post-processing)
+		rowNum = 0;
+		XSSFSheet rawDataIntellectualComparisonSheet = workbook.createSheet("Raw Data (post-processing)");
+		rowNum = WriteFieldRow(rowNum, workbook, rawDataIntellectualComparisonSheet, fields2, columnsPerField, emphasiseFont, true);
+		rowNum = WriteStatsRows(rowNum, workbook, rawDataIntellectualComparisonSheet, fields2, stats, columnsPerField, emphasiseFont);
+		rowNum = WriteTotalRow(rowNum, workbook, rawDataIntellectualComparisonSheet, fields2, columnsPerField, italicFont);
+		rowNum = WritePRows(rowNum, workbook, rawDataIntellectualComparisonSheet, fields2, prVals, columnsPerField, emphasiseFont);
+		rawDataIntellectualComparisonSheet.createRow(rowNum++);
+		rowNum = WriteFieldRow(rowNum, workbook, rawDataIntellectualComparisonSheet, fields2, columnsPerField, emphasiseFont, false);
+		rowNum = WriteHeaderRow(rowNum, workbook, rawDataIntellectualComparisonSheet, fields2, columnsPerField, emphasiseFont);
+		WriteDataRows(workbook, true, rowNum, rawDataIntellectualComparisonSheet, fields2, classification);
+		*/
+		rowNum = 1;
+
+		int tableWidth = xlsHeader.size();
+		// Create Deliverables
+		XSSFSheet deliverablesSheet = workbook.createSheet("Deliverables");
+		deliverablesSheet.createRow(0);
+		rowNum = WriteInfoTable(rowNum, workbook, deliverablesSheet, emphasiseFont);
+		rowNum = WriteDeliverablesHeaderRow(rowNum, workbook, deliverablesSheet, xlsHeader, tableWidth, emphasiseFont);
+		int initialRowNum = rowNum - 1;
+		WriteAggregatedRows(rowNum, fields2, workbook, rawDataSheet, deliverablesSheet, initialRowNum, tableWidth, emphasiseFont,"Raw Data");
+
+		//Apply conditional formatting
+		org.apache.poi.ss.util.CellRangeAddress[] regions =  [CellRangeAddress.valueOf("A13:ZZ100000")].toArray();
+
+		ApplyConditionalFormatting(rawDataSheet, regions);
+		//ApplyConditionalFormatting(rawDataIntellectualComparisonSheet, regions);
+		// Write the output to a file
+		FileOutputStream fileOut = new FileOutputStream("generated-file.xlsx");
+		workbook.write(fileOut);
+		fileOut.close();
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		workbook.write(bos);
+		bos.close();
+		sys.defineVariable("arr", bos.toByteArray());
+		// Closing the workbook
+		workbook.close();
+	]]&gt;
+	&lt;/script&gt;
+
+	&lt;var-def name="fileS3Location"&gt;
+		&lt;s3 bucket="${s3_bucket_to_save}"&gt;
+			&lt;s3-put path="${s3_folder_to_save}/${s3_name_to_save}.xlsx" content-type="application/xlsx"
+				content-disposition="inline" acl="PublicRead"&gt;
+				&lt;var name="arr" /&gt;
+			&lt;/s3-put&gt;
+		&lt;/s3&gt;
+	&lt;/var-def&gt;
+
+	&lt;export include-original-data="false"&gt;
+		&lt;single-column name="link" value="${fileS3Location}" /&gt;
+	&lt;/export&gt;
+
+&lt;/config&gt;</content>
+                                            <description></description>
+                                            <includedConfigs/>
+                                            <inclusionCode>d9a1cf83-cd3a-49db-bc76-641292ddfbcf</inclusionCode>
+                                            <jsonParams>{"configXMLModified":"true"}</jsonParams>
+                                            <machineWorkSetting>
+                                                <category>
+                                                    <automation>false</automation>
+                                                    <description></description>
+                                                    <enabled>true</enabled>
+                                                    <executingType>MACHINE</executingType>
+                                                    <name>Other</name>
+                                                    <private>false</private>
+                                                    <publicId>dd92f240-144b-4fef-8476-4ec0acbc1105</publicId>
+                                                </category>
+                                                <contentType>BLANK</contentType>
+                                                <description></description>
+                                                <enabled>true</enabled>
+                                                <name>Miscellaneous Tasks</name>
+                                                <publicId>26e6e095-00bb-43fa-8c34-af0b18e71ac9</publicId>
+                                                <version>
+                                                    <componentUuid>26e6e095-00bb-43fa-8c34-af0b18e71ac9</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2018-10-18T13:29:49Z</lastModified>
+                                                    <versionUuid>26e6e095-00bb-43fa-8c34-af0b18e71ac9</versionUuid>
+                                                </version>
+                                                <answers/>
+                                                <machineWorkSettingType>BASIC</machineWorkSettingType>
+                                                <template>
+                                                    <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+	&lt;export include-original-data="true"&gt;
+	&lt;/export&gt;
+&lt;/config&gt;</content>
+                                                    <name>Blank</name>
+                                                    <origination>CREATED_MANUALLY</origination>
+                                                    <status>ACTIVE</status>
+                                                    <type>BASE_MACHINE</type>
+                                                    <uuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</uuid>
+                                                    <version>
+                                                        <componentUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</componentUuid>
+                                                        <incrementalVersion>1.0</incrementalVersion>
+                                                        <lastInChain>true</lastInChain>
+                                                        <lastModified>2012-12-27T00:00:00Z</lastModified>
+                                                        <versionUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</versionUuid>
+                                                    </version>
+                                                </template>
+                                            </machineWorkSetting>
+                                            <machineWorkSettingType>BASIC</machineWorkSettingType>
+                                            <name>statistics_aggregation_with_gold_data_processing</name>
+                                            <machineConfigOptions/>
+                                            <sourceType>MANUAL</sourceType>
+                                            <template>
+                                                <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+	&lt;export include-original-data="true"&gt;
+	&lt;/export&gt;
+&lt;/config&gt;</content>
+                                                <name>Blank</name>
+                                                <origination>CREATED_MANUALLY</origination>
+                                                <status>ACTIVE</status>
+                                                <type>BASE_MACHINE</type>
+                                                <uuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</uuid>
+                                                <version>
+                                                    <componentUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2012-12-27T00:00:00Z</lastModified>
+                                                    <versionUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</versionUuid>
+                                                </version>
+                                            </template>
+                                            <uuid>d9a1cf83-cd3a-49db-bc76-641292ddfbcf</uuid>
+                                            <version>
+                                                <componentUuid>0cf91cd9-33eb-4eef-a95c-e6eaced60bbf</componentUuid>
+                                                <incrementalVersion>1.8</incrementalVersion>
+                                                <lastInChain>true</lastInChain>
+                                                <lastModified>2018-11-02T12:22:46Z</lastModified>
+                                                <versionUuid>aaf18746-0531-4ff3-ab53-affeab349471</versionUuid>
+                                            </version>
+                                        </machineConfig>
+                                        <moderation>false</moderation>
+                                        <origination>CREATED_AUTOMATICALLY</origination>
+                                        <requiresData>true</requiresData>
+                                        <status>ACTIVE</status>
+                                        <streamComplexRunThreshold>1</streamComplexRunThreshold>
+                                        <streamTimeInterval>Immediately</streamTimeInterval>
+                                        <streamTimeIntervalValue>0</streamTimeIntervalValue>
+                                        <streamValueType>Tasks</streamValueType>
+                                        <title>statistics_aggregation_with_gold_data_processing</title>
+                                        <type>SINGLE</type>
+                                        <uuid>296354a1-1a91-4b19-a348-5f16ff1221a6</uuid>
+                                        <validWorkflow>false</validWorkflow>
+                                        <version>
+                                            <componentUuid>c3042157-b28f-4aff-854c-233f89e24763</componentUuid>
+                                            <incrementalVersion>1.1</incrementalVersion>
+                                            <lastInChain>true</lastInChain>
+                                            <lastModified>2018-11-02T13:00:53Z</lastModified>
+                                            <versionUuid>153f76e1-0cf3-4c53-a291-299657c0704b</versionUuid>
+                                        </version>
+                                        <workSettingBase>false</workSettingBase>
+                                    </campaign>
+                                    <deleted>false</deleted>
+                                    <skipForSTPCalculation>false</skipForSTPCalculation>
+                                    <stepIndex>3</stepIndex>
+                                    <stepPosition>INTERMEDIATE</stepPosition>
+                                    <streamed>false</streamed>
+                                    <uuid>3bba9a31-15c4-4e81-9489-c96fb31a875f</uuid>
+                                </campaignMap>
+                                <campaignMap>
+                                    <activateTracking>false</activateTracking>
+                                    <businessRule>
+                                        <content>package com.freedomoss.requester;
+
+#list any import classes here.
+import com.freedomoss.objective.model.CompositeRuleContext;
+import com.freedomoss.objective.model.CompositeRuleDataItemContext;
+import com.freedomoss.requester.model.AwsHitQuestionItem;
+import com.freedomoss.requester.model.AwsHitQuestionAnswerItem;
+import org.slf4j.Logger;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.ArrayList;
+import com.freedomoss.requester.dto.SubmissionResultDTO;
+
+#declare any global variables here
+global CompositeRuleContext source
+global Logger log
+global Map params
+
+rule "Rule context initialization"
+auto-focus true
+no-loop
+dialect "mvel"
+agenda-group "initialization-group"
+	when
+		$ctx:CompositeRuleContext(initialized == false);
+	then
+		$ctx.updateWorkingMemory();
+		# move to business rules
+		$ctx.logExecutedRule(kcontext.getRule().getName());
+		kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("calculation").setFocus();
+end</content>
+                                        <name>Business Process: End Rule</name>
+                                        <ruleType>WORKFLOW_RULE</ruleType>
+                                        <uuid>25ea8fa6-2dc7-4f4c-9a8c-97f0cc29fbe1</uuid>
+                                    </businessRule>
+                                    <campaign>
+                                        <active>false</active>
+                                        <businessRules/>
+                                        <campaignMaps/>
+                                        <campaigns/>
+                                        <executingType>MACHINE</executingType>
+                                        <goldBucketBlockSize>0</goldBucketBlockSize>
+                                        <goldRatio>0</goldRatio>
+                                        <goldSource>Empty</goldSource>
+                                        <goldType>Percentage</goldType>
+                                        <includeOriginalData>false</includeOriginalData>
+                                        <machineConfig>
+                                            <answers/>
+                                            <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+
+    &lt;var-def name="exportType"&gt;
+        &lt;case&gt;
+            &lt;if condition='${sys.isVariableDefined("_sys_export_type")}'&gt;
+                &lt;template&gt;${_sys_export_type}&lt;/template&gt;
+            &lt;/if&gt;
+        &lt;/case&gt;
+    &lt;/var-def&gt;
+
+    &lt;var-def name="exportColumns"&gt;
+        &lt;case&gt;
+            &lt;if condition='${sys.isVariableDefined("_sys_export_columns")}'&gt;
+                &lt;template&gt;${_sys_export_columns}&lt;/template&gt;
+            &lt;/if&gt;
+            &lt;else&gt;&lt;/else&gt;
+        &lt;/case&gt;
+    &lt;/var-def&gt;
+
+    &lt;var-def name="columnNameCase"&gt;
+        &lt;case&gt;
+            &lt;if condition='${sys.isVariableDefined("_sys_column_name_case")}'&gt;
+                &lt;template&gt;${_sys_column_name_case}&lt;/template&gt;
+            &lt;/if&gt;
+            &lt;else&gt;keep&lt;/else&gt;
+        &lt;/case&gt;
+    &lt;/var-def&gt;
+
+    &lt;var-def name="dataOnly"&gt;
+        &lt;case&gt;
+            &lt;if condition='${sys.isVariableDefined("_sys_data_only")}'&gt;
+                &lt;template&gt;${_sys_data_only}&lt;/template&gt;
+            &lt;/if&gt;
+            &lt;else&gt;true&lt;/else&gt;
+        &lt;/case&gt;
+    &lt;/var-def&gt;
+
+    &lt;var-def name="datastoreName"&gt;
+        &lt;script return="item.getWrappedObject().getRun().getDatastoreName()" /&gt;
+    &lt;/var-def&gt;
+    &lt;case&gt;
+        &lt;if condition="${!datastoreName.isEmpty()}"&gt;
+            &lt;insert-datastore   datastore-name="${datastoreName}" create="true"&gt;
+                &lt;script return="hit_submission_data_item.getWrappedObject().getItemValueMap()"/&gt;
+            &lt;/insert-datastore&gt;
+        &lt;/if&gt;
+    &lt;/case&gt;
+
+    &lt;export include-original-data="true"
+            export-type="${exportType}"
+            export-columns="${exportColumns}"
+            column-name-case="${columnNameCase}"
+            data-only="${dataOnly}"&gt;
+    &lt;/export&gt;
+&lt;/config&gt;</content>
+                                            <description>Default machine campaign for end step.</description>
+                                            <includedConfigs/>
+                                            <inclusionCode>9e5000e3-c243-42d3-b5ad-c6ac90dec35e</inclusionCode>
+                                            <machineWorkSetting>
+                                                <category>
+                                                    <automation>false</automation>
+                                                    <description></description>
+                                                    <enabled>true</enabled>
+                                                    <executingType>MACHINE</executingType>
+                                                    <name>Other</name>
+                                                    <private>false</private>
+                                                    <publicId>dd92f240-144b-4fef-8476-4ec0acbc1105</publicId>
+                                                </category>
+                                                <contentType>BLANK</contentType>
+                                                <description></description>
+                                                <enabled>true</enabled>
+                                                <name>Miscellaneous Tasks</name>
+                                                <publicId>26e6e095-00bb-43fa-8c34-af0b18e71ac9</publicId>
+                                                <version>
+                                                    <componentUuid>26e6e095-00bb-43fa-8c34-af0b18e71ac9</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2018-10-18T13:29:49Z</lastModified>
+                                                    <versionUuid>26e6e095-00bb-43fa-8c34-af0b18e71ac9</versionUuid>
+                                                </version>
+                                                <answers/>
+                                                <machineWorkSettingType>BASIC</machineWorkSettingType>
+                                                <template>
+                                                    <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+	&lt;export include-original-data="true"&gt;
+	&lt;/export&gt;
+&lt;/config&gt;</content>
+                                                    <name>Blank</name>
+                                                    <origination>CREATED_MANUALLY</origination>
+                                                    <status>ACTIVE</status>
+                                                    <type>BASE_MACHINE</type>
+                                                    <uuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</uuid>
+                                                    <version>
+                                                        <componentUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</componentUuid>
+                                                        <incrementalVersion>1.0</incrementalVersion>
+                                                        <lastInChain>true</lastInChain>
+                                                        <lastModified>2012-12-27T00:00:00Z</lastModified>
+                                                        <versionUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</versionUuid>
+                                                    </version>
+                                                </template>
+                                            </machineWorkSetting>
+                                            <name>Final Results</name>
+                                            <machineConfigOptions/>
+                                            <sourceType>MANUAL</sourceType>
+                                            <template>
+                                                <content>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config charset="UTF-8"&gt;
+	&lt;export include-original-data="true"&gt;
+	&lt;/export&gt;
+&lt;/config&gt;</content>
+                                                <name>Blank</name>
+                                                <origination>CREATED_MANUALLY</origination>
+                                                <status>ACTIVE</status>
+                                                <type>BASE_MACHINE</type>
+                                                <uuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</uuid>
+                                                <version>
+                                                    <componentUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</componentUuid>
+                                                    <incrementalVersion>1.0</incrementalVersion>
+                                                    <lastInChain>true</lastInChain>
+                                                    <lastModified>2012-12-27T00:00:00Z</lastModified>
+                                                    <versionUuid>8f04bd99-7f51-4796-a528-d1a7c9ccfbc4</versionUuid>
+                                                </version>
+                                            </template>
+                                            <uuid>9e5000e3-c243-42d3-b5ad-c6ac90dec35e</uuid>
+                                            <version>
+                                                <componentUuid>9e5000e3-c243-42d3-b5ad-c6ac90dec35e</componentUuid>
+                                                <incrementalVersion>1.0</incrementalVersion>
+                                                <lastInChain>true</lastInChain>
+                                                <lastModified>2018-10-18T13:29:56Z</lastModified>
+                                                <versionUuid>ebfeaa91-d2d9-11e8-844d-0259617ec1f8</versionUuid>
+                                            </version>
+                                        </machineConfig>
+                                        <moderation>false</moderation>
+                                        <origination>CREATED_AUTOMATICALLY</origination>
+                                        <requiresData>true</requiresData>
+                                        <status>ACTIVE</status>
+                                        <streamComplexRunThreshold>100</streamComplexRunThreshold>
+                                        <streamTimeInterval>Immediately</streamTimeInterval>
+                                        <streamTimeIntervalValue>0</streamTimeIntervalValue>
+                                        <streamValueType>Percents</streamValueType>
+                                        <title>Final Results</title>
+                                        <type>SINGLE</type>
+                                        <uuid>af4c8905-26dd-4120-b208-39ad3530ffc6</uuid>
+                                        <validWorkflow>false</validWorkflow>
+                                        <version>
+                                            <componentUuid>eb956478-d2d9-11e8-844d-0259617ec1f8</componentUuid>
+                                            <incrementalVersion>1.0</incrementalVersion>
+                                            <lastInChain>true</lastInChain>
+                                            <lastModified>2018-10-18T13:29:56Z</lastModified>
+                                            <versionUuid>ebfeb041-d2d9-11e8-844d-0259617ec1f8</versionUuid>
+                                        </version>
+                                        <workSettingBase>false</workSettingBase>
+                                    </campaign>
+                                    <deleted>false</deleted>
+                                    <skipForSTPCalculation>false</skipForSTPCalculation>
+                                    <stepIndex>4</stepIndex>
+                                    <stepPosition>END</stepPosition>
+                                    <streamed>false</streamed>
+                                    <uuid>68cfc1a6-5bbe-426c-936c-48273e7b99e0</uuid>
+                                </campaignMap>
+                            </campaignMaps>
+                            <campaigns/>
+                            <compositeCampaignVersion>NEW_WORKFLOW</compositeCampaignVersion>
+                            <compositeStructureXml>&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id="0"/&gt;&lt;mxCell id="1" parent="0"/&gt;&lt;MachineTask campaignMapUUID="3a9d2afc-96c2-4798-b2c2-2b6138a66522" id="3" label="params" name="params" originalLabel="params" taskUUID="80f32b0a-6000-401f-9be2-863c10cb16b3" type="machine_task"&gt;&lt;mxCell parent="1" style="machine_task" vertex="1"&gt;&lt;mxGeometry as="geometry" height="60.0" width="160.0" x="100.0" y="190.0"/&gt;&lt;/mxCell&gt;&lt;/MachineTask&gt;&lt;End campaignMapUUID="68cfc1a6-5bbe-426c-936c-48273e7b99e0" id="4" name="End" type="end"&gt;&lt;mxCell parent="1" style="end" vertex="1"&gt;&lt;mxGeometry as="geometry" height="32.0" width="32.0" x="640.0" y="80.0"/&gt;&lt;/mxCell&gt;&lt;/End&gt;&lt;Link id="5" name="" outcome="ApproveAll" outcomeId="ApproveAll" ruleUUID="7867be70-4319-427d-b7fd-fb7367fb3f55" type="link"&gt;&lt;mxCell edge="1" parent="1" source="3" style="link" target="8"&gt;&lt;mxGeometry as="geometry" relative="1" x="0.5" y="10.0"&gt;&lt;Array as="points"/&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;/Link&gt;&lt;Start id="6" name="Start" type="start"&gt;&lt;mxCell parent="1" style="start" vertex="1"&gt;&lt;mxGeometry as="geometry" height="32.0" width="32.0" x="160.0" y="80.0"/&gt;&lt;/mxCell&gt;&lt;/Start&gt;&lt;Link id="7" name="" type="link"&gt;&lt;mxCell edge="1" parent="1" source="6" style="link" target="3"&gt;&lt;mxGeometry as="geometry" relative="1" x="0.5" y="10.0"&gt;&lt;Array as="points"&gt;&lt;mxPoint x="180.0" y="210.0"/&gt;&lt;mxPoint x="180.0" y="210.0"/&gt;&lt;/Array&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;/Link&gt;&lt;MachineTask campaignMapUUID="ce4dbed4-4c00-46e6-b76c-e7ddbdf59341" id="8" label="put_to_datastore" name="put_to_datastore" originalLabel="put_to_datastore" taskUUID="eb786a47-e56d-4fd5-b39e-4ffc85eae190" type="machine_task"&gt;&lt;mxCell parent="1" style="machine_task" vertex="1"&gt;&lt;mxGeometry as="geometry" height="60.0" width="160.0" x="290.0" y="190.0"/&gt;&lt;/mxCell&gt;&lt;/MachineTask&gt;&lt;Link id="9" name="" outcomeId="ApproveAll" ruleUUID="0a608de6-004f-4f2e-9047-74f86a1b56e6" type="link"&gt;&lt;mxCell edge="1" parent="1" source="8" style="link" target="11"&gt;&lt;mxGeometry as="geometry" relative="1" x="0.5" y="10.0"&gt;&lt;Array as="points"/&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;/Link&gt;&lt;MachineTask campaignMapUUID="3bba9a31-15c4-4e81-9489-c96fb31a875f" id="10" label="statistics_aggregation_with_gold_data_processing" name="statistics_aggregation_with_gold_data_processing" originalLabel="statistics_aggregation_with_gold_data_processing" taskUUID="296354a1-1a91-4b19-a348-5f16ff1221a6" type="machine_task"&gt;&lt;mxCell parent="1" style="machine_task" vertex="1"&gt;&lt;mxGeometry as="geometry" height="60.0" width="300.0" x="330.0" y="280.0"/&gt;&lt;/mxCell&gt;&lt;/MachineTask&gt;&lt;Rule id="11" name="filter" ruleUUID="d50d6bcd-4105-4de5-963a-1fd9ee308965" type="rule"&gt;&lt;mxCell parent="1" style="rule" vertex="1"&gt;&lt;mxGeometry as="geometry" height="32.0" width="32.0" x="354.0" y="124.0"/&gt;&lt;/mxCell&gt;&lt;/Rule&gt;&lt;Link id="13" name="" outcome="ApproveAll" outcomeId="ApproveAll" ruleUUID="da823243-4363-406d-a6c0-c7842c9e19f0" type="link"&gt;&lt;mxCell edge="1" parent="1" source="10" style="link" target="4"&gt;&lt;mxGeometry as="geometry" relative="1" x="0.5" y="10.0"&gt;&lt;Array as="points"/&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;/Link&gt;&lt;Link conditional="true" id="14" label="false" name="" outcomeId="false" ruleUUID="d50d6bcd-4105-4de5-963a-1fd9ee308965" type="link"&gt;&lt;mxCell edge="1" parent="1" source="11" style="link" target="10"&gt;&lt;mxGeometry as="geometry"&gt;&lt;mxPoint as="sourcePoint" x="500.0" y="110.0"/&gt;&lt;mxPoint as="targetPoint" x="500.0" y="86.0"/&gt;&lt;Array as="points"&gt;&lt;mxPoint x="480.0" y="140.0"/&gt;&lt;/Array&gt;&lt;mxPoint as="offset" x="47.0"/&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;/Link&gt;&lt;Link conditional="true" id="15" label="true" name="" outcomeId="true" ruleUUID="d50d6bcd-4105-4de5-963a-1fd9ee308965" type="link"&gt;&lt;mxCell edge="1" parent="1" source="11" style="link" target="4"&gt;&lt;mxGeometry as="geometry"&gt;&lt;mxPoint as="targetPoint" x="474.0" y="125.0"/&gt;&lt;Array as="points"&gt;&lt;mxPoint x="370.0" y="100.0"/&gt;&lt;/Array&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;/Link&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;</compositeStructureXml>
+                            <description>Business Process description</description>
+                            <executingType>COMPOSITE</executingType>
+                            <goldBucketBlockSize>0</goldBucketBlockSize>
+                            <goldRatio>0</goldRatio>
+                            <goldSource>Empty</goldSource>
+                            <goldType>Percentage</goldType>
+                            <includeOriginalData>false</includeOriginalData>
+                            <moderation>false</moderation>
+                            <origination>CREATED_AUTOMATICALLY</origination>
+                            <requiresData>true</requiresData>
+                            <status>ACTIVE</status>
+                            <streamComplexRunThreshold>1</streamComplexRunThreshold>
+                            <streamTimeInterval>Immediately</streamTimeInterval>
+                            <streamTimeIntervalValue>0</streamTimeIntervalValue>
+                            <streamValueType>Tasks</streamValueType>
+                            <title>Statistics aggregation v2.1 [fixed for 9.1]</title>
+                            <type>COMPOSITE</type>
+                            <uuid>8883e674-d41e-4df6-857d-c5a43a65025a</uuid>
+                            <validWorkflow>true</validWorkflow>
+                            <version>
+                                <componentUuid>137d9810-0a40-478e-b3f2-7895b5cb09de</componentUuid>
+                                <incrementalVersion>1.107</incrementalVersion>
+                                <lastInChain>true</lastInChain>
+                                <lastModified>2018-11-02T12:48:33Z</lastModified>
+                                <versionUuid>536ea650-5c70-4af5-b4f4-99d40796aa80</versionUuid>
+                            </version>
+                            <workSettingBase>false</workSettingBase>
+                        </campaign>
+                        <description>
+                            <automationType>NONE</automationType>
+                            <dynamicTaskRenderingDisabled>false</dynamicTaskRenderingDisabled>
+                            <goldRun>false</goldRun>
+                            <qualificationTraining>false</qualificationTraining>
+                            <stepDescription>{}</stepDescription>
+                            <streamingValue>1</streamingValue>
+                            <streamingValueType>Tasks</streamingValueType>
+                            <taskParams>{"values":{"DESCRIPTION":"","NAME":"params"}}</taskParams>
+                            <uploadResultsType>CREATE</uploadResultsType>
+                        </description>
+                        <executingType>MACHINE</executingType>
+                        <forceComplete>false</forceComplete>
+                        <forceCompleteIdleTime>0</forceCompleteIdleTime>
+                        <forceCompletePercent>100</forceCompletePercent>
+                        <mixStrategy>
+                            <additionalRows>0</additionalRows>
+                            <blockSize>1</blockSize>
+                            <goldItemSize>0</goldItemSize>
+                            <goldPercentage>0</goldPercentage>
+                            <goldRatio>true</goldRatio>
+                            <mainRows>20</mainRows>
+                            <repeated>false</repeated>
+                        </mixStrategy>
+                        <purged>false</purged>
+                        <recordProcessingStatus>COMPLETED</recordProcessingStatus>
+                        <recursiveCount>1</recursiveCount>
+                        <rootRunUUID>b4de0ea0-31cd-4e6a-8ed6-ef864b0ada39</rootRunUUID>
+                        <runTags>
+                            <value>Group fields</value>
+                        </runTags>
+                        <runType>SIMPLE</runType>
+                        <tags>Group fields</tags>
+                        <title>params</title>
+                        <uuid>b4de0ea0-31cd-4e6a-8ed6-ef864b0ada39</uuid>
+                    </run>
+                </runs>
+                <automationUseCases/>
+                <dataStores>
+                    <dataStore>
+                        <id>10</id>
+                        <name>links_datastore</name>
+                        <type>COMMON</type>
+                        <size>0</size>
+                        <dataStoreColumns>
+                            <dataStoreColumn>
+                                <name>initial</name>
+                                <type>TEXT</type>
+                                <size>0</size>
+                            </dataStoreColumn>
+                            <dataStoreColumn>
+                                <name>runuuid</name>
+                                <type>TEXT</type>
+                                <size>0</size>
+                            </dataStoreColumn>
+                            <dataStoreColumn>
+                                <name>id</name>
+                                <type>TEXT</type>
+                                <size>0</size>
+                            </dataStoreColumn>
+                        </dataStoreColumns>
+                        <creationDate>2018-11-01T15:41:43Z</creationDate>
+                        <fieldSchema>
+                            <answers>
+                                <answer>
+                                    <allowNA>false</allowNA>
+                                    <answer>initial</answer>
+                                    <answerCode>initial</answerCode>
+                                    <answerTypeObject>
+                                        <answerTypeGroup>UNCONSTRAINED_TEXT</answerTypeGroup>
+                                        <code>FREE_TEXT</code>
+                                        <description></description>
+                                        <optionsAvailable>false</optionsAvailable>
+                                        <showDefaultValue>true</showDefaultValue>
+                                        <showForFieldScheme>true</showForFieldScheme>
+                                        <showForHumanTask>true</showForHumanTask>
+                                        <showForMachineConfig>true</showForMachineConfig>
+                                        <title>Free Text</title>
+                                        <valueType>SINGLEVALUE</valueType>
+                                    </answerTypeObject>
+                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                    <autocompleteField>false</autocompleteField>
+                                    <constantable>false</constantable>
+                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                    <lastModified>2018-11-01T15:41:43Z</lastModified>
+                                    <letCustomValues>false</letCustomValues>
+                                    <manualField>false</manualField>
+                                    <multiValue>false</multiValue>
+                                    <percentRequired>false</percentRequired>
+                                    <range>false</range>
+                                    <required>false</required>
+                                    <sequenceNumber>1</sequenceNumber>
+                                    <shuffle>false</shuffle>
+                                    <useBlocks>false</useBlocks>
+                                    <useEmptyCell>false</useEmptyCell>
+                                </answer>
+                                <answer>
+                                    <allowNA>false</allowNA>
+                                    <answer>runuuid</answer>
+                                    <answerCode>runuuid</answerCode>
+                                    <answerTypeObject>
+                                        <answerTypeGroup>UNCONSTRAINED_TEXT</answerTypeGroup>
+                                        <code>FREE_TEXT</code>
+                                        <description></description>
+                                        <optionsAvailable>false</optionsAvailable>
+                                        <showDefaultValue>true</showDefaultValue>
+                                        <showForFieldScheme>true</showForFieldScheme>
+                                        <showForHumanTask>true</showForHumanTask>
+                                        <showForMachineConfig>true</showForMachineConfig>
+                                        <title>Free Text</title>
+                                        <valueType>SINGLEVALUE</valueType>
+                                    </answerTypeObject>
+                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                    <autocompleteField>false</autocompleteField>
+                                    <constantable>false</constantable>
+                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                    <lastModified>2018-11-01T15:41:43Z</lastModified>
+                                    <letCustomValues>false</letCustomValues>
+                                    <manualField>false</manualField>
+                                    <multiValue>false</multiValue>
+                                    <percentRequired>false</percentRequired>
+                                    <range>false</range>
+                                    <required>false</required>
+                                    <sequenceNumber>2</sequenceNumber>
+                                    <shuffle>false</shuffle>
+                                    <useBlocks>false</useBlocks>
+                                    <useEmptyCell>false</useEmptyCell>
+                                </answer>
+                                <answer>
+                                    <allowNA>false</allowNA>
+                                    <answer>id</answer>
+                                    <answerCode>id</answerCode>
+                                    <answerTypeObject>
+                                        <answerTypeGroup>UNCONSTRAINED_TEXT</answerTypeGroup>
+                                        <code>FREE_TEXT</code>
+                                        <description></description>
+                                        <optionsAvailable>false</optionsAvailable>
+                                        <showDefaultValue>true</showDefaultValue>
+                                        <showForFieldScheme>true</showForFieldScheme>
+                                        <showForHumanTask>true</showForHumanTask>
+                                        <showForMachineConfig>true</showForMachineConfig>
+                                        <title>Free Text</title>
+                                        <valueType>SINGLEVALUE</valueType>
+                                    </answerTypeObject>
+                                    <appendDataStoreOptions>false</appendDataStoreOptions>
+                                    <autocompleteField>false</autocompleteField>
+                                    <constantable>false</constantable>
+                                    <doNotNormalizeTaggedText>false</doNotNormalizeTaggedText>
+                                    <doNotUseInAdjudication>false</doNotUseInAdjudication>
+                                    <findMajorityForAllAtomicValues>false</findMajorityForAllAtomicValues>
+                                    <lastModified>2018-11-01T15:41:43Z</lastModified>
+                                    <letCustomValues>false</letCustomValues>
+                                    <manualField>false</manualField>
+                                    <multiValue>false</multiValue>
+                                    <percentRequired>false</percentRequired>
+                                    <range>false</range>
+                                    <required>false</required>
+                                    <sequenceNumber>3</sequenceNumber>
+                                    <shuffle>false</shuffle>
+                                    <useBlocks>false</useBlocks>
+                                    <useEmptyCell>false</useEmptyCell>
+                                </answer>
+                            </answers>
+                            <description>links_datastore</description>
+                            <id>10</id>
+                            <name>links_datastore</name>
+                            <origination>CREATED_AUTOMATICALLY</origination>
+                            <status>ACTIVE</status>
+                            <uuid>2ce766ab-8c5f-4bd2-aaf7-5a5231e7f57a</uuid>
+                        </fieldSchema>
+                        <uuid>af5aefdf-3b18-4176-aa5b-136fa5ba74fd</uuid>
+                    </dataStore>
+                    <type>SCHEMA_WITH_DATA</type>
+                </dataStores>
+                <automationInfo/>
+            </project>
+            <hashCode>2014154122</hashCode>
+        </objectContainer>
+    </objects>
+</objectListWrapper>
+
+    <export include-original-data="true"></export>
+
+</config>

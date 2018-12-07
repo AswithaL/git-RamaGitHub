@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+                 <script><![CDATA[
+                                import com.thoughtworks.selenium.*;
+                                import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
+                                import org.openqa.selenium.*;
+                                import org.openqa.selenium.remote.RemoteWebDriver;
+                                import org.openqa.selenium.interactions.Actions;
+                                import java.util.HashMap;
+                                import java.util.ArrayList;
+                                import com.google.gson.Gson;
+                ]]></script> 
+
+                <var-def name="ebay_JSON_Details">
+                    <robotics-flow>
+                        <robot driver="chrome" name="roboticsDriver" close-on-completion="true" maximize-on-startup="true">
+                            <script return="converted"><![CDATA[
+                                import java.util.ArrayList;
+                                import java.util.HashMap;
+                                import com.google.gson.Gson;
+								resultList = new ArrayList();
+                                ProdName = new ArrayList();
+                                feedBack = new ArrayList();
+                                url = new ArrayList();
+                                ItemSpecific = new ArrayList();
+								dr=roboticsDriver.getWrappedObject();
+                                open("https://ebay.com");
+                                Thread.sleep(5000);
+                                dr.findElement(By.xpath('//*[@placeholder="Search for anything"]')).click();
+                                sendKeys("Dell");
+                                Thread.sleep(5000);
+                                dr.findElement(By.xpath('//*[@value="Search"]')).click();
+								Thread.sleep(10000);
+                                    for (int counter = 1; counter <= 3; counter++) {
+										for (int i = 1; i <= 10; i++) {
+										Thread.sleep(10000);
+											dr.findElement(By.xpath('//li[@id="srp-river-results-listing'+i+'"]/div/div[2]/a')).click();
+											
+                                            Thread.sleep(10000);
+                                            String link = dr.getCurrentUrl();
+                                            WebElement wb = dr.findElement(By.xpath("//*[@id='itemTitle']"));
+                                            Thread.sleep(7000);
+                                            String Pd = wb.getText();
+                                            WebElement fb = dr.findElement(By.xpath("//*[@id='si-fb']"));
+                                            Thread.sleep(7000);
+                                            String fBack = fb.getText();
+                                            double FB = Double.parseDouble(fBack.replaceAll("[^0-9\\.]+", ""));
+                                            WebElement item = dr.findElement(By.xpath("//*[@id='vi-desc-maincntr']/div[4]/div"));
+                                            Thread.sleep(7000);
+                                            String is = item.getText();
+											url.add(link);
+                                            ProdName.add(Pd);
+                                            feedBack.add(FB);
+                                            ItemSpecific.add(is);
+											dr.navigate().back();
+												if (counter == 2 | counter == 3) {
+														dr.findElement(By.xpath("//*[@id='Pagination']/tbody/tr/td[2]/a[" + counter + "]")).click();
+														continue;
+                                                    }
+                                        }
+                                    }
+                                dr.quit();
+									for (int i = 0; i < ProdName.size(); i++) {
+                                         Map<String, String> mp = new HashMap<String, String>();
+                                            mp.put("Product Name", ProdName.get(i));
+                                            mp.put("Item Specific", ItemSpecific.get(i));
+                                            mp.put("Link", url.get(i));
+                                                if(feedBack.get(i)>99.0) {
+                                                    mp.put("Decision_status", "approve");
+                                                }
+                                                else {
+                                                    mp.put("Decision_status", "disapprove");
+                                                }
+											resultList.add(mp);
+                                    }
+								Gson gson = new Gson();
+                                converted = gson.toJson(resultList);
+                            ]]></script>
+                        </robot>
+                    </robotics-flow>
+                </var-def>
+
+                <var-def name="excelFile">
+                                <list-to-excel format="xlsx">
+                                <var name="ebay_JSON_Details" />
+                                </list-to-excel>
+                </var-def>
+
+
+
+                <var-def name="s3browserlink">
+					<s3 bucket="wf-vr-training">
+						<s3-put path="temp.bucket/21033/New_Rama_Ebay_Output.xlsx" content-type="application/vnd.ms-excel"
+								content-disposition="inline" acl="PublicRead">
+							<script return='excelFile' />
+						</s3-put>
+					</s3>
+                </var-def>
+
+                <export include-original-data="false">
+					<single-column name="s3_ebay_link" value="${s3browserlink.toString()}" />
+                </export>
+
+</config>

@@ -1,0 +1,4 @@
+"paragraph"
+"This JavaScript tree has checkbox system in order to use this component as a navigation bar
+		with selection lists. Besides usual two-state checkboxes (checked item, unchecked item),
+		there is a possibility to use three state checkboxes with ""partly-checked"" value (some sub-items are checked). To test any of these functionalities you should select an item in a tree and then click on an appropriate action link."

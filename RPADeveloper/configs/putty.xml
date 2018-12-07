@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">      
+       <robotics-flow>
+              <robot driver="desktop" name="AutoItDr" close-on-completion="true">
+                     <script><![CDATA[
+                           import com.thoughtworks.selenium.*;
+                           import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
+                           import org.openqa.selenium.*;
+                           import org.openqa.selenium.remote.RemoteWebDriver;
+                           import org.openqa.selenium.interactions.Actions;
+                           import java.util.concurrent.TimeUnit;
+                           import org.openqa.selenium.Keys;
+
+                           driver = AutoItDr.getWrappedObject();
+
+                           String email_str = "krishnas1502@gmail.com";
+
+                           driver.get("putty.exe -ssh traning@traning-ssh.workfusion.com -pw dEFgEmzL");
+                           driver.switchTo().window("[CLASS:PuTTY]");
+                           Thread.sleep(10000);                           
+                           
+                           driver.getKeyboard().sendKeys("ssh-keygen -t rsa -C \"" + email_str + "\"{ENTER}");
+                           Thread.sleep(3000);
+
+                           driver.getKeyboard().sendKeys("FilePutty{ENTER}");
+                           Thread.sleep(3000);
+
+                           driver.getKeyboard().sendKeys("vim FilePutty{ENTER}");
+                           Thread.sleep(3000);
+
+                           privateContent = driver.findElement(By.cssSelector("")).getAttribute("ACTION_PUTTY_COPY_ALL_TEXT");
+                           
+                           String privateKey = privateContent.split("vim FilePutty")[0];
+                               sys.defineVariable("privateKey", privateKey);
+                                                                                                                
+                          Thread.sleep(3000);
+
+                           driver.getKeyboard().sendKeys(Keys.chord(Keys.SHIFT,":") + "q" + "{ENTER}" );
+                                   Thread.sleep(2000);
+
+                           driver.getKeyboard().sendKeys("vim FilePutty.pub{ENTER}");
+                           Thread.sleep(2500);
+
+                           publicContent = driver.findElement(By.cssSelector("")).getAttribute("ACTION_PUTTY_COPY_ALL_TEXT");
+                          
+                           String publicKey = publicContent.split("vim FilePutty.pub")[0];
+                            sys.defineVariable("publicKey", publicKey);                                                                          
+                           Thread.sleep(2500);
+
+                           driver.getKeyboard().sendKeys(Keys.chord(Keys.SHIFT,":") + "q" + "{ENTER}" );
+                           Thread.sleep(2500);
+                           driver.getKeyboard().sendKeys("rm FilePutty FilePutty.pub{ENTER}");
+                           driver.getKeyboard().sendKeys("exit" + "{ENTER}");
+                     ]]></script>
+              </robot>
+       </robotics-flow>      
+              
+
+
+       <export include-original-data="false">
+              <single-column name="Private_Key" value="${privateKey}" />
+              <single-column name="Public_Key" value="${publicKey}" />
+       </export>
+
+
+</config>

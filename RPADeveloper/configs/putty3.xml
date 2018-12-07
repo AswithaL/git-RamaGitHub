@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+
+
+
+<robotics-flow>
+<robot driver="desktop" name="aDriver"  close-on-completion="true">
+            <capability name="SEARCH_ALL_WINDOWS">true</capability>
+            <capability name="autoit"></capability>
+            <script><![CDATA[
+                open("putty.exe -ssh traning@traning-ssh.workfusion.com -pw dEFgEmzL")
+                sleep(15 * 1000)
+
+                switchTo().window("[CLASS:PuTTY]")
+                sleep(2000)
+                
+                sendKeys('ssh-keygen -t rsa -C "your_email@example.com"{ENTER}')
+                sleep(2000)
+                
+                sendKeys('c{ENTER}')
+                sleep(2000)
+                sendKeys('{ENTER}')
+                 sleep(2000)
+                sendKeys('{ENTER}')
+                   sleep(2000)
+
+
+               
+
+                  sendKeys('cat c.pub{ENTER}') 
+                sleep(1000)  
+                
+               sendKeys('{ALT}')
+               
+               sendKeys('{DOWN}')               
+                sendKeys('{DOWN}')
+                             sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')           
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                             sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+
+
+                              sendKeys('{ENTER}')
+               
+
+                 
+              
+               
+           
+                sleep(1000)
+              windowContent = clipboardText()
+
+                windowContent=windowContent.toString()
+                x = windowContent.length()
+                 log.info(x.toString())
+
+            
+                                                
+                                                 
+                 
+               sendKeys("clear{ENTER}")
+               sendKeys('cat c{ENTER}') 
+               sendKeys('{ALT}')
+               
+               sendKeys('{DOWN}')               
+                sendKeys('{DOWN}')
+                             sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')           
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+                              sendKeys('{DOWN}')
+
+
+                              sendKeys('{ENTER}')
+                  sleep(3000)
+                 windowContent_pri = clipboardText()
+                 y = windowContent_pri.length()
+                 log.info(y.toString())
+
+               count = 1
+             
+               String[] lines2 = windowContent_pri.split("\n")             
+                for (String line : lines2) {
+                      
+                       if(count == 30){
+					   
+                           log.info(line)
+                          public_key = line
+                          x = public_key.length()
+                          public_key = public_key.substring(7 , x)
+                       }
+                       if(count >=34 && count<=58){
+                             log.info(line)
+                        private_key = private_key + line
+                       }
+                       
+                       count = count+1
+                }
+                
+
+          
+            
+            ]]></script>
+        </robot>
+    </robotics-flow>
+    <export include-original-data="false">
+       <single-column name="public key" value="${public_key}"/>
+      	<single-column name="private key" value="${private_key}"/>
+    </export>
+</config>
+

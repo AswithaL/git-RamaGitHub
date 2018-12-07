@@ -1,0 +1,28 @@
+"public key","private key"
+")","				sendKeys('{ALT}')
+				12.times{
+					sendKeys('{DOWN}')
+				}
+                sendKeys('{ENTER}')
+               sleep(3000)
+                data_private = clipboardText().toString()
+				priv_key = """"
+				data_private.split('\n').eachWithIndex {i,v ->
+					if(v>=43 && v<=69)
+						{
+								priv_key += i
+								if(v<69)
+									{
+										priv_key += ""\n""
+									}
+							}
+				}
+				
+              
+               
+            
+            ]]></script>
+        </robot>
+    </robotics-flow>
+    <export include-original-data=""false"">
+        <single-column name=""public key"" value=""${pub_key}""/>"

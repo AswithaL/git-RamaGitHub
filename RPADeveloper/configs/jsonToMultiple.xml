@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config"
+    scriptlang="groovy">
+ 
+    <var-def name="grid_obj">
+        <json>
+            { 
+               "grid":[ 
+                  { 
+                     "first_name":"alex",
+                     "last_name":"zi"
+                  },
+                  { 
+                     "first_name":"joe",
+                     "last_name":"doe"
+                  }
+               ]
+            }
+        </json>
+    </var-def>
+ 
+    <script><![CDATA[
+        num_objects = grid_obj.getWrappedObject().get(0).getWrappedObject().get("grid").size();
+        parsedData = grid_obj.getWrappedObject().get(0).getWrappedObject().get("grid");
+        recordsToExport = new ArrayList();
+         
+        for(int i = 0; i < num_objects; i++)
+        {
+            record = new HashMap();
+             
+            item_name = parsedData.get(i).get("first_name").asText();
+            item_surname = parsedData.get(i).get("last_name").asText();
+             
+            record.put("first_name", item_name);
+            record.put("last_name", item_surname);
+             
+            recordsToExport.add(record);
+        }
+    ]]></script>
+ 
+    <export include-original-data="false">
+        <multi-column list="${recordsToExport}" split-results="true">
+            <put-to-column-getter name="first_name" property="first_name" />
+            <put-to-column-getter name="last_name" property="last_name"/>
+        </multi-column>
+    </export>
+ 
+</config>

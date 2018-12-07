@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+
+
+
+<robotics-flow>
+<robot driver="desktop" name="putty"  close-on-completion="true">
+            <capability name="SEARCH_ALL_WINDOWS">true</capability>
+            <capability name="autoit"></capability>
+            <script><![CDATA[
+                open("putty.exe -ssh traning@traning-ssh.workfusion.com -pw dEFgEmzL")
+                sleep(5000)
+                switchTo().window("[CLASS:PuTTY]")
+                sleep(5000)
+                
+                sendKeys('ssh-keygen -t rsa -C "krishnas1502@gmail.com"')
+				sendKeys("{ENTER}")
+                sleep(3000)
+                keyname = "rpakeys-${UUID.randomUUID()}"
+                sendKeys(keyname)
+				3.times{
+					sendKeys('{ENTER}')
+					sleep(2000)
+				}
+ 
+				sendKeys("clear{ENTER}")
+				sleep(1000)
+                sendKeys("cat ${keyname}.pub{ENTER}") 
+                sleep(1000)  
+                
+				sendKeys('{ALT}')
+				12.times{
+					sendKeys('{DOWN}')
+				}
+				sendKeys('{ENTER}')
+
+                sleep(3000)
+                data_pub = clipboardText().toString()
+               println clipboardText().toString().split('\n') 
+				pub_key = data_pub.split('\n')[40].split(' ')[3]
+				log.info("//############//" + pub_key )
+				sendKeys("clear{ENTER}")
+                sendKeys("cat ${keyname}{ENTER}") 
+				sendKeys('{ALT}')
+				12.times{
+					sendKeys('{DOWN}')
+				}
+                sendKeys('{ENTER}')
+               sleep(3000)
+                data_private = clipboardText().toString()
+				priv_key = ""
+				data_private.split('\n').eachWithIndex {i,v ->
+					if(v>=43 && v<=69)
+						{
+								priv_key += i
+								if(v<69)
+									{
+										priv_key += "\n"
+									}
+							}
+				}
+				
+              
+               
+            
+            ]]></script>
+        </robot>
+    </robotics-flow>
+    <export include-original-data="false">
+        <single-column name="public key" value="${pub_key}"/>
+      	<single-column name="private key" value="${priv_key}"/>
+    </export>
+</config>

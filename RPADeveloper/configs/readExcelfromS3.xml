@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" charset="UTF-8">
+    <s3 bucket="wf-vr-training">
+        <var-def name="dataFile_contentString">
+            <s3-get name="temp.bucket/21033/DueData.xlsx"></s3-get>
+        </var-def>
+    </s3>
+    
+    <var-def name="templatefile_url">
+        <script language="groovy" return="tmpFile_excel"><![CDATA[    
+              import com.google.common.io.Files;
+              import java.nio.charset.StandardCharsets;
+              tmpFile_excel = File.createTempFile("templateFile", ".xlsx");
+              FileOutputStream fileOuputStream = new FileOutputStream(tmpFile_excel);
+              byte[] templateFileContent = dataFile_contentString.getWrappedObject().get(0).getWrappedObject();
+              println templateFileContent
+              fileOuputStream.write(templateFileContent);
+              fileOuputStream.close();        
+       ]]></script>
+    </var-def>
+ 
+    <export include-original-data="true">
+      
+        <single-column name="templatefile_url">
+            <template>${templatefile_url}</template>
+        </single-column>
+    </export>
+</config>

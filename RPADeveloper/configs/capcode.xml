@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" charset="UTF-8">
+
+	<var-def name="ecc_order">
+		<template>${contract_no}</template>
+	</var-def>
+	
+	<var-def name="order_date">
+		<template>${orderdate}</template>
+	</var-def>
+  
+  	<var-def name="repeat">
+		<template>${repeat}</template>
+	</var-def>
+  
+  <var-def name="destinationfile">
+		<template>${destinationfile}</template>
+	</var-def>
+  <var-def name="masterdatafile">
+		<template>${masterdatafile}</template>
+	</var-def>
+  
+    <var-def name="eccrepeatorder">
+		<template>${eccrepeatorder}</template>
+	</var-def>
+  
+  	<var-def name="tempdirectorypath">
+		<template>${tempdirectorypath}</template>
+	</var-def>
+  
+   <var-def name="jar_location">
+	 <var-global name="jarlocation"/> 
+	<!-- <template>${jarlocation}</template> -->
+</var-def>
+
+
+  	<script>
+        <![CDATA[
+
+		log.info("Loading External Jars");
+		addClassPath (new java.net.URL(jar_location.toString()));
+ 		log.info("Finished loading");
+
+
+        ]]>
+	</script>
+ 
+
+	<script><![CDATA[ 
+	
+		import org.util.mitsui.CMFUtil;
+	//	import java.util.*;
+		import org.json.JSONArray;
+		import org.json.JSONObject;
+		
+		log.info("start");
+
+		String msg = CMFUtil.copyFile(destinationfile.toString(), tempdirectorypath.toString());
+		
+		log.info(msg);
+
+		String destination = destinationfile.toString();
+		String masterdata = masterdatafile.toString();
+
+		String basicinfodata = CMFUtil.getBasicInfo(tempdirectorypath.toString());
+		
+		log.info(basicinfodata);
+		
+		JSONObject root = new JSONObject(basicinfodata.toString());
+
+		JSONObject sizeFieldSub = root.getJSONObject("sizeFieldData");
+
+		JSONArray sizeFieldList = sizeFieldSub.getJSONArray("sizeFieldList");
+
+		List dataBaseValues = new ArrayList();
+		
+		//String eccOrder = "CAA0172644"; // This will come from previous BOT
+		//String orderDate = "5/1/2018"; // This will come from previous BOT
+  		Integer lineDetail = 10;
+		
+		String repeatFlag = repeat.toString();
+		String sapFlag = "";
+	
+	if(null!=repeatFlag && repeatFlag.equalsIgnoreCase("TRUE")){
+			sapFlag = "REPEAT";
+		}else{
+			sapFlag = "NEW ORDER";
+		} 
+
+		
+		
+		for(int i=0 ; i < sizeFieldList.length() ; i++){
+			
+			JSONObject size = sizeFieldList.getJSONObject(i);
+	
+
+	
+			Map map = new LinkedHashMap();
+			if(sapFlag.equalsIgnoreCase("REPEAT")){
+				map.put("ECC ORDER #", ecc_order.toString());
+			}else{
+				map.put("ECC ORDER #", ecc_order.toString());	
+			}
+
+			
+			map.put("ORDER DATE:", order_date.toString());
+			map.put("New/Change", sapFlag);
+			map.put("PRODUCT", size.getString("Product"));
+			map.put("MILL", root.getString("Sales_Manufacturer"));
+			map.put("PRICE TYPE", "Base");
+			map.put("WEIGHT METHOD", "Actual");
+
+			
+
+			//map.put("COMPETITIVE FREIGHT", root.getString("Sales_Charge_rate_1"));
+
+			map.put("COMPETITIVE FREIGHT", root.getString("Purchase_Charge_rate_1"));
+			
+			map.put("FREIGHT PAYMENT", sizeFieldSub.getString("Freight_Payment"));
+			map.put("PACKING", "Paper");
+			map.put("LINE DETAIL", "");
+			String gaugeStr = size.getString("Gauge");
+			
+ 			if (gaugeStr != null && gaugeStr.length() > 0) {
+				map.put("GAUGE", Double.parseDouble(gaugeStr));
+			}else{
+
+				map.put("GAUGE", 0);
+			}
+			map.put("MEASUREMENT", size.getString("Measurement"));
+			String widthStr = size.getString("Width");
+
+			if(widthStr != null && widthStr.length() > 0){
+				map.put("WIDTH", Double.parseDouble(widthStr));	
+			}else{
+				map.put("WIDTH", 0);
+			}
+
+			
+			map.put("QTY", size.getString("Quantity"));
+			map.put("BASE PRICE", size.getString("Base_Price"));
+			//map.put("EXTRAS ($/CWT)", size.getString("EXTRAS"));
+			map.put("NET EFFECTIVE", size.getString("Effective_Price"));
+			map.put("WANT DATE", sizeFieldSub.getString("WANT_DATE"));
+			map.put("SHIP MODE", sizeFieldSub.getString("SHIP_MODE"));
+			map.put("CUST PO#", size.getString("Customer_PO")); 
+			//map.put("MILL CERT", "NO");
+				
+			map.put("MILL CERT", sizeFieldSub.getString("MILL_CERT"));	
+			map.put("GRADE", size.getString("Steel_Grade")); 
+			map.put("PART #", size.getString("Part_No"));  
+			map.put("COATING WT", size.getString("Coating_Weight"));
+			map.put("SURFACE", size.getString("Surface")); 
+   			map.put("CHEM TREAT", size.getString("Chem_Treatment")); 
+			map.put("OILING", size.getString("EDGE_OILING"));
+			map.put("EDGE OILING", size.getString("EDGE_OILING"));
+			map.put("MAX COIL WT", size.getString("MAX_COIL_WT"));
+			map.put("MIN COIL WT", size.getString("MIN_COIL_WT"));
+			map.put("STENCIL", size.getString("STENCIL"));
+			map.put("COIL ID", size.getString("COIL_ID"));
+			map.put("COIL OD", size.getString("COIL_OD"));
+			map.put("END USE / NOTES", size.getString("End_Use_Note"));
+			map.put("OTHER SPECIAL REQUIREMENTS", "");
+			map.put("FINISH", size.getString("Finish"));
+  			
+			dataBaseValues.add(map);
+			lineDetail = lineDetail + 10;
+			
+			
+		}
+
+		CMFUtil.insertDataBase(tempdirectorypath.toString(), dataBaseValues);
+
+		CMFUtil.insertDataBaseInOriginalFile(masterdata, dataBaseValues); 
+
+		log.info("end");
+	
+	]]>
+	</script>
+	 <export include-original-data="true">
+    	
+    </export>
+</config>

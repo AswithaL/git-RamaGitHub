@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+	<robotics-flow>
+		<robot name="roboticsDriver" driver="chrome" close-on-completion="true" start-in-private="true">
+
+			<script><![CDATA[
+				import java.util.concurrent.TimeUnit;
+				import com.google.gson.JsonObject;
+				import com.google.gson.GsonBuilder;
+				import com.google.gson.Gson;
+				def dr = roboticsDriver.getWrappedObject();
+
+				open("https://www.ebay.com/");
+				
+				 Thread.sleep(10000);
+                  dr.findElement(By.xpath('//*[@placeholder="Search for anything"]')).click();
+                   sendKeys("Laptop");
+                   Thread.sleep(10000);
+                   dr.findElement(By.xpath('//*[@value="Search"]')).click();
+				Thread.sleep(10000);
+
+				LinkedHashMap productList = new LinkedHashMap();
+				LinkedHashMap  resultList= new LinkedHashMap();
+				productsToSend = new ArrayList()
+				productData = new ArrayList()
+				                                                                ProdName = new ArrayList();
+                                                                                feedBack = new ArrayList();
+                                                                                url = new ArrayList();
+                                                                                ItemSpecific = new ArrayList();
+				
+				productList.put("product_name", "Product Name")
+				productList.put("items_Specifics", "Items Specifics")
+				productList.put("product_link", "Product Link")
+				productList.put("product_decision", "Decision")
+				
+				resultList.put("product_name", "Product Name")
+				resultList.put("items_Specifics", "Items Specifics")
+				resultList.put("product_link", "Product Link")
+				resultList.put("product_decision", "Decision")
+				
+				//for(int i = 1; i <= 3; i++)
+				for (int counter = 1; counter <= 3; counter++)
+				{
+				    log.info("Page Number : - "+i)
+					
+					//for(int j = 1; j <= 10; j++)
+					for (int i = 1; i <= 10; i++)
+					{
+						log.info("Product Number : - "+j)
+						
+						productLink = driverW.findElement(By.xpath("//li[contains(@id, 'srp-river-results-listing${i}')]//a[@class='s-item__link']"))						
+						link = driverW.findElement(By.xpath("//li[contains(@id, 'srp-river-results-listing${i}')]/div/div[2]/a")).getAttribute("href")
+
+						productLink.click()
+						driverW.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+
+						productName 	= driverW.findElement(By.xpath("//h1[@id='itemTitle']")).getText()
+						log.info("Product Name : - "+productName)
+						percentageLikeString  = driverW.findElement(By.xpath("//div[@id='si-fb']")).getText()
+						
+												
+						decision = "";
+						value = percentageLikeString.replaceAll("[^0-9\\.]+","")
+						doubleValue = value.isDouble() ? value.toDouble() : null
+						shipping = driverW.findElement(By.xpath("//*[@id = 'mainContent']")).getText().toLowerCase()
+						
+						if(doubleValue > 99.0 && shipping.contains('free') && !shipping.contains('untracked'))
+						{
+							decision = "approve"
+						}
+						else
+						{
+							decision = "disapprove"
+						}
+
+					
+						tBodyXpath = "//*[@id='viTabs_0_is']/div/table/tbody"
+						totalRows = $$(byXpath("${tBodyXpath}/tr")).size();
+						
+					
+						readMoreValue = driverW.findElement(By.xpath("//*[@id='viTabs_0_is']")).getText()
+						 
+						if(readMoreValue.contains('Read more')){
+						driverW.findElement(By.xpath("//*[@id='readFull']/a")).click()
+						}
+						
+						String item_specifics = " "
+						for(int n = 1; n <= totalRows; n++)
+						{
+							specificsIndx = 1;
+							descrIndx = 2
+							indx = 1;
+							indxDescr = 2
+							countItemRows = $$(byXpath("${tBodyXpath}/tr[${n}]/td")).size() - 2;
+							for(int m = 1; m <= countItemRows; m++){
+								specificsName 		  = $(byXpath("${tBodyXpath}/tr[${n}]/td[${indx}]")).getText()
+								specificsDescriptions = $(byXpath("${tBodyXpath}/tr[${n}]/td[${indxDescr}]")).getText()
+								indx = specificsIndx + 2;
+								indxDescr = descrIndx + 2;
+								
+								item_specifics += specificsName + " "+ specificsDescriptions.replaceAll("See all condition definitions","") + " | "
+							}
+							
+						}						
+						productList.put("product_name", productName)
+						productList.put("items_Specifics", item_specifics)
+						productList.put("product_link", link)
+						productList.put("product_decision", decision)
+
+						
+						productData << new LinkedHashMap(productList)
+               
+						sys.defineVariable("productData", new com.google.gson.Gson().toJson(productData))
+						
+						driverW.navigate().back()
+						driverW.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+					}
+					
+					driverW.findElement(By.xpath("//li[@class='x-pagination__li'][${i}]/a")).click();
+				}
+			]]></script>
+
+
+
+		</robot>
+	</robotics-flow>
+
+	<var-def name="productLink">
+		<s3 bucket="wf-vr-training">
+                <s3-put path="temp.bucket/21033/Rama_Ebay_Output6.xlsx" content-type="application/vnd.ms-excel"
+                content-disposition="inline" acl="PublicRead">
+                <script return='excelFile' />
+                </s3-put>
+                </s3>
+	</var-def>
+	
+	<export include-original-data="false">
+		<single-column name="ExlProductLink" value="${productLink}"></single-column>
+	</export>
+
+</config> 	

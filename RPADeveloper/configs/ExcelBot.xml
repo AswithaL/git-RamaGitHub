@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+
+<script><![CDATA[
+
+		import org.apache.poi.ss.usermodel.Cell;
+		import org.apache.poi.ss.usermodel.Row;
+		import org.apache.poi.xssf.usermodel.XSSFRow;
+		import org.apache.poi.xssf.usermodel.XSSFSheet;
+		import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+		listColumns = new ArrayList();
+		listColumns.add("temperature");
+		listColumns.add("pressure");
+		listColumns.add("speed");
+		listColumns.add("dateTime");
+		listColumns.add("city");
+		listColumns.add("latitude");
+		listColumns.add("longitude");
+		listColumns.add("population");
+		listColumns.add("state");
+
+		XSSFWorkbook book = new XSSFWorkbook();
+		XSSFSheet sheet = book.createSheet("weather");
+
+		// Set header
+		Row headerRow = sheet.createRow(0);
+		for(int i = 0; i < listColumns.size(); i++) {
+			Cell cell = headerRow.createCell(i);
+			cell.setCellValue(listColumns.get(i).toString());
+		}
+
+		// Set rows with info
+		int rowNumber = 1;
+		for(Map weatherMap: exportList){
+			Row sheetRow = sheet.createRow(rowNumber++);
+			int columnNumber = 0;
+			for(String columnName: listColumns){
+				Cell sheetCell = sheetRow.createCell(columnNumber++);
+				sheetCell.setCellValue(weatherMap.get(columnName));
+			}
+		}
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		book.write(bos);
+		bos.close();
+
+		sys.defineVariable("exportWeather", bos.toByteArray());
+
+	]]></script>
+	
+    <export include-original-data="true">
+    <single-column name="exportWeather" value="${exportWeather}" />
+    </export>
+
+</config>

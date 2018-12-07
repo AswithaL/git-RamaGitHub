@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config"
+	scriptlang="groovy">
+
+	<var-def name="ApiKey">
+		49fddcb6981134
+	</var-def>
+
+	<var-def name="companies_name">
+		<template>${company}</template>
+	</var-def>
+	
+	<var-def name="Page_search">
+		<template>
+			https://us1.locationiq.com/v1/search.php?q=${companies_name}&amp;format=xml&amp;key=${ApiKey}
+		</template>
+	</var-def>
+	
+
+	<var-def name="page_result">
+		<http url="${Page_search}">
+				</http>
+	</var-def>
+<var-def name="Jsonresponse">
+<xml-to-json>
+<var name="page_result"/>
+</xml-to-json>
+</var-def>
+
+	<script><![CDATA[ 
+	  outputData=new groovy.json.JsonSlurper().parseText(Jsonresponse.toString());
+		
+ 	  println Jsonresponse
+	  println outputData;
+	  print("=============================================\n");
+	  placeid= outputData.searchresults.place.place_id[0];
+	  name= outputData.searchresults.place.display_name[0];
+	  type= outputData.searchresults.place.type[0];
+	  println placeid
+	  println name
+	  println type
+	print("=============================================");
+
+	]]></script>
+
+	<export include-original-data="false">
+	<single-column name="Company" value="${companies_name}" />
+	 <single-column name="Address" value="${name}" />
+	<single-column name="Place_ID" value="${placeid}" />
+	<single-column name="Type" value="${type}" />
+	</export>
+
+</config>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config charset="UTF-8">
+    <var-def name="json_list_of_maps">
+        <script language="groovy" return="jsonString"><![CDATA[
+            import com.google.common.io.Files;
+            import java.nio.charset.StandardCharsets;
+            import java.io.BufferedReader;
+            import java.io.File;
+            import java.io.FileReader;
+            import java.io.IOException;
+            import java.util.ArrayList;
+            import java.util.HashMap;
+            import java.util.Iterator;
+            import java.util.LinkedHashMap;
+            import java.util.List;
+            import java.util.Map;
+            import java.util.Map.Entry;
+             
+            import javax.xml.parsers.DocumentBuilder;
+            import javax.xml.parsers.DocumentBuilderFactory;
+            import javax.xml.parsers.ParserConfigurationException;
+             
+            import org.w3c.dom.Document;
+            import org.w3c.dom.Node;
+            import org.w3c.dom.NodeList;
+            import org.xml.sax.SAXException;
+             
+            //attributes
+            Map<String, Integer> columnsDetails;
+            String blockStartingChar;
+            int startingDistance;
+            String blockEndingChar;
+            Map<Integer, Integer> rowLengths;
+             
+            parseXml();
+            List<String> data_list = getAllRowsList();
+            List<String> data_list1=filterRows(data_list)
+            List<Map<String, Object>> list3=getColumnsList(data_list1)
+             
+             
+            //convert list of maps to json string
+            jsonString=com.freedomoss.workfusion.utils.gson.GsonUtils.GSON.toJson(list3);
+             
+            //methods
+            void parseXml() throws ParserConfigurationException, SAXException, IOException {
+                this.columnsDetails = new LinkedHashMap<String, Integer>();
+                Map<Integer, Integer> rowLengthsMap = new LinkedHashMap<Integer, Integer>();
+                 
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document document = builder.parse(new File(xmlfile_url.toString()));
+                 
+                // get the startingchar from xml
+                this.blockStartingChar = document.getElementsByTagName("StartingChar").item(0).getTextContent();
+                 
+                // get endingchar from xml
+                this.blockEndingChar = document.getElementsByTagName("EndingChar").item(0).getTextContent();
+                 
+                // get starting distance from xml
+                this.startingDistance = Integer.parseInt(document.getElementsByTagName("StartingDistance").item(0).getTextContent());
+                 
+                // get the row lengths and add them to a map
+                NodeList rowLenghts = document.getElementsByTagName("RowLengths").item(0).getChildNodes();
+                 
+                for (int i = 1; i < rowLenghts.getLength(); i += 2) {
+                    Node list = rowLenghts.item(i);
+                    int key = Integer.parseInt(list.getAttributes().getNamedItem("name").getTextContent());
+                    int value = Integer.parseInt(list.getTextContent());
+                    rowLengthsMap.put(key, value);
+                }
+                 
+                this.rowLengths = rowLengthsMap;
+                 
+                // get the column lengths
+                NodeList list = document.getElementsByTagName("Column");
+                 
+                for (int i = 0; i < list.getLength(); i++) {
+                    Node currentNode = list.item(i);
+                    if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                        NodeList colData = currentNode.getChildNodes();
+                        String columnName = colData.item(1).getTextContent();
+                        String columnSize = colData.item(3).getTextContent();
+                        columnsDetails.put(columnName, Integer.parseInt(columnSize));
+                    }
+                }
+            }
+             
+            List<String> getAllRowsList() throws IOException {           
+                // Text file row list
+                List<String> rowsList = new ArrayList<String>();
+                                 
+                BufferedReader br = new BufferedReader(new FileReader(datafile_url.toString()));               
+                String currentLine;
+                 
+                while ((currentLine = br.readLine()) != null) {                               
+                    // add Text file rows to a list
+                    if (!currentLine.trim().equals("")) {
+                        rowsList.add(currentLine);
+                        log.error("************************** " + currentLine);
+                    }
+                }
+                 
+                br.close();               
+                return rowsList;
+            }
+             
+            List<String> filterRows(List<String> rows) {               
+                List<String> returningList = new ArrayList<String>();
+                boolean flag = false;
+                int count = 0;
+                 
+                StringBuffer joinedLine = new StringBuffer();
+                 
+                for (int i = 0; i < rows.size(); i++) {               
+                    StringBuffer row = new StringBuffer(rows.get(i));
+                     
+                    if (row.toString().contains(blockStartingChar)) {                   
+                        flag = true;
+                        i = i + startingDistance;
+                        continue;                   
+                    } else if (row.toString().contains(blockEndingChar)) {                   
+                        flag = false;
+                    }
+                 
+                    // merging rows
+                    if (flag) {                   
+                        count++;
+                        int size = rowLengths.get(count);
+                     
+                        // fixing the row size error
+                        if (row.length() != size) {
+                            row.setLength(size);
+                        }                   
+                        joinedLine.append(row);
+                    }
+                     
+                    if (count == rowLengths.size()) {                   
+                        returningList.add(joinedLine.toString());
+                        // clean the stringbuffer
+                        joinedLine.setLength(0);                   
+                        count = 0;
+                    }
+                 
+                }
+                return returningList;           
+            }
+             
+            List<Map<String, Object>> getColumnsList(List<String> rowsList) {           
+                // return data separated list
+                List<Map<String, Object>> separatedColumnsList = new ArrayList<Map<String, Object>>();
+                 
+                for (int i = 0; i < rowsList.size(); i++) {               
+                    // get the row
+                    String row = rowsList.get(i);
+                     
+                    Map<String, Object> columnsMap = new HashMap<String, Object>();
+                    // create iterator
+                    Iterator<Entry<String, Integer>> it = columnsDetails.entrySet().iterator();
+                     
+                    // get the column lenths of the each column
+                    while (it.hasNext()) {                   
+                        Map.Entry<String, Integer> pair = (Map.Entry<String, Integer>) it.next();
+                         
+                        // get the column
+                        Object column = row.substring(0, pair.getValue()).trim();
+                         
+                        // get the other column row after substring
+                        row = row.substring(pair.getValue());
+                         
+                        // add to columns to list
+                        columnsMap.put(pair.getKey(), column);                   
+                    }
+                    separatedColumnsList.add(columnsMap);
+                }
+                return separatedColumnsList;
+            }
+ 
+ 
+        ]]></script>
+    </var-def>
+     
+    <export include-original-data="true">
+        <single-column name="json_list_of_maps">
+            <template>${json_list_of_maps}</template>
+        </single-column>
+    </export>
+</config>

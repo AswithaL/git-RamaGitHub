@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+<script><![CDATA[ 
+import java.util.ArrayList;
+  countries_arraylist=new ArrayList(); 
+  countries_list = hit_submission_data_item.getWrappedObject().getItemValueMap(); 
+  countries_arraylist.add(countries_list)
+
+sys.defineVariable("countries_arraylist", countries_arraylist)
+
+if (!countries_arraylist.isEmpty()) {
+            def columns = countries_arraylist.get(0).keySet()
+            println "The Outputis .......#####"+columns;
+            sys.defineVariable("columns", columns)
+        }
+]]></script>
+ 
+
+    <export include-original-data="false">
+    
+     <multi-column list="${countries_arraylist}" split-results="true">
+    <loop item="columnName">
+                <list>
+                    <script return="columns"/>
+                </list>
+                <body>
+                    <put-to-column-getter name="${columnName}" property="${columnName}" />
+                </body>
+            </loop>
+        </multi-column>
+    </export>
+</config>

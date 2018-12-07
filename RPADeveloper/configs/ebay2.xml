@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">	
+
+<robotics-flow exclusive="true">
+ 	 <robot driver="chrome" name="cdriver" close-on-completion="true">
+ 	 <var-def name="varExportproducts">
+			<script return="str" ><![CDATA[ 
+				import groovy.json.JsonOutput
+				import java.util.Arrays
+				import java.util.logging.Logger;
+				import com.workfusion.rpa.helpers.UiConditions;
+				import com.workfusion.rpa.helpers.conditions.UiCondition;
+				import org.openqa.selenium.Keys;
+				import org.openqa.selenium.support.ui.Select;
+				import org.openqa.selenium.support.ui.ExpectedConditions;
+				import org.openqa.selenium.support.ui.WebDriverWait;
+				import java.util.regex.Pattern
+				import java.util.regex.Matcher
+				import java.util.concurrent.TimeUnit;			
+				timeouts().pageLoadTimeout(15, TimeUnit.MINUTES).implicitlyWait(100, TimeUnit.SECONDS)
+				//timeouts(40*1000)
+				
+				strSearch="iphone"
+				url="https://www.ebay.com"
+				lstLinks = new ArrayList()				
+				pagesList = new ArrayList()
+				lstproducts = new ArrayList()
+				lstExportproducts = new ArrayList()
+				
+				
+				
+				driver = cdriver.getWrappedObject()	
+				open(url)
+				wait=new WebDriverWait(driver, 80);			
+				sleep(10000)
+				wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//*[@id='gh-ac']"))).clear();
+				wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//*[@id='gh-ac']"))).click();
+				wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//*[@id='gh-ac']"))).sendKeys(strSearch)// xpath using ID
+				wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//*[@id='gh-btn']"))).click()//xpath using Id
+				sleep(8000)
+				
+				for(pageCount in 1..3){					
+					sleep(8000)
+						for(j=1; j<=10 ;j++) 
+						{
+							urlOfProd =	wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath('//li[@id="srp-river-results-listing'+j+'"]/div/div[2]/a'))).getAttribute('href')  //Get 10 prods 
+							sleep(8000)
+							lstproducts.add(urlOfProd)	
+											
+						} 		
+					
+					sleep(5000)		
+					wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//*[@id='srp-river-results-SEARCH_PAGINATION_MODEL_V2']/div[2]/nav/a[2]"))).click()
+					sleep(5000)					
+				}	
+								
+				sleep(5000)
+				log.info(""+lstproducts.size());
+				
+				int i = 1
+				
+				for(int m=0;m<lstproducts.size();m++)				
+				{					
+					log.info("it.toString() -==="+lstproducts.get(m).toString())
+					
+					open(lstproducts.get(m).toString())
+					sleep(10000)
+					mapproduct = new LinkedHashMap()
+					
+					feedback = null
+					float rating = 0.0					
+					shipping=null;
+					
+					productName = wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//h1[@id='itemTitle']"))).getText()
+					log.info("productName"+productName)
+					sleep(2000)
+					 
+					productSpecifics = wait.until(ExpectedConditions.visibilityOfElementLocated(by('//*[@id="viTabs_0_is"]'))).getText().toString()
+					sleep(5000)
+					log.info("productSpecifics"+productSpecifics)
+					
+					/* sleep(5000)
+					log.info("productSpecifics"+productSpecifics)
+					Iterator itemsRow = productSpecifics.iterator()
+					sleep(3000)
+					log.info("itemsRow"+itemsRow.size())
+					StringBuilder strRow = new StringBuilder();
+					
+					while(itemsRow.hasNext()){
+						try
+						{
+							log.info("itemsRow"+itemsRow.next().getText())
+							if(itemsRow.next()!=null)
+							{		
+							strRow.append(itemsRow.next().getText())
+							strRow.append(" | ") 
+							}
+						}
+						catch(NoSuchElementException e){
+							err="Exception in Specifcaition"
+						}
+					} */
+					
+					productSpecification = productSpecifics.length() > 0 ? productSpecifics.substring(0, productSpecifics.length() - 3): "No Specification"
+										
+					try
+					{
+						sleep(5000)
+						feedback = wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//*[@id='si-fb']"))).getText()
+						sleep(5000)
+						if(feedback!=null)
+						{
+							Pattern pattern = Pattern.compile("([0-9.])+")
+		            		Matcher matcher = pattern.matcher(feedback)
+							while (matcher.find()) {
+								productRating = Float.parseFloat(matcher.group())
+							}
+              				sleep(3000)
+							shipping = wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath('//*[@id="shSummary"]'))).getText()
+							sleep(3000)
+							log.info("shipping###----"+shipping.toString())
+						}
+					}
+					catch(NoSuchElementException e){
+						err=" Exception in Feedback"
+					}
+					
+					productRecommendaion = "disapprove"
+					log.info("productRecommendaion"+productRecommendaion)
+					if(productRating >= 99.0 && shipping.contains('FREE'))
+						recommended = "approve"
+					sleep(3000)
+					mapproduct.put("Link",lstproducts.get(m).toString())
+					mapproduct.put("Name",productName)
+					mapproduct.put("Specification",productSpecification)
+					mapproduct.put("Recommended",productRecommendaion)
+					
+					lstExportproducts.add(mapproduct)
+					log.info("Product Details:- "+lstExportproducts)
+					log.info("Product Count:- "+i++)
+				sleep(3000)
+				}	
+				
+				def json = JsonOutput.toJson(lstExportproducts)
+				str=""+json;	
+			]]></script>
+						
+			</var-def>
+			
+			
+		</robot>
+			<var-def name="productexcelfile">
+			<list-to-excel format="xlsx">
+				<var name="varExportproducts" />
+			</list-to-excel>
+			</var-def>
+			
+			<var-def name="excel_s3_link">
+				<s3 bucket="wf-vr-training">
+					<s3-put path="temp.bucket/21033/iphonefromebay.xlsx" content-disposition="inline" acl="PublicRead" content-type="application/vnd.ms-excel">
+						
+							<script return="productexcelfile" />
+						
+					</s3-put>
+				</s3>
+			</var-def>
+            
+	</robotics-flow>
+	
+
+<export include-original-data="false">
+	<single-column name="ebayProducList" value="${excel_s3_link}"></single-column>
+
+</export>
+
+</config>

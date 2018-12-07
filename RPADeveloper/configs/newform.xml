@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+  
+    <robotics-flow>
+        <robot name="bb8" driver="universal" close-on-completion="true">
+            <capability name="SEARCH_ALL_WINDOWS" value="true" />
+            <script> <![CDATA[                            
+                def s3Path = 'https://wf-vr-training.s3.amazonaws.com/temp.bucket/16075/people.jpg'
+                println "Before downloadFileOnAgent" 
+                filePath = downloadFileOnAgent(s3Path)
+                 println "After downloadFileOnAgent"     
+                def loginPage = 'https://www.google.com/forms'
+                def username = 'krishnas1502@gmail.com'
+                def password = 'srkr@1984'
+                inChrome() {
+                  open(loginPage);
+                  $('#identifierId').val(username).pressEnter();
+                  sleep(3000);
+                  $(byXpath("//*[@name='password']")).val(password);
+                  $('#passwordNext').click();       
+      
+                  sleep(3000);
+                  //link1 = $(byXpath("//*[@id=':2h']/div[1]"));
+                  $(byXpath("//*[@id=':2h']/div[1]")).click();
+                  //link1.click();
+                  sleep(2000);
+
+                  //def contactinformation_form_title = "Contact information for 16075";
+                  
+                  //contact_info_title = $(byXpath("//*[@id='SchemaEditor']/div//div/textarea[@data-initial-value='Contact information']"));
+                  form_title = $(byXpath('//*[@id="SchemaEditor"]/div/div[2]/div/div/div[2]/div[2]/div[1]/content/div/div[1]/div[2]/textarea'))
+                  //$(byCssSelector('#SchemaEditor > div > div:nth-child(2) > div > div > div.freebirdFormeditorViewPagePageFields > div.freebirdFormeditorViewPageTitleAndDescription > div:nth-child(1) > content > div > div.quantumWizTextinputPapertextareaMainContent.exportContent > div.quantumWizTextinputPapertextareaContentArea.exportContentArea > textarea')).click()
+                  form_title.click();
+                  form_title.clear();
+                  sendKeys("Contact information for 16075");
+                  Thread.sleep(1000);
+                  pressTab();
+                  sendKeys("Contact information for 16075");
+                  Thread.sleep(2000);
+
+                  $(byXpath("//div[@jscontroller='ii1Xhc']/div[@aria-label='Add image']")).click();
+                  //add_image_btn.click(); 
+ 
+                  //frame_id = $(byXpath("//iframe[@class='picker-frame']")).getAttribute("id");
+                //  switchTo().frame('2cifra75uw0')
+                  
+                  //switchTo().frame(frame_id);
+                  sleep(3000);
+               
+                  $(byXpath("//div[contains(text(),'Choose an image to upload')]")).click();
+              // $(byCssSelector("#\3a p > div")).click()
+                  //upload_tab.click();  
+                
+                  sys.defineVariable("info_title", "Contact information for 16075");  
+                  Thread.sleep(5000);
+              }
+               inDesktop() {
+                  switchTo().window('[CLASS:#32770]');
+                  $('[CLASS:Edit;INSTANCE:1]').sendKeys(filePath);
+                  $('[CLASS:Button;INSTANCE:1]').click();
+                  switchTo().window('[CLASS:IEFrame]'); 
+               } 
+               inIE() {
+                timeouts(40 * 1000);
+                WebDriverWait wait = new WebDriverWait(driver(), 20);
+                Thread.sleep(10000);       
+                pressTab();
+                pressTab();
+                
+                actions().sendKeys(Keys.PAGE_UP).perform();
+                switchTo().defaultContent();
+                $(byXpath("//div[@role='button']//span[contains(.,'Send')]")).click();                
+                sleep(2000);
+                $(byXpath('//*[@id="email"]//input[starts-with(@class,"quantumWizTextinputPaperinputInput")][1]')).sendKeys("leburuaswitha@gmail.com");
+                $(byXpath('//div[contains(text(),"Subject")]/preceding-sibling::input')).sendKeys("Assignment")
+                sleep(5000);
+                $(byXpath('//div[@aria-label="Include form in email"]')).click()                
+                sleep(2000);                                  
+                $(byXpath('//*[@id="email"]/div/div/div[2]/div[2]/div[2]/content/span')).click();                  
+                sleep(5000);
+                driver.navigate().to('https://mail.google.com')
+                sleep(5000);
+                $(byXpath('//a[contains(@title,"Inbox")]')).click()
+                sleep(2000)
+                $(byXpath('//table[@class="F cf zt"]//tr[1]')).click()
+                zoom(0.50)
+                sleep(3000)
+                screenshot = driver.getScreenshotAs(OutputType.BYTES)
+                sleep(5000)
+                zoom(1)                
+                }                 
+            ]]></script>
+        </robot>
+    </robotics-flow>
+    <var-def name="SreenshotUrl">
+         <s3 bucket="wf-vr-training">
+              <s3-put path="temp.bucket/16075/GooleFormScreenshot.png" content-type="image/png" acl="PublicRead">
+                     <script return="screenshot"/>
+              </s3-put>
+       </s3>
+      </var-def>        
+         
+    <export include-original-data="false">  
+        <single-column name="SreenshotUrl" value="${SreenshotUrl}"/>
+    </export>
+
+      
+</config>

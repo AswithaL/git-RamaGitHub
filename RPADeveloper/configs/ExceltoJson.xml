@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" charset="UTF-8">
+ 
+ <robotics-flow>
+ <robot name="robot" driver="desktop" close-on-completion="true">
+            <capability name="SEARCH_ALL_WINDOWS" value="true" />
+            <script><![CDATA[
+            
+                filePath = downloadFileOnAgent("http://localhost:15110/wf-vr-training/temp.bucket/21033/DueData.xlsx");
+            ]]></script>
+        </robot>
+  </robotics-flow>
+    <script><![CDATA[
+   
+        import java.io.File;
+        import java.io.FileInputStream;
+        import java.io.FileNotFoundException;
+        import java.io.IOException;
+        import java.util.ArrayList;
+        import java.util.Iterator;
+        import java.util.LinkedHashMap;
+        import java.util.List;
+        import java.util.Map;
+ 
+        import org.apache.poi.ss.usermodel.Cell;
+        import org.apache.poi.ss.usermodel.Row;
+        import org.apache.poi.xssf.usermodel.XSSFSheet;
+        import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+        import org.apache.poi.ss.usermodel.Sheet;
+ 
+		import org.json.JSONArray;
+		import org.json.JSONException;
+		import org.json.JSONObject;
+
+		import com.google.gson.Gson;
+		import com.google.gson.JsonObject;
+		import com.google.gson.JsonParser;
+ 		import org.apache.poi.ss.usermodel.DateUtil;
+ 		import java.text.SimpleDateFormat;
+ 		
+ 		
+        public static List getOCRDataFromXLS(String fileValue) {
+        List ocrDatalist = new ArrayList();
+        List headerList = new ArrayList();
+        List rowList = new ArrayList();
+        FileInputStream file;
+        try {
+            file = new FileInputStream(new File(fileValue));
+
+            XSSFWorkbook baseBook = new XSSFWorkbook(file);
+
+            String sheetName = baseBook.getSheetAt(0).getSheetName();
+            System.out.println("================== SHEET NAME " + sheetName + "  =========================");
+
+            Iterator sheetIterator = baseBook.iterator();
+
+            while (sheetIterator.hasNext()) {
+
+                // Get sheet from the workbook
+                XSSFSheet sheet = (XSSFSheet) sheetIterator.next();
+
+                // Iterate through each rows from first sheet
+                Iterator rowIterator = sheet.iterator();
+
+                int rowIndex = 0;
+                while (rowIterator.hasNext()) {
+                    Row row = (Row) rowIterator.next();
+
+                    if (rowIndex == 0) {
+                        Iterator cellIterator = row.cellIterator();
+                        while (cellIterator.hasNext()) {
+                            headerList.add(((Cell) cellIterator.next()).getStringCellValue());
+                        }
+                    } else {
+
+                        Map jSonToRec = new LinkedHashMap();
+                        // For each row, iterate through each columns
+                        Iterator cellIterator = row.cellIterator();
+                        Iterator headerIterator = headerList.iterator();
+                        
+                        while (cellIterator.hasNext()) {
+                            Cell cell = (Cell) cellIterator.next();
+                            String cellValue = "";
+                            switch (cell.getCellType()) {
+                            case Cell.CELL_TYPE_NUMERIC:
+                                //cellValue = Double.toString(cell.getNumericCellValue());
+                                // System.out.print(cell.getNumericCellValue() +
+                                // "\t");
+                                  if (DateUtil.isCellDateFormatted(cell)) {
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                                    System.out.print(dateFormat.format(cell.getDateCellValue()) + "\t\t");
+                                    cellValue=dateFormat.format(cell.getDateCellValue());
+                                } else {
+                                    System.out.print(cell.getNumericCellValue() + "\t\t");
+                                    cellValue=Double.toString(cell.getNumericCellValue());
+                                }
+                                break;
+                            case Cell.CELL_TYPE_STRING:
+                                cellValue = cell.getStringCellValue();
+                                // System.out.print(cell.getStringCellValue() +
+                                // "\t");
+                                break;
+                            case Cell.CELL_TYPE_BLANK:
+
+                                // System.out.print("\t");
+                                break;
+                            case Cell.CELL_TYPE_BOOLEAN:
+                                cellValue = Boolean.toString(cell.getBooleanCellValue());
+                                // System.out.print(cell.getBooleanCellValue() +
+                                // "\t");
+                                break;
+                            case Cell.CELL_TYPE_ERROR:
+
+                                // System.out.print(cell.getErrorCellValue() +
+                                // "\t");
+                                break;
+                            case Cell.CELL_TYPE_FORMULA:
+                                cellValue = cell.getCellFormula();
+                                // System.out.print(cell.getCellFormula() + "\t");
+                                break;
+                            default:
+
+                                break;
+                            }
+                            
+                            
+                            jSonToRec.put(headerIterator.next(), cellValue);
+                        }
+
+                        String jsonString = new Gson().toJson(jSonToRec);
+                        jsonString = jsonString.replace("[", "").replace("]", "");
+                      //  JsonObject obj = new JsonParser().parse(jsonString).getAsJsonObject();
+                        // list.add(org.apache.commons.lang.StringEscapeUtils.escapeJavaScript(jsonString));
+                        ocrDatalist.add(jSonToRec);
+                       // System.out.println("================== JSON VALUE " + jsonString + "  =========================");
+                       // System.out.println("================== JsonObject " + obj + "  =========================");
+                        //System.out.println("================== ocrDatalist " + ocrDatalist + "  =========================");
+                         //System.out.println("================== ocrDatalist size " + ocrDatalist.size() + "  =========================");
+                    }
+
+                    rowIndex++;
+                }
+
+                break; // remove to get all others workbooks
+            }
+				// System.out.println("================== ocrDatalist " + ocrDatalist + "  =========================");
+             //System.out.println("================== ocrDatalist size1 " + ocrDatalist.size() + "  =========================");
+            baseBook.close();
+
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return ocrDatalist;
+        }
+     
+        
+      List  Ocrlist = getOCRDataFromXLS(filePath);
+    System.out.println("================== OcrlistOfMap " + Ocrlist + "  =========================");
+     System.out.println("================== OcrlistOfMap " + Ocrlist.size() + "  =========================");
+     
+ private static JSONArray mergeJSONObjects(String jsonOcr, String jsonEcc) {
+		JSONArray ocrArr = new JSONArray(jsonOcr);
+		JSONArray eccArr = new JSONArray(jsonEcc);
+		System.out.println("111::"+ocrArr);
+		System.out.println("222::"+eccArr);
+		for(int i=0 ; i< ocrArr.length(); i++){   // iterate through jsonArray 
+			JSONObject ocrObject = ocrArr.getJSONObject(i);  // get jsonObject @ i position 
+			//System.out.println("jsonObject " + i + ": " + ocrObject);
+			String ocrPrimarykey = ocrObject.getString("Primary_Key");
+			for(int j=0;j<eccArr.length();j++){
+				JSONObject eccObject = eccArr.getJSONObject(j);
+				String eccPrimarykey = eccObject.getString("Primary_Key");
+				if(ocrPrimarykey.equalsIgnoreCase(eccPrimarykey)){
+					/* eccObject.remove("Account_No");
+					eccObject.remove("Due_Data");
+					eccObject.remove("Invoice_No");
+					eccObject.remove("Amount");
+					eccObject.remove("Currency"); */
+						String s=ocrObject.getString("Invoice_No");
+					double d = Double.parseDouble(s);
+					int m = (int) d;
+					eccObject.put("Account_No",ocrObject.getString("Account_No"));
+					eccObject.put("Due_Data",ocrObject.getString("Due_Data"));
+					eccObject.put("Invoice_No",m);
+					eccObject.put("Amount",ocrObject.getString("Amount"));
+					eccObject.put("Currency",ocrObject.getString("Currency"));
+					//System.out.println("eccObject::"+eccObject);
+					//eccArr.remove(j);
+					eccArr.put(j,eccObject);
+				}
+				
+				
+			}
+		}
+		
+		return eccArr;
+	}
+   
+      
+
+     public static List getEccMasterDataFromXLS(String fileValue) {
+             List eccMasterDatalist = new ArrayList();
+        List headerList = new ArrayList();
+        List rowList = new ArrayList();
+        FileInputStream file;
+        try {
+            file = new FileInputStream(new File(fileValue));
+
+            XSSFWorkbook baseBook = new XSSFWorkbook(file);
+
+            String sheetName = baseBook.getSheetAt(1).getSheetName();
+            System.out.println("================== SHEET NAME " + sheetName + "  =========================");
+
+            Iterator sheetIterator = baseBook.iterator();
+
+            while (sheetIterator.hasNext()) {
+
+                // Get sheet from the workbook
+           	 Sheet sheet = baseBook.getSheet(sheetName);
+                //XSSFSheet sheet = (XSSFSheet) sheetIterator.next();
+                System.out.println("================== sheet111111:::" + sheet+ "  =========================");
+                // Iterate through each rows from first sheet
+                Iterator rowIterator = sheet.iterator();
+
+                int rowIndex = 0;
+                while (rowIterator.hasNext()) {
+                    Row row = (Row) rowIterator.next();
+
+                    if (rowIndex == 0) {
+                        Iterator cellIterator = row.cellIterator();
+                        while (cellIterator.hasNext()) {
+                            headerList.add(((Cell) cellIterator.next()).getStringCellValue());
+                        }
+                    } else {
+
+                        Map jSonToRec1 = new LinkedHashMap();
+                        // For each row, iterate through each columns
+                        Iterator cellIterator = row.cellIterator();
+                        Iterator headerIterator = headerList.iterator();
+                        while (cellIterator.hasNext()) {
+                            Cell cell = (Cell) cellIterator.next();
+                            String cellValue = "";
+                            switch (cell.getCellType()) {
+                            case Cell.CELL_TYPE_NUMERIC:
+                                cellValue = Double.toString(cell.getNumericCellValue());
+                                // System.out.print(cell.getNumericCellValue() +
+                                // "\t");
+                                break;
+                            case Cell.CELL_TYPE_STRING:
+                                cellValue = cell.getStringCellValue();
+                                // System.out.print(cell.getStringCellValue() +
+                                // "\t");
+                                break;
+                            case Cell.CELL_TYPE_BLANK:
+
+                                // System.out.print("\t");
+                                break;
+                            case Cell.CELL_TYPE_BOOLEAN:
+                                cellValue = Boolean.toString(cell.getBooleanCellValue());
+                                // System.out.print(cell.getBooleanCellValue() +
+                                // "\t");
+                                break;
+                            case Cell.CELL_TYPE_ERROR:
+
+                                // System.out.print(cell.getErrorCellValue() +
+                                // "\t");
+                                break;
+                            case Cell.CELL_TYPE_FORMULA:
+                                cellValue = cell.getCellFormula();
+                                // System.out.print(cell.getCellFormula() + "\t");
+                                break;
+                            default:
+
+                                break;
+                            }
+                            jSonToRec1.put(headerIterator.next(), cellValue);
+                        }
+
+                        String jsonString1 = new Gson().toJson(jSonToRec1);
+                        jsonString1 = jsonString1.replace("[", "").replace("]", "");
+                        JsonObject obj1 = new JsonParser().parse(jsonString1).getAsJsonObject();
+                        // list.add(org.apache.commons.lang.StringEscapeUtils.escapeJavaScript(jsonString));
+                        eccMasterDatalist.add(jSonToRec1);
+                       // System.out.println("================== JSON VALUE1 " + jsonString1 + "  =========================");
+                        //System.out.println("================== eccMasterDatalist " + eccMasterDatalist + "  =========================");
+                         //System.out.println("================== eccMasterDatalist size " + eccMasterDatalist.size() + "  =========================");
+                    }
+
+                    rowIndex++;
+                }
+
+                break; // remove to get all others workbooks
+            }
+				// System.out.println("================== eccMasterDatalist1 " + eccMasterDatalist + "  =========================");
+            // System.out.println("================== eccMasterDatalist size1 " + eccMasterDatalist.size() + "  =========================");
+            baseBook.close();
+
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return eccMasterDatalist;
+        }
+    List EccMasterlist=getEccMasterDataFromXLS(filePath);
+     System.out.println("================== EccMasterlist " + EccMasterlist + "  =========================");
+                 System.out.println("================== EccMasterlist size1 " + EccMasterlist.size() + "  =========================");
+                   Gson gson = new Gson();
+		                String jsonOcr = gson.toJson(Ocrlist);
+		                System.out.println("JSON Array OCR:::"+jsonOcr);
+		               // jsonOcr = jsonOcr.replace("[", "").replace("]", "");
+		                //System.out.println("================== jsonOcr " + jsonOcr + "  =========================");
+		                String jsonEcc = gson.toJson(EccMasterlist);
+		               // jsonEcc = jsonEcc.replace("[", "").replace("]", "");
+		                System.out.println("JSON Array ECC " + jsonEcc);
+		                
+		               /* JsonObject obj = new JsonParser().parse(jsonOcr).getAsJsonObject();
+		                JsonObject obj1 = new JsonParser().parse(jsonEcc).getAsJsonObject();
+		                System.out.println("================== obj " + obj + "  =========================");
+		                System.out.println("================== obj1 " + obj1 + "  =========================");*/
+		                JSONArray mergedJSON = mergeJSONObjects(jsonOcr, jsonEcc);
+		        		System.out.println("mergedJSON: " + mergedJSON);
+		        			JSONObject jo = new JSONObject();
+		        		// populate the array
+		        		jo.put("eccMasterData",mergedJSON);
+		        		System.out.println("Jo: " + jo);
+		
+     ]]></script>
+  <!--   <loop item="newStatusSPData" maxloops="${Ocrlist.size()}" index="index">
+        <list>
+            <script return="OcrlistOfMap" />
+        </list>
+        <body>
+           <script><![CDATA[ 
+           
+                jsonMap = new com.google.gson.Gson().toJson(Ocrlist.get(Integer.valueOf(index.toString())-1));
+               log.info(jsonMap);
+           ]]></script>
+          
+           <create-datastore name="xls_file_return">
+        	<datastore-column name="primary_key"/>
+        	<datastore-column name="account_no"/>
+        	<datastore-column name="due_data"/>
+        	<datastore-column name="invoice_no"/>
+        	<datastore-column name="amount"/>
+        	<datastore-column name="currency"/>
+   		   </create-datastore>
+             <insert-datastore datastore-name="xls_file_return"  create="true"   json-value-map="${jsonMap}" /> 
+        </body>
+      
+    </loop>
+    
+  
+    <var-def name="result">
+        <datastore name="xls_file_return">
+          select currency from @this 
+        </datastore>
+    </var-def>
+     <script><![CDATA[
+      String[] outputColumns = org.apache.commons.lang.StringUtils.split(datastoreColumns.toString(), ",");
+      List exportItems = new ArrayList();
+      List ids = new ArrayList();
+    ]]></script>
+    
+     <var-def name="datastoreColumns">       
+        primary_key,account_no,due_data,invoice_no,amount,currency
+    </var-def>
+    <script><![CDATA[
+      String[] outputColumns = org.apache.commons.lang.StringUtils.split(datastoreColumns.toString(), ",");
+       System.out.println("================== outputColumns " + outputColumns+ "  =========================");
+      List exportItems = new ArrayList();
+      List ids = new ArrayList();
+    ]]></script>
+     <loop item="OCRRow">
+        <list>
+            <datastore name="xls_file_return">
+               select * from @this 
+            </datastore>
+        </list>
+        <body>
+            <script><![CDATA[
+              ids.add(OCRRow.get(0));
+                System.out.println("================== id " + ids.add(OCRRow.get(0)) + "  =========================");
+              Map exportItem = new HashMap();
+              for (String column : outputColumns) {
+                exportItem.put(column, OCRRow.get(column).toString());
+                 System.out.println("================== column::: " + column + "  =========================");
+              }
+            
+             /*  exportItem.put("xls_file_return", xls_file_return.toString()); */
+             
+              exportItems.add(exportItem);
+                   System.out.println("================== exportItems " + exportItems + "  =========================");
+            ]]></script>
+        </body>
+    </loop> -->
+    
+    <!--  <var-def name="EccData">
+    <template>${mergedJSON}</template>
+  </var-def>
+      
+  <file path="C:\\RPA\\JsonToCSV.csv" action="write" type="binary">
+    <list-to-csv>
+      <var name="EccData"/>
+    </list-to-csv>
+  </file> -->
+    
+      <export include-original-data="false">
+        <single-column name="result" value="${mergedJSON}"/>
+          
+    </export>  
+    
+</config>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+  
+  <var-def name="movienames">
+              <json expression="$.row">
+                     <xml-to-json>
+                           <excel-to-list>
+                                  <http-extended
+                                         url="http://localhost:15110/wf-vr-training/temp.bucket/21033/MovieName.xlsx"></http-extended>
+                           </excel-to-list>
+                     </xml-to-json>
+              </json>
+
+       </var-def>
+       <script><![CDATA[
+              import groovy.json.JsonSlurper;
+              slurper=new JsonSlurper();
+              data =slurper.parseText(movienames.toString())
+              names = data.movies
+              print names
+              println data.size();
+             // println  names[2];
+       ]]></script> 
+             
+       <var-def name="htmlreport">
+				<http url="http://localhost:15110/wf-vr-training/temp.bucket/21033/htmlreportlayout.txt"/>
+			</var-def>
+	<robotics-flow>
+			<robot driver="chrome" name="imdb" close-on-completion="true" maximize-on-startup="true" start-in-private="true" >
+			
+				<script><![CDATA[ 
+				dr=imdb.getWrappedObject();
+				//openChrome("https://www.imdb.com/?ref_=nv_home")
+				open("https://www.imdb.com/?ref_=nv_home"); 
+				sleep(2000);
+				// ArrayList title=["The Shawshank Redemption", "The Godfather","The Dark Knight","12 Angry Men","Schindler's List","Pulp Fiction","The Lord of the Rings: The Return of the King","Whiplash","Fight Club"]
+				//ArrayList title=["The Shawshank Redemption", "The Godfather"]
+				StringBuilder sb=new StringBuilder();
+				String s1=htmlreport.toString();
+				sb.append(s1);
+				
+				for(i=0;i<data.size();i++){
+				 title = names[i]
+				 println  title
+// 				moviename=title[i];
+// 				println moviename;	
+				$(byXpath("//input[@id='navbar-query']")).val(title); sleep(2000);
+				$(byXpath('//select[@name="s"]')).selectOption(1);
+				
+				
+				Button= $(byXpath('//button[@type="submit"]'));
+				actions().moveToElement(Button)
+				         .keyDown(Keys.CONTROL)
+				         .click(Button)
+				         .keyUp(Keys.CONTROL)
+				         .perform();
+				       //  tab= new driver().getWindowHandles()
+				         switchToNextWindow()
+				sleep(2000);
+				$(byXpath('//tr[1]/td[2]/a')).click();
+				
+				
+				println("====================================================")
+				year= $(byXpath('//*[@id="titleYear"]/a')).getText().toString();
+				director= $(byXpath('//*[text()="Director:"]/following::span[1]')).getText().toString();
+				rating= $(byXpath('//*[@itemprop="ratingValue"]')).getText().toString();
+				//println $(byXpath('//div[@class="credit_summary_item"][3]')).getText();
+				List starList=dr.findElements(By.xpath('//div[@class="credit_summary_item"][3]/span'));
+				String stars="";
+				for(int j=1;j<starList.size();j++){
+				stars=stars+$(byXpath('//div[@class="credit_summary_item"][3]/span['+j+']')).getText()+" ";
+				}
+				//println stars.toString()
+				 gross= $(byXpath('//*[@id="titleDetails"]/div[10]')).getText().toString();
+				 gross1= gross.toString().replace("Cumulative Worldwide Gross: ","");
+				 desc= $(byXpath('//*[@itemprop="aggregateRating"]')).getText().toString();
+				 imgURL= $(byXpath('//*[@class="poster"]/a/img')).getAttribute('src').toString();
+				String s2="<tr><td>"+title+"</td><td>"+year+"</td><td>"+director+"</td><td>"+rating+"</td><td>"+stars.toString()+"</td><td>"+gross1+"</td><td><nobr>"+desc+"</nobr></td><td>"+imgURL+"</td></tr>";
+				sb.append(s2);
+				println(year);
+				println(director);
+				println(rating);
+				println(stars);
+				println(gross1);
+				println(desc);
+				println(imgURL);
+				driver().close();
+				switchToRootWindow(); 
+				println("====================================================")
+				}
+				String s3="</table></body></html>";
+				sb.append(s3);
+				sys.defineVariable("sb", sb)
+				 
+				 ]]></script> 
+
+				<var-def name="htmlTableData">
+					<file path="output.html" action="write"><var name="sb"/></file>	
+				</var-def>
+
+				<var-def name="S3html">
+					<s3 bucket="wf-vr-training" access-key="rs00495639" secret-key="rs00495639"> 
+						<s3-put path="temp.bucket/21033/outputhtml2.html" content-type="text/html" acl="PublicRead">
+							<script return="sb"/>
+						</s3-put>
+					</s3>
+				</var-def>
+				</robot>
+				<robot driver="chrome" name="gmail" close-on-completion="true" maximize-on-startup="true" start-in-private="true" >
+				<script><![CDATA[
+					 import java.text.SimpleDateFormat;
+				        import java.text.DateFormat;
+					 import org.openqa.selenium.*;
+				     import org.openqa.selenium.support.ui.ExpectedConditions;
+				     import org.openqa.selenium.WebDriverException;
+					
+					driver =gmail.getWrappedObject();
+				open('http://localhost:15110/wf-vr-training/temp.bucket/21033/outputhtml2.html');
+				
+				WebDriverWait wait=new WebDriverWait(driver, 120);
+				                          // timeouts(30 * 1000)
+				                           sleep(3000);
+				                           pressCtrlA();
+											pressCtrlC();
+										Thread.sleep(500)
+				  					   open("https://www.gmail.com")
+				                     wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@autocomplete='username']"))).sendKeys("krishnas1502@gmail.com")
+				                     wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath('//*[@id="identifierNext"]/content/span'))).click()
+				
+				                     wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath('//div[@id="password"]//input'))).sendKeys("srkr@1984")
+				                     wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath('//*[@id="passwordNext"]/content/span'))).click()
+									sleep(5000)
+										newtab =	 wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath('//*[text()="Compose"]')))
+										
+								Thread.sleep(6000);
+								
+								actions().moveToElement(newtab).keyDown(Keys.CONTROL).click(newtab).keyUp(Keys.CONTROL).perform();		
+						//	wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath('//*[text()="COMPOSE"]'))).click();
+										switchToNextWindow();
+				                     		
+				                            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".oj div textarea"))).sendKeys("srkr.swarna@gmail.com")
+				                            subject="imdb assignment HTML report";
+				                            wait.until(ExpectedConditions.visibilityOfElementLocated(byCssSelector(".aoD.az6 input"))).sendKeys(subject);
+				
+				
+				
+				                         wait.until(ExpectedConditions.visibilityOfElementLocated(byCssSelector(".Ar.Au div"))).click();
+				                       //pressTab();   
+				                       pressCtrlV();
+				                          screenimage= driver().getScreenshotAs(OutputType.BYTES); 
+				                          sleep(2000);
+				                          $(byText("Send")).click();
+				                         sleep(5000);
+// 				                            pressTab();
+// 				                             pressEnter()
+				                              DateFormat df1= new SimpleDateFormat("dd/MM/yyyy");
+									     Date date = new Date();
+									    String PDate=df1.format(date).toString();
+									
+									    DateFormat df2= new SimpleDateFormat("HH:mm:ss");                            
+									    Date time = new Date();
+									     String PTime=df2.format(time).toString();
+									     sys.defineVariable("PDate",PDate)
+									     sys.defineVariable("PTime",PTime)
+									   				                          
+				                          
+			
+				 ]]></script> 
+				
+				<var-def name="Screenshot_Link">
+					<s3 bucket="wf-vr-training" access-key="rs00495639" secret-key="rs00495639">
+						<s3-put path="temp.bucket/21033/ImdbScreenshot2.png" content-type="image/*" content-disposition="inline" acl="PublicRead">
+							<script return="screenimage"/>
+						</s3-put>
+					</s3>
+				</var-def>
+				
+				</robot>
+
+</robotics-flow>
+
+    <export include-original-data="true">
+	    <single-column name="ScreenShot" value="${Screenshot_Link}"></single-column>
+	    <single-column name="Email_Subject"><script return="subject"/> </single-column>
+	    <single-column name="Date" ><var name="PDate"/></single-column>
+	    <single-column name="Time" ><var name="PTime"/></single-column>
+     </export>
+
+</config>

@@ -1,0 +1,28 @@
+"private key"
+"    			import groovy.json.JsonSlurper 
+    			def jsonSlurper = new JsonSlurper()
+    			def obj = jsonSlurper.parseText(inv_num.toString());
+    			
+    			for(i=0;i<3;i++){
+    				
+    				item = obj.item[i];
+    				quantity = obj.quantity[i];
+    				description = obj.description[i];
+    				price = obj.price[i];
+    				
+    				
+	    			$(byXpath('//*[@id=""item_table""]/tbody['+(i+2)+']/tr[1]/td[2]/div/input')).sendKeys(item);
+	    			$(byXpath('//*[@id=""item_table""]/tbody['+(i+2)+']/tr[1]/td[3]/div/input')).sendKeys(quantity);
+	    			$(byXpath('//*[@id=""item_table""]/tbody['+(i+2)+']/tr[2]/td[1]/div/textarea')).sendKeys(description);
+	    			$(byXpath('//*[@id=""item_table""]/tbody['+(i+2)+']/tr[1]/td[4]/div/input')).sendKeys(price);
+	    			
+    			
+    				if(i != 2){
+    					$(byXpath('//*[@id=""invoice_form""]/div/div[3]/div[1]/div/a[1]')).click();
+    				}
+    			}
+    			$(byXpath(""//input[@id='invoice_discount_percent']"")).sendKeys(""10"");
+				    			    			screen = driver().getScreenshotAs(OutputType.BYTES)
+
+               driver=robot_invoice.getWrappedObject();
+			   WebDriverWait wait = new WebDriverWait(driver, 20);"

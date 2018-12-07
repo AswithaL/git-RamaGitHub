@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config">
+
+	<var-def name="document_image_link">
+		<template>${document_link}</template>
+	</var-def>
+
+	<case>
+		<if condition='${document_image_link.toString().isEmpty()}'>
+				<var name="document_image_link" />
+		</if>
+	</case>
+
+	<var-def name="ocrUrl">https://ocr2.workfusion.com/api/v1/cloud
+	</var-def>
+	<var-def name="ocrUsername">workfusion</var-def>
+	<var-def name="ocrPassword">tO1hfU$L2</var-def>
+	<var-def name="language">English</var-def>
+	<var-def name="customRegions">
+		<template>${pdf_selections_json_normalized}</template>
+	</var-def>
+
+	<case>
+		<if condition="${customRegions.toString().isEmpty()}">
+			<var-def name="customRegions">
+				[]
+			</var-def>
+		</if>
+	</case>
+
+	<var-def name="document_uuid">
+		<template>${document_uuid}</template>
+	</var-def>
+	<case>
+		<if condition="${document_uuid.toString().isEmpty()}">
+			<var-def name="document_uuid">
+				<template>${java.util.UUID.randomUUID().toString()}</template>
+			</var-def>
+		</if>
+	</case>
+
+	<var-def name="dictionaryList">
+		<to-text>
+			<http url="${document_link}" />
+		</to-text>
+	</var-def>
+
+	<var-def name="originalDocumentText">
+		<to-text>
+			<http url="${document_link}" />
+		</to-text>
+	</var-def>
+
+	<script><![CDATA[
+		import org.webharvest.runtime.variables.ListVariable;
+		import org.webharvest.runtime.variables.NodeVariable;
+
+		String dictionaryString="";
+		String[] d = dictionaryList.toString().split("[ |\n]");
+		Set s = new HashSet();
+		for(int i=0; i<d.length; i++){
+			String word = d[i];
+			if (!word.isEmpty()) {
+				dictionaryString=dictionaryString + word + "\n";
+			}
+		}
+		ListVariable lv = new ListVariable();
+		lv.addVariable(new NodeVariable(dictionaryString));
+
+		sys.defineVariable("dictionary", lv, true);
+
+		Set alphabetExtensionSet = new TreeSet();
+
+		for (char c : originalDocumentText.toString().toCharArray()) {
+			alphabetExtensionSet.add(c + "");
+		}
+
+		alphabetExtensionSet.remove(" ");
+		alphabetExtensionSet.remove("\n");
+
+		String alphabetExtension = String.join("", alphabetExtensionSet);
+	]]></script>
+
+	<var-def name="dictionaryLink">
+		<s3 bucket="wf-vr-training">
+			<s3-put path="temp.bucket/wf-ocr/${document_uuid}_dictionary.html" acl="PublicReadWrite"
+				expires-in-seconds="3600" content-type="text/html; charset=utf-8"
+				content-disposition="inline">
+				<var name='dictionary' />
+			</s3-put>
+		</s3>
+	</var-def>
+
+
+	<var-def name="submitResponse">
+		<http url="${ocrUrl}/processImage?taskId=${taskId}&amp;${ocrParams}"
+			method="post" multipart="true" username="${ocrUsername}" password="${ocrPassword}">
+			<http-param name="file" isfile="true">
+				<http url="${document_image_link}" />
+			</http-param>
+			<http-param name="profile">documentConversion</http-param>
+			<http-param name="exportFormat">pdfSearchable,xmlForCorrectedImage,html
+			</http-param>
+			<http-param name="xml:writeRecognitionVariants">true</http-param>
+			<http-param name="language">
+				<template>${language}</template>
+			</http-param>
+			<http-param name="correctSkew">true</http-param>
+			<http-param name="correctOrientation">true</http-param>
+			<http-param name="allowedRegionTypes">BT_Text,BT_Table</http-param>
+		</http>
+	</var-def>
+
+
+	<function name="checkForErrors">
+		<var-def name="status">
+			<xpath expression="string(//response/task/@status)">
+				<var name="response" />
+			</xpath>
+		</var-def>
+
+		<case>
+			<if
+				condition='${!status.toString().equals("Submitted")
+      &amp;&amp; !status.toString().equals("Queued")
+      &amp;&amp; !status.toString().equals("InProgress")
+      &amp;&amp; !status.toString().equals("Completed")}'>
+				<script>
+					throw new RuntimeException("OCR failed. Response:\n" + response);
+				</script>
+			</if>
+		</case>
+
+		<var-def name="errorsNum">
+			<xpath expression="count(//error)">
+				<var name="response" />
+			</xpath>
+		</var-def>
+
+		<case>
+			<if condition="${errorsNum.toInt() > 0}">
+				<script><![CDATA[
+					throw new RuntimeException("OCR failed. Status response: " + response);
+				]]></script>
+			</if>
+		</case>
+	</function>
+
+	<call name="checkForErrors">
+		<call-param name="response">
+			<template>${submitResponse}</template>
+		</call-param>
+	</call>
+	<var-def name="taskId">
+		<xpath expression="string(//response/task/@id)">
+			<var name="submitResponse" />
+		</xpath>
+	</var-def>
+
+	<var-def name="statusResponse" />
+	<var-def name="taskStatus">Unknown</var-def>
+	<while condition='${!taskStatus.toString().equals("Completed")}'
+		maxloops="200">
+		<script><![CDATA[
+			Thread.sleep(5000);
+		]]></script>
+
+		<var-def name="statusResponse">
+			<http url="${ocrUrl}/getTaskStatus?taskId=${taskId}" method="get"
+				username="${ocrUsername}" password="${ocrPassword}" />
+		</var-def>
+
+		<call name="checkForErrors">
+			<call-param name="response">
+				<template>${statusResponse}</template>
+			</call-param>
+		</call>
+
+		<var-def name="taskStatus">
+			<xpath expression="string(//response/task/@status)">
+				<var name="statusResponse" />
+			</xpath>
+		</var-def>
+	</while>
+
+	<var-def name="resultPdfUrl">
+		<xpath expression="string(//response/task/@resultUrl)">
+			<var name="statusResponse" />
+		</xpath>
+	</var-def>
+	<var-def name="resultPdf">
+		<http url="${resultPdfUrl}" />
+	</var-def>
+	<var-def name="documentPdfLink">
+		<s3 bucket="wf-vr-training">
+			<s3-put path="temp.bucket/wf-ocr/${document_uuid}.pdf" acl="PublicReadWrite"
+				expires-in-seconds="3600" content-type="application/pdf"
+				content-disposition="inline">
+				<var name='resultPdf' />
+			</s3-put>
+		</s3>
+	</var-def>
+
+
+	<var-def name="resultHtmlUrl">
+		<xpath expression="string(//response/task/@resultUrl3)">
+			<var name="statusResponse" />
+		</xpath>
+	</var-def>
+	<var-def name="resultHtml">
+		<http url="${resultHtmlUrl}" />
+	</var-def>
+	<var-def name="resultHtml">
+		<script return="res"><![CDATA[
+			// Removing BOM
+			res = resultHtml.toString().replaceAll("^\uFEFF", "");
+		]]></script>
+	</var-def>
+	<var-def name="documentHtmlLink">
+		<s3 bucket="wf-vr-training">
+			<s3-put path="temp.bucket/wf-ocr/${document_uuid}.html" acl="PublicReadWrite"
+				expires-in-seconds="3600" content-type="text/html; charset=utf-8"
+				content-disposition="inline">
+				<var name='resultHtml' />
+			</s3-put>
+		</s3>
+	</var-def>
+
+	<export include-original-data="false">
+		<single-column name="document_uuid" value="${document_uuid}" />
+		<single-column name="document_pdf_link" value="${documentPdfLink}" />
+		<single-column name="document_html_link" value="${documentHtmlLink}" />
+		<single-column name="ocr_task_id" value="${taskId}" />
+		<single-column name="ocr_status_response" value="${statusResponse}" />
+	</export>
+</config>

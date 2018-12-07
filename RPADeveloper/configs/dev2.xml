@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+<!-- 
+	<var-def name="citiesData">
+		<http url="http://localhost:15110/wf-vr-training/temp.bucket/21033/cities.json"/>
+	</var-def>
+	
+	<var-def name="inputCities">
+		<http url="${citiesData}"/>
+	</var-def> -->
+	
+	<var-def name="inputCitiesUrl">
+		http://localhost:15110/wf-vr-training/temp.bucket/21033/cities.json
+	</var-def>
+	
+	<var-def name="inputCities">
+		<http url="${inputCitiesUrl}"/>
+	</var-def>
+	
+	<script><![CDATA[
+
+		import java.util.ArrayList;
+		import com.google.gson.*;
+		import java.text.SimpleDateFormat;
+		import java.util.Date;
+		
+		citiesList = new ArrayList();
+		populationList = new ArrayList();
+		statesList = new ArrayList();
+		exportList = new ArrayList();
+
+		Gson gson = new Gson();
+		JsonArray jsonarray = gson.fromJson(inputCities.toString(), JsonArray.class);
+
+		for (JsonElement e : jsonarray) {
+			JsonObject jsonobj = e.getAsJsonObject();
+			city = jsonobj.getAsJsonPrimitive("city").getAsString();
+			citiesList.add(city);
+			population=jsonobj.getAsJsonPrimitive("population").getAsString();
+			populationList.add(population);
+			state=jsonobj.getAsJsonPrimitive("state").getAsString();
+			statesList.add(state);
+		}
+		
+		println(citiesList);
+		
+		
+		//currentWeatherList = new ArrayList();
+		for(int i = 0; i < citiesList.size(); i++){
+			if(i >= 200) break;
+			
+			map = new HashMap();
+			String city = citiesList.get(i);
+			city = city.replace(" ", "%20");
+			String gsonUrl = "http://api.openweathermap.org/data/2.5/weather?q=" +city + "&APPID=b6370392ff2c8d934c5973a9cca95969";
+			println("i=" + i + " gsonUrl=" + gsonUrl);
+			URL url = new URL(gsonUrl);
+			HttpURLConnection connection = null;
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+
+			BufferedReader bufferedReader = null;
+			try{ 
+				bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			}catch(java.io.FileNotFoundException e){
+
+				map.put("temperature", "null");
+				map.put("pressure", "null");
+				map.put("humidity", "null");
+				map.put("speed", "null");
+				map.put("latitude", "null");
+				map.put("longitude", "null");
+				map.put("dateTime", dateTime.toString());
+				map.put("city", city);
+				map.put("population", population);
+				map.put("state", state);
+
+				exportList.add(map);
+				continue;
+			}
+			
+			StringBuffer response = new StringBuffer();
+			while ((inputLine = bufferedReader.readLine()) != null) {
+	            response.append(inputLine);
+	        }
+	        bufferedReader.close();
+	        gson = new Gson();
+	        println("response="+response);
+			JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
+
+			code = jsonObject.getAsJsonPrimitive("cod").getAsString();
+			
+			Date date = new Date();
+			SimpleDateFormat simpleDataFormat = new SimpleDateFormat("E, d MMM yyyy hh:mm:ss z");
+			dateTime = simpleDataFormat.format(date);
+					
+			if("200".equals(code)){
+				mainObject = jsonObject.getAsJsonObject("main");
+				windObject =  jsonObject.getAsJsonObject("wind");
+				coordObject =  jsonObject.getAsJsonObject("coord");
+				
+				temp = mainObject.getAsJsonPrimitive("temp").getAsString();
+				pressure = mainObject.getAsJsonPrimitive("pressure").getAsString();
+				humidity = mainObject.getAsJsonPrimitive("humidity").getAsString();
+
+				speed = windObject.getAsJsonPrimitive("speed").getAsString();
+				
+				lat = coordObject.getAsJsonPrimitive("lat").getAsString();
+				lon = coordObject.getAsJsonPrimitive("lon").getAsString();
+
+				map.put("temperature", temp.toString());
+				map.put("pressure", pressure.toString());
+				map.put("humidity", humidity.toString());
+				map.put("speed", speed.toString());
+				map.put("latitude", lat.toString());
+				map.put("longitude", lon.toString())
+				map.put("dateTime", dateTime.toString());
+				map.put("city", city);
+				map.put("population", populationList.get(i).toString());
+				map.put("state", statesList.get(i).toString());
+
+				exportList.add(map);
+				Thread.sleep(500);
+			}
+		}
+		
+	println("exportList=" + exportList);
+
+	]]></script>
+	
+	<script><![CDATA[
+
+		import org.apache.poi.ss.usermodel.Cell;
+		import org.apache.poi.ss.usermodel.Row;
+		import org.apache.poi.xssf.usermodel.XSSFRow;
+		import org.apache.poi.xssf.usermodel.XSSFSheet;
+		import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+		listColumns = new ArrayList();
+		listColumns.add("temperature");
+		listColumns.add("pressure");
+		listColumns.add("speed");
+		listColumns.add("dateTime");
+		listColumns.add("city");
+		listColumns.add("latitude");
+		listColumns.add("longitude");
+		listColumns.add("population");
+		listColumns.add("state");
+
+		XSSFWorkbook book = new XSSFWorkbook();
+		XSSFSheet sheet = book.createSheet("weather");
+
+		// Set header
+		Row headerRow = sheet.createRow(0);
+		for(int i = 0; i < listColumns.size(); i++) {
+			Cell cell = headerRow.createCell(i);
+			cell.setCellValue(listColumns.get(i).toString());
+		}
+
+		// Set rows with info
+		int rowNumber = 1;
+		for(Map weatherMap: exportList){
+			Row sheetRow = sheet.createRow(rowNumber++);
+			int columnNumber = 0;
+			for(String columnName: listColumns){
+				Cell sheetCell = sheetRow.createCell(columnNumber++);
+				sheetCell.setCellValue(weatherMap.get(columnName));
+			}
+		}
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		book.write(bos);
+		bos.close();
+
+		sys.defineVariable("exportWeather", bos.toByteArray());
+
+	]]></script>
+	
+	<var-def name="excel">
+		<script return="exportWeather" />
+	</var-def>
+	
+	
+						<var-def name="excelFile">
+	                        <s3 bucket="wf-vr-training" >
+	                            <s3-put path="temp.bucket/21033/weatherReport.xlsx" content-type="application/vnd.ms-excel" acl="PublicRead" content-disposition="inline">
+	                            	<var name="excel"/>
+	                            </s3-put>
+	                        </s3>
+	                    </var-def>
+	
+	<robotics-flow>
+		<robot name="roboticsDriver" driver="chrome" close-on-completion="false" start-in-private="true">
+			<script><![CDATA[
+				import org.openqa.selenium.*;
+				import org.openqa.selenium.support.ui.ExpectedConditions;
+				import org.openqa.selenium.WebDriverException;
+				driver = roboticsDriver.getWrappedObject();
+				WebDriverWait wait=new WebDriverWait(driver, 60);
+								open("https://mail.rediff.com/cgi-bin/login.cgi");
+								
+				wait.until(ExpectedConditions.visibilityOfElementLocated(byCssSelector('#login1'))).click();
+				sendKeys("ramakrishnareddy.sw");
+				wait.until(ExpectedConditions.visibilityOfElementLocated(byCssSelector('#password'))).click();
+				sendKeys("srkr@1984");
+				sleep(3000);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(byCssSelector('input[type="submit"]'))).click();
+				sleep(2000);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath('//*[@id="boxscroll"]/li[1]/a/b'))).click()
+			//	$(byXpath('//*[text()="Write mail"]')).click();
+				sleep(3000);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector('#TO_IDcmp2'))).sendKeys("krishnas1502@gmail.com");
+				sleep(3000);
+                subject="Weather Report(Developer Asnmt)";
+                wait.until(ExpectedConditions.visibilityOfElementLocated(byCssSelector('.fld_sub input'))).sendKeys(subject);
+                sleep(10000);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(byCssSelector('.rd_comp_attach_bx.rd_comp_attach_contcmp4.rd_comp_attach_contcmp2 a'))).click();
+
+				Thread.sleep(10000)       
+
+			]]></script>
+	</robot>
+	
+	     <robot name="robot" driver="desktop" close-on-completion="false">
+            <capability name="SEARCH_ALL_WINDOWS" value="true" />
+            <script><![CDATA[
+            
+             	enableTypeOnScreen();
+                switchTo().window('[CLASS:#32770]');
+                filePath = downloadFileOnAgent("http://localhost:15110/wf-vr-training/temp.bucket/21033/weatherReport.xlsx");
+                timeouts(40 * 1000);
+                sendKeys(filePath);
+                timeouts(40 * 1000);
+                pressEnter();
+                sleep(6000);
+            ]]></script>
+        </robot>
+
+		<robot name="roboticsDriver" driver="chrome" close-on-completion="true" start-in-private="true">
+			<script><![CDATA[
+				sleep(1000);
+				screen = driver().getScreenshotAs(OutputType.BYTES);
+				//$(byText('Send')).click();
+				$(byCssSelector('a[class="send_ng_compo rd_btn_cmp_send"]')).click();
+			]]></script>
+		</robot>
+	</robotics-flow>
+				
+	<var-def name="ScreenshotURL">
+	                           <s3 bucket="wf-vr-training" >
+	                               <s3-put path="temp.bucket/21033/DevMailScreenshot.png" content-type="image/png" acl="PublicRead" content-disposition="inline">
+	                               	<script return="screen"/>
+	                               </s3-put>
+	                           </s3>
+							</var-def>
+	
+	<export include-original-data="false">
+		<single-column name="excelFile" value="${excelFile}" />
+		<single-column name="ScreenshotURL" value="${ScreenshotURL}" />
+	</export>
+
+</config>

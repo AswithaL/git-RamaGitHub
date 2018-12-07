@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+<var-def name="output">
+<template>
+some text in line1.$(sys.lf) some text in line 2.
+Date:$(sys.date())
+Time:$(sys.time())
+Date and Time with format:$(sys.datetime("dd/MM/yyyy- HH:mm:ss"))
+
+</template>
+</var-def>
+
+<script><![CDATA[
+
+println output;
+ ]]></script>
+
+    <export include-original-data="true"></export>
+
+</config>

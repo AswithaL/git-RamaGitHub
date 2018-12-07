@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+ 
+    <include-config code="store_json"/>
+ 
+    <!-- extract books with price greater than 10 -->
+    <var-def name="expensive_books">
+        <json expression="$..book[?(@.price > 10)]">
+            <var name="store_json"/>
+        </json>
+    </var-def>
+ 
+    <export include-original-data="true">
+        <single-column name="expensive_books" value="${expensive_books}"/>
+    </export>
+ 
+</config>

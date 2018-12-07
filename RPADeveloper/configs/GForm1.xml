@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+  
+    <robotics-flow>
+        <robot name="GForm" driver="universal" close-on-completion="true">
+            <capability name="SEARCH_ALL_WINDOWS" value="true" />
+            <script> <![CDATA[
+                try{
+            	driver = GForm.getWrappedObject()
+				WebDriverWait wait = new WebDriverWait(driver,30000)
+                openChrome('https://automationacademy.com')
+				$(byXpath('//*[@id="block-workfusion-mainnavigation"]/ul/li[4]/a')).click()
+                    sleep(5000)
+                    wait.until(ExpectedConditions.elementToBeClickable($(byCssSelector('#username')))).sendKeys('rs00495639@techmahindra.com')
+                    $(byCssSelector('#password')).sendKeys('gA95d)5InJ_=')
+                    $(byCssSelector('#loginbtn')).click()
+                    keyboard().sendKeys('{CTRLDOWN}s{CTRLUP}')
+                    driver.navigate().to('https://automationacademy.com/learn/pluginfile.php/12806/mod_assign/intro/people.jpg')
+                	imageName = UUID.randomUUID()
+                log.info("1")
+            	inDesktop() {
+            		switchTo().window('[TITLE:people.jpg (800×533) - Google Chrome]')
+            	    sendKeys('{CTRLDOWN}s{CTRLUP}')
+            	    sleep(3000)
+            	    def imageLocation = "C:\\RPA\\${imageName}"
+                  	switchTo().window('[TITLE:Save As]')
+               		 $('[CLASS:Edit;INSTANCE:1]').sendKeys(imageLocation).pressEnter()
+                 log.info("2")
+                	sleep(1000)
+            	    switchTo().window('[TITLE:people.jpg (800×533) - Google Chrome]')
+            	}
+				
+            	log.info("3")
+            	inChrome() {
+            	driver.navigate().to('https://forms.google.com/forms')
+        	 	sleep(5000)
+   	 			$(byId('identifierId')).sendKeys("krishnas1502")
+				sleep(2000)
+				$(byText("Next")).click()
+				sleep(2000)
+				$(byName("password")).sendKeys("srkr@1984")
+				sleep(3000)
+				wait.until(ExpectedConditions.elementToBeClickable($(byText("Next")))).click()
+				sleep(8000)
+				$(byXpath('/html/body/div[2]/div[3]/div[1]/div/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[2]/div[2]')).click()
+				sleep(5000)
+				$(byXpath('//textarea[contains(text(),"Contact information")]')).click()
+				sendKeys('RPA DESKTOP ADVANCED')
+				pressTab()
+				sleep(5000)
+				log.info("4")
+				sendKeys('Google Forms Automation')
+				sleep(1000)
+				$(byXpath('//div[@data-tooltip="Add image"]')).click()
+				sleep(5000)
+				switchTo().frame($(byXpath('//iframe[@class="picker-frame"]')))
+				sleep(3000)
+				$(byCssSelector(".a-b-c.d-u.d-u-F")).click()
+				sleep(1000)
+				log.info("5")
+           			}
+           		
+           		inDesktop()
+           		{
+           			switchTo().window('[TITLE:Open]')
+           			sleep(1000)
+           			$('[CLASS:Edit]').sendKeys("C:\\RPA\\${imageName}.jpg").pressEnter()
+           			
+           		
+           		}
+           		
+           		log.info("6")
+           		sleep(5000)
+           		inChrome(){
+           		switchTo().defaultContent()
+           		sendKeys("IMAGE UPLOADED")
+           		
+				$(byXpath('//span[contains(text(),"Send")]')).click()
+				sleep(3000)
+				$(byXpath('//div[contains(text(),"To")]/preceding-sibling::input')).sendKeys('krishnas1502@gmail.com')
+				$(byXpath('//div[contains(text(),"Subject")]/preceding-sibling::input')).sendKeys(' Assignment')
+				$(byXpath('//div[@aria-label = "Include form in email"]')).click()
+				pressTab()
+				pressTab()
+				pressTab()
+				pressEnter()
+			
+				log.info("7")
+				driver.navigate().to('https://mail.google.com')
+				wait.until(ExpectedConditions.elementToBeClickable($(byXpath('//a[contains(@title,"Inbox")]')))).click()
+				sleep(2000)
+				$(byXpath('//table[@class="F cf zt"]//tr[1]')).click()
+				zoom(0.50)
+				
+				sleep(3000)
+				screen = driver.getScreenshotAs(OutputType.BYTES)
+				sleep(5000)
+				zoom(1)
+				
+				log.info("8")
+           		}
+           		}
+           		catch(Exception e)
+           		{
+           		screen = driver.getScreenshotAs(OutputType.BYTES)
+           		log.info("9")
+           		}
+              
+                 
+            ]]></script>
+        </robot>
+    </robotics-flow>
+         
+ <var-def name="SreenshotUrl">
+	  <s3 bucket="wf-vr-training">
+		<s3-put path="temp.bucket/21033/GooleFormScreenshot.png" content-type="image/png" acl="PublicRead">
+			<script return="screen"/>
+		</s3-put>
+	</s3>
+</var-def>
+         
+         
+    <export include-original-data="false">  
+        <single-column name="SreenshotUrl" value="${SreenshotUrl}"/>
+    </export>
+      
+</config>

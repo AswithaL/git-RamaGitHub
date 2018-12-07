@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+ 
+   <!--  <var-def name="thrifts">
+        <file path="C:\\21033\\thrifts.csv" action="write" type="binary">
+            <to-csv url="http://localhost:15110/wf-vr-training/temp.bucket/21033/Master_Data_V2.xlsx"/>
+        </file>
+    </var-def> -->
+ <!-- 
+    <var-def name="people">
+        <file path="./output/people.csv" action="write" type="binary">
+            <to-csv file="people.xlsx" separator="|"/>
+        </file>
+    </var-def> -->
+     <var-def name="outputLink">
+  		<s3 bucket="wf-vr-training" access-key="rs00495639" secret-key="rs00495639"> 
+						<s3-put path="temp.bucket/21033/OCRedData.csv" content-type="text/html" acl="PublicRead">
+							 <to-csv url="http://localhost:15110/wf-vr-training/temp.bucket/21033/DueData.xlsx"/>
+						</s3-put>
+					</s3>
+</var-def>
+    <export include-original-data="true">
+       <!--  <single-column name="thrifts" value="${thrifts}"/> -->
+        <single-column name="outputLink" value="${outputLink}"/> 
+    </export>
+</config>

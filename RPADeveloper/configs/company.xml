@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+<var-def name="ApiKey">
+              51b7b96c70668f
+                </var-def>
+
+                <var-def name="companies_name">
+                                <template>${company_name}</template>
+                </var-def>
+                
+
+                <var-def name="Page_search">
+                                <template>
+                                                https://us1.locationiq.com/v1/search.php?q=${companies_name}&amp;format=xml&amp;key=${ApiKey}
+                                </template>
+                </var-def>
+                  <var-def name="page_result">
+                                <http-extended url="${Page_search}">
+                                 </http-extended>
+                </var-def>
+                
+<script><![CDATA[
+
+def customers = new XmlSlurper().parse(new File('customers.xml'))
+for (customer in customers.corporate.customer) {
+ println "${customer.@name} works for ${customer.@company}"
+} 
+abc =  new XmlSlurper().parseText(page_result);
+   println  "abc" +abc
+   println  "page_result" +page_result
+
+                               /*  Address = Page_search.result.formatted_address.text();
+                                Phonenumber = Page_search.result.formatted_phone_number.text();
+                                companyName = Page_search.result.name.text(); */
+                                
+                                Address = abc.searchresults.place.display_name.getAt(0).text();
+                                Phonenumber = abc.searchresults.place.place_id.getAt(0).text();
+                                companyName = abc.searchresults.place.type.getAt(0).text();
+                                println "Address" +Address
+                                println Phonenumber
+                                println companyName
+
+]]></script>
+    <export include-original-data="false">
+     <single-column name="Company_Name" value="${companyName}" />
+                                <single-column name="Company_Address" value="${Address}" />
+                                <single-column name="Company_Contact" value="${Phonenumber}" />
+                                
+                </export>
+    
+
+</config>

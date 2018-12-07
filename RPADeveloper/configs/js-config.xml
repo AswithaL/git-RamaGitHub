@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+ 
+    <robotics-flow>
+        <robot driver="chrome">
+            <script><![CDATA[
+ 
+                String script = """ var callback = arguments[arguments.length - 1];
+                                    return callback(document.getElementsByTagName('a')[1].href) """
+ 
+                open("https://rpa-tutorial.s3.amazonaws.com/trainings/iframe/form.html")
+                def result = driver().executeAsyncScript(script)
+                sys.defineVariable("result", result)
+                ]]></script>
+        </robot>
+    </robotics-flow>
+    <export include-original-data="true">
+    <single-column name="result" value="${result}"></single-column>
+    </export>
+ 
+</config>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config"
+	scriptlang="groovy">
+	<!-- <include-config code="AM_BOT_UTILITIES" /> -->
+	<robotics-flow>
+		<robot driver="chrome">
+			<capability name="SEARCH_ALL_WINDOWS" value="true" />
+			<script><![CDATA[
+				bot = new BotUtilities();
+				WebDriverWait wait = new WebDriverWait(driver(), 150);
+				def wDriver = driver()
+				openIE("https://docs.google.com/forms");
+				enableTypeOnScreen()
+				wDriver.manage().window().maximize();
+				log.warn("Google form login page");
+				try{
+					sleep(4000)
+					wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//input[@type='email']")));
+					WebElement user = wDriver.findElement(By.xpath("//input[@type='email']"));
+					bot.enterText(user,"krishnas1502@gmail.com");
+					bot.waitAndClickByXpath(wait,"//*[@id='identifierNext']/content/span");
+
+					sleep(4000)
+					wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//input[@type='password']")));
+					WebElement password = wDriver.findElement(By.xpath("//input[@type='password']"));
+					bot.enterText(password,"srkr@1984");
+					bot.waitAndClickByXpath(wait,"//*[@id='passwordNext']/content/span");
+
+					log.warn("After login");
+					sleep(10000)
+
+					wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//*[@id=':1d' and @role='option']/div[1]")));
+					bot.waitAndClickByXpath(wait,"//*[@id=':1d' and @role='option']/div[1]");
+
+					sleep(5000)
+					WebElement tarea = wDriver.findElement(By.xpath("//textarea[@aria-label='Form title']"));
+					bot.enterText(tarea,"AM form upload");
+					/*
+					try {
+						wait.until(ExpectedConditions.textToBePresentInElementLocated(byXpath("//div[@aria-label='All changes saved in Drive, Every change you make is automatically saved in Drive.,Last edit was seconds ago']"), "All changes saved in Drive"))
+					}
+					catch(Exception e){}
+					*/
+					wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//div[@data-action-id='freebird-add-image']")));
+					$("div[data-action-id=freebird-add-image]").click();
+
+					Boolean foundIFrame = false;
+					while(!foundIFrame) {
+						try {
+							wait.until(ExpectedConditions.visibilityOfElementLocated(byCssSelector("iframe.picker-frame")));
+							foundIFrame = true;
+						}
+						catch(Exception e) {
+							$("div[data-action-id=freebird-add-image]").click();
+						}
+					}
+					switchTo().frame($("iframe.picker-frame"));
+					sleep(5000)
+					$(byXpath("//div[@role='button'][contains(text(),'Choose an image to upload')]")).click();
+					sleep(5000)
+			
+                    inDesktop
+                    {
+                    def count=0;
+                    def windowFound = false;
+                    while(count<=10 && !windowFound)
+                    {
+                        try{
+                             window("[TITLE:Choose File to Upload]");
+                             switchTo().window('[CLASS:#32770]')
+                             //$('[CLASS:Edit;INSTANCE:1]').sendKeys("https://wf-vr-training.s3.amazonaws.com/temp.bucket/abhijeet_more/people.jpg")
+                             //$('[CLASS:Button;INSTANCE:1]').click()
+                             windowFound = true;
+                            }
+                            catch(Exception e)
+                            {					
+                                sleep(500)
+                            }
+                    }
+
+                    $("[CLASS:Edit;INSTANCE:1]").setText(downloadFileOnAgent("http://localhost:15110/wf-vr-training/temp.bucket/21033/people.jpg"))
+                    pressEnter();
+                    }
+					inIE
+					{
+					  sleep(12000)
+                      switchTo().parentFrame();
+                      wait.until(ExpectedConditions.elementToBeClickable(byXpath("//div[@role = 'button']//span[text()='Send']")));
+                      sleep(3000)
+					  log.warn("send button visible");
+                      wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//textarea[@aria-label='Form description']")));
+                      WebElement desc = wDriver.findElement(By.xpath("//textarea[@aria-label='Form description']"));				
+                      bot.enterText(desc,"People form upload");
+
+                        sleep(8000)
+                        log.warn("clicking on send button");
+                        wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//span[text()='Send' and @class='quantumWizButtonPaperbuttonLabel exportLabel']")));
+                         boolean isFail = true;
+                         int count1 = 0;
+                         sleep(3000)
+                          while(isFail)
+                          {
+                              try
+                              {
+                                 log.warn("Inside try...");							  
+                                  bot.waitAndClickByXpath(wait,"//span[text()='Send' and @class='quantumWizButtonPaperbuttonLabel exportLabel']");
+                                  isFail = false;
+                              }
+                              catch(Exception e){
+                                    count1++;
+                                  if (count1>=10)
+                                        throw e;                        
+                                  sleep(1000)
+                              }
+                         }
+                        sleep(3000)
+
+                        wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//input[@aria-label='To']")));
+                        WebElement mail = wDriver.findElement(By.xpath("//input[@aria-label='To']"));				
+                        bot.enterText(mail,"krishnas1502@gmail.com");
+                        sleep(3000)
+
+                        bot.waitAndClickByXpath(wait,"//div[@aria-label='Include form in email'and @role='checkbox']");
+                        log.warn("clicking on second send button");
+                        wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//div[@aria-label='Send']//span[text()='Send']")));
+                        bot.waitAndClickByXpath(wait,"//div[@aria-label='Send']//span[text()='Send']");
+                        sleep(5000)
+                        log.warn("Mail sent");
+                        openIE("https://mail.google.com/mail/");
+                        wait.until(ExpectedConditions.visibilityOfElementLocated(byXpath("//div[@role = 'main']//div[@role = 'tabpanel']//table/tbody/tr[1]")));
+                        log.warn("Mail is open");
+                        bot.waitAndClickByXpath(wait,"//div[@role = 'main']//div[@role = 'tabpanel']//table/tbody/tr[1]");
+                        sleep(3000)
+
+                        screenshot = driver().getScreenshotAs(OutputType.BYTES);
+                        sys.defineVariable("screen", screenshot)
+                        log.warn("taken the screenshot");
+					}
+				}
+				catch(Exception e) {
+					log.warn("Exception ::"+e);
+					screenshot = driver().getScreenshotAs(OutputType.BYTES);
+					sys.defineVariable("screen", screenshot)
+				}
+			]]></script>
+			<var-def name="link_url">
+				<s3 bucket='wf-vr-training'>
+					<s3-put path="temp.bucket/21033/contact-form_image.jpg">
+						<var name="screen" />
+					</s3-put>
+				</s3>
+			</var-def>
+		</robot>
+	</robotics-flow>
+	<export include-original-data="false">
+		<single-column name="screenshot_link" value="${link_url}" />
+	</export>
+</config>

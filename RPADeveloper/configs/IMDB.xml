@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+  <robotics-flow>
+
+              <robot driver="chrome" name="Cdriver" close-on-completion="true">
+
+                     <script><![CDATA[                      
+
+                           import java.util.concurrent.TimeUnit;
+
+                           import org.openqa.selenium.*;                              
+
+                           movienames = ["The Shawshank Redemption","The Godfather","Forrest Gump","The Dark Knight","12 Angry Men","Schindler's List","Pulp Fiction","The Lord of the Rings: The Return of the King","Whiplash","Fight Club"]
+
+                           open("http://www.imdb.com")
+
+                           sleep(10000)
+
+                           htmlReport = "<html><head><style>table, th, td {border: 1px solid blue;}</style></head><body><table style='width:100%'><tr><th>Movie</th><th>Year</th><th>Director</th><th>Rating</th><th>Stars</th><th>Gross Boxoffice</th><th>Short Storyline</th><th>Link to Poster Picture</th></tr>";
+
+                           for(String title:movienames){
+
+                                  sleep(6000)
+
+                                  $(byId("navbar-query")).clear();
+
+                                  sleep(2000)
+
+                                  $(byId("navbar-query")).sendKeys(title)
+
+                                  sleep(3000)
+
+                                  $(byId("navbar-query")).sendKeys(Keys.ENTER);
+
+                                  sleep(4000)
+
+                                  $(byLinkText(title.toString())).sendKeys(Keys.chord(Keys.CONTROL,Keys.RETURN));
+
+                                   sleep(3000)
+
+                                  tabs = new ArrayList (driver().getWindowHandles());
+
+                                  switchTo().window(tabs.get(1));
+
+                                  sleep(5000)
+
+                                  year = $(byXpath('//*[@id="titleYear"]/a')).text();
+
+                                  director = $(byXpath('//*[@id="title-overview-widget"]/div[2]/div[1]/div[2]/a')).text();
+
+                                  rating = $(byXpath("//*[@itemprop='ratingValue']")).text()
+                                  
+                                  
+
+                                  boxOffice = $(byXpath("//*[@id='titleDetails']/div[9]")).text();
+
+                                  story = $(byXpath("//*[@id='titleStoryLine']/div[1]/p")).text();
+
+                                  posterLink = $(byXpath("//*[@class='poster']/a/img")).getAttribute("src");
+                                  
+                                  List starList=driver().findElements(By.xpath('//*[@id="title-overview-widget"]/div[2]/div[1]/div[4]'));
+                                  String stars="";
+                                   for(int i=1;i<=3;i++){
+                                          stars=stars+"\n"+ $(byXpath('//*[@id="title-overview-widget"]/div[2]/div[1]/div[4]/a['+i+']')).getText()+"\n";
+                                   }
+                                  /* $(By.xpath('//*[@id="title-overview-widget"]/div[2]/div[1]/div[4]/a[4]')).click()
+
+                                  List starList=driver().findElements(By.xpath('//*[@id="fullcredits_content"]/table[3]/tbody/tr'));
+                                                   //*[@id="title-overview-widget"]/div[2]/div[1]/div[4]/a[1]
+                                  String stars="";
+                                                println starList.size()
+                                  for(int j=1;j<starList.size();j++){
+                                  //List tdcount = driver().findElements(By.xpath('//*[@id="fullcredits_content"]/table[3]/tbody/tr['+(j)+']/td'));
+                                  List even_tr = driver().findElements(By.xpath('//*[@id="fullcredits_content"]/table[3]/tbody/tr['+(j)+'][@class = "even"]'));
+                                  println even_tr.size();
+                                  List odd_tr = driver().findElements(By.xpath('//*[@id="fullcredits_content"]/table[3]/tbody/tr['+(j)+'][@class = "odd"]'));
+                                  println odd_tr.size();
+                                  
+                                                  if(even_tr.size()>0 || odd_tr.size()>0 ){
+                                  stars=stars+"\n"+ $(byXpath('//*[@id="fullcredits_content"]/table[3]/tbody/tr['+(j)+']/td[2]')).getText()+"\n";
+                                                      }
+                                                      else{
+                                                      j++}
+                                  } */
+
+                                  htmlReport += "<tr><td>"+title+"</td><td>"+year+"</td><td>"+director+
+
+                                                "</td><td>"+rating+"</td><td>"+stars+"</td><td>"+boxOffice+
+
+                                                "</td><td>"+story+"</td><td><a href=\""+posterLink+"\"</a>Link_to_PosterPic</td></tr>";
+
+                                  close();
+
+                                  switchTo().window(tabs.get(0));
+
+                           }
+
+                           htmlReport += "</table></body></html>";
+
+                     ]]></script>
+
+              </robot>
+
+       </robotics-flow>   
+
+       <var-def name="htmlLink">
+
+              <s3 bucket="wf-vr-training" >
+
+                     <s3-put path="temp.bucket/16075/htmlReport.html" acl="PublicRead"
+
+                           content-type="text/html; charset=utf-8" content-disposition="inline">
+
+                           <template>${htmlReport}</template>
+
+                     </s3-put>
+
+              </s3>
+
+       </var-def>
+
+       <robotics-flow>
+
+              <robot driver="chrome" name="Cdriver" close-on-completion="true">
+
+                     <script><![CDATA[
+
+                           import java.text.SimpleDateFormat
+
+                           open(htmlLink.toString())
+
+                           sleep(8000)
+
+                           pressCtrlA()
+
+                           pressCtrlC()
+
+                           open("https://gmail.com")
+
+                           $(byXpath('//*[@id= "identifierId"]')).sendKeys("leburuaswitha")
+
+                           sleep(4000)
+                           $(byXpath('//*[@id="identifierNext"]/content/span')).click()
+                           sleep(4000)
+                           $(byXpath('//*[@id= "password"]/div[1]/div/div[1]/input')).sendKeys("Black@1234").pressEnter()
+                       
+                           sleep(10000)                                                      
+
+                           $(byXpath('//*[@id= ":5i"]/div/div')).click();
+
+                           $(byXpath('///*[@id=":ax"]')).sendKeys("lebur.aswitha@gmail.com").pressTab()
+
+                           $(by('placeholder', 'Subject')).val('RPA Dev Web Advanced Assignment 1 html Report').pressTab()
+
+                           $(byXpath('//*[@id= ":bk"]')).pressCtrlV().pressEnter()
+                                          
+                           sleep(5000)
+
+                           dateFormatter = new SimpleDateFormat("dd/MM/yyyy")
+
+                           timeFormatter = new SimpleDateFormat("HH:mm:ss")
+
+                           date = new Date()
+
+                           date_Val = dateFormatter.format(date)
+
+                           time_Val = timeFormatter.format(date)
+
+                           screenshot = ((TakesScreenshot) Cdriver()).getScreenshotAs(OutputType.FILE)
+
+                           $(byXpath('//*[@id=":a5"]')).click()
+
+                           sys.defineVariable("subject", "RPA Dev Web Advanced Assignment 1 html Report")
+
+                           sys.defineVariable("Sent_date", date_Val)
+
+                           sys.defineVariable("Sent_time", time_Val)
+
+                           close()                          
+
+                     ]]></script>
+
+                     <var-def name="screenshotLink">
+
+                           <s3 bucket="wf-vr-training" >
+
+                                  <s3-put path="temp.bucket/16075/mail_screenshot.png"
+
+                                         content-type="image/png" acl="PublicRead" content-disposition="inline">
+
+                                         <file path='${screenshot.path}' type="binary" />
+
+                                  </s3-put>
+
+                           </s3>
+
+                     </var-def>
+
+              </robot>
+
+       </robotics-flow>
+
+       <export include-original-data="false">
+
+              <single-column name="Subject" value="${subject}" />
+
+              <single-column name="Date" value="${Sent_date}" />
+
+              <single-column name="Time" value="${Sent_time}" />
+
+              <single-column name="Screenshot" value="${screenshotLink}" />
+
+       </export>
+
+</config>

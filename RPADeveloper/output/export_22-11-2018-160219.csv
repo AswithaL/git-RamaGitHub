@@ -1,0 +1,10 @@
+"ping_output"
+"
+Pinging google.com [172.217.166.46] with 32 bytes of data:
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 172.217.166.46:
+    Packets: Sent = 3, Received = 0, Lost = 3 (100% loss),
+"

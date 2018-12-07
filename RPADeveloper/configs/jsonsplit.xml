@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+    <script><![CDATA[
+            class JsonUtils {
+                static List jsonToList(Object json) {
+                    List result = new ArrayList();
+         
+                    Iterator elements = json.getWrappedObject().get(0).getWrappedObject().elements();
+                    while (elements.hasNext()) {
+                        Object element = elements.next();
+                        result.add(element);
+                    }
+         
+                    return result;
+                }
+            }
+            0;
+    ]]></script>
+ 
+    <script><![CDATA[
+        export = new ArrayList();
+        columns = new LinkedHashSet();
+    ]]></script>
+ 
+    <var-def name="users_json">
+        {"application_users":
+            [{"id": 1, "name": "Lala Puga"},
+            {"id": 2, "name": "John Doe"},
+            {"id": 15, "name": "Elton John"}]
+        }
+    </var-def>
+ 
+    <var-def name="users">
+        <json expression="$.application_users">
+            <var name="users_json"/>
+        </json>
+    </var-def>
+     
+    <loop item="user">
+        <list>
+            <script return="JsonUtils.jsonToList(users)"/>
+        </list>
+        <body>
+            <script><![CDATA[
+                Map current = new LinkedHashMap();
+ 
+                Iterator fields = user.getWrappedObject().fields();
+                while (fields.hasNext()) {
+                    Map.Entry field = fields.next();
+                    columns.add(field.getKey());
+                    current.put(field.getKey(), field.getValue().asText());
+                }
+ 
+                export.add(current);
+            ]]></script>
+        </body>
+    </loop>
+ 
+    <export include-original-data="true">
+        <multi-column list="${export}" split-results="true">
+            <loop item="columnName">
+                <list>
+                    <script return="columns"/>
+                </list>
+                <body>
+                    <put-to-column-getter name="${columnName}" property="${columnName}" />
+                </body>
+            </loop>
+        </multi-column>
+    </export>
+</config>

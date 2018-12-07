@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+	
+	<robotics-flow>
+		<robot name="robot_invoice" driver="chrome" close-on-completion="true"
+			start-in-private="true">
+			<script><![CDATA[ 
+			
+				driver=robot_invoice.getWrappedObject();
+			    WebDriverWait wait = new WebDriverWait(driver, 20);
+				open('https://train-invoiceplane.workfusion.com');
+				$(byId('email')).sendKeys("wf-robot@mail.com");
+				$(byId('password')).sendKeys("BotsRock4ever!");
+				
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='login']/form/input"))).click();				
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Invoices']"))).click();	
+				
+				$(byLinkText('Create Invoice')).click();
+				Thread.sleep(1000);
+				
+				$(byId('client_name')).selectOptionByValue('Amazon');
+					
+				$(byId('invoice_group_id')).selectOption('Invoice Default');
+				$(byId('invoice_create_confirm')).click();
+				Thread.sleep(1000);
+				
+    			prod_num =$(byId('invoice_number')).getValue();
+    			$(byId('payment_method')).selectOptionByValue('2');
+			
+			]]></script>
+			
+			
+			<var-def name="inv_num">
+				<json expression='$.row'>
+					<xml-to-json>
+		        		<datastore name="invoices_21033">
+							select * from @this
+						</datastore>
+					</xml-to-json>
+				</json>
+    		</var-def>
+    		
+    		<script><![CDATA[ 
+    			import groovy.json.JsonSlurper 
+    			def jsonSlurper = new JsonSlurper()
+    			def obj = jsonSlurper.parseText(inv_num.toString());
+    			
+    			for(i=0;i<3;i++){
+    				
+    				item = obj.item[i];
+    				quantity = obj.quantity[i];
+    				description = obj.description[i];
+    				price = obj.price[i];
+    				
+    				
+	    			$(byXpath('//*[@id="item_table"]/tbody['+(i+2)+']/tr[1]/td[2]/div/input')).sendKeys(item);
+	    			$(byXpath('//*[@id="item_table"]/tbody['+(i+2)+']/tr[1]/td[3]/div/input')).sendKeys(quantity);
+	    			$(byXpath('//*[@id="item_table"]/tbody['+(i+2)+']/tr[2]/td[1]/div/textarea')).sendKeys(description);
+	    			$(byXpath('//*[@id="item_table"]/tbody['+(i+2)+']/tr[1]/td[4]/div/input')).sendKeys(price);
+	    			
+    			
+    				if(i != 2){
+    					$(byXpath('//*[@id="invoice_form"]/div/div[3]/div[1]/div/a[1]')).click();
+    				}
+    			}
+    			$(byXpath("//input[@id='invoice_discount_percent']")).sendKeys("10");
+				    			    			screen = driver().getScreenshotAs(OutputType.BYTES)
+
+               driver=robot_invoice.getWrappedObject();
+			   WebDriverWait wait = new WebDriverWait(driver, 20);
+    			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='btn_save_invoice']"))).click();	
+
+    			
+    		]]></script>
+    		
+			<var-def name="invoice_url">
+				 	<s3 bucket="wf-vr-training">
+				<s3-put path="temp.bucket/21033/Invoices_ScreenShot.png" acl="PublicRead">
+				         <script return="screen"/>
+				     </s3-put>
+				</s3>
+			</var-def>
+		</robot>
+	</robotics-flow>
+	
+    <export include-original-data="false" >
+		<single-column name="s3_url">
+			<var name="invoice_url"/>
+		</single-column>
+		<single-column name="id">
+			<script return="prod_num"/>
+		</single-column>
+	</export>
+
+</config>
+

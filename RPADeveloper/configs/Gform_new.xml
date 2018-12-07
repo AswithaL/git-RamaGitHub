@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+  
+    <robotics-flow>
+        <robot name="bb8" driver="universal" close-on-completion="true">
+            <capability name="SEARCH_ALL_WINDOWS" value="true" />
+            <script> <![CDATA[
+             
+                // Copy the file to the RPA machine.
+             
+                try{
+                // Login into the mail system           
+            	driver = bb8.getWrappedObject()
+               		
+				WebDriverWait wait = new WebDriverWait(driver,30000)
+                openChrome('https://automationacademy.com/learn/login')
+                    sleep(5000)
+                    keyboard().sendKeys('{CTRLDOWN}s{CTRLUP}')
+                    wait.until(ExpectedConditions.elementToBeClickable($(byXpath('//*[@id="username"]')))).sendKeys('rs00495639@techmahindra.com')
+                    $(byXpath('//*[@id="password"]')).sendKeys('gA95d)5InJ_=')
+                    $(byXpath('//*[@id="loginbtn"]')).click()
+                    keyboard().sendKeys('{CTRLDOWN}s{CTRLUP}')
+                    driver.navigate().to('https://automationacademy.com/learn/pluginfile.php/12806/mod_assign/intro/people.jpg')
+                log.info("DOWNLOAD_TO_START")
+                picname = UUID.randomUUID()
+                
+            	inDesktop() {
+            		switchTo().window('[TITLE:people.jpg (800×533) - Google Chrome]')
+            	    sendKeys('{CTRLDOWN}s{CTRLUP}')
+            	    sleep(3000)
+            	    def tempPath = "C:\\RPA\\${picname}"
+                  switchTo().window('[TITLE:Save As]')
+                $('[CLASS:Edit;INSTANCE:1]').sendKeys(tempPath).pressEnter()
+                log.info("DOWNLOADed")
+                sleep(1000)
+            	    switchTo().window('[TITLE:people.jpg (800×533) - Google Chrome]')
+            	}
+            
+				
+            	log.info("FILLING FORM")
+            	//iframe[@class="picker-frame"]
+            	//div[@role="button" and contains(text(),"Choose an image")]
+            	inChrome() {
+            	driver.navigate().to('https://forms.google.com/forms')
+        	 	/* open('https://forms.google.com/forms') */
+        	 	sleep(5000)
+   	 			$(byId('identifierId')).sendKeys("krishnas1502")
+				sleep(2000)
+				$(byText("Next")).click()
+				sleep(2000)
+				$(byName("password")).sendKeys("srkr@1984")
+				sleep(3000)
+				wait.until(ExpectedConditions.elementToBeClickable($(byText("Next")))).click()
+				sleep(8000)
+				
+				$(byXpath('/html/body/div[2]/div[3]/div[1]/div/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[2]/div[2]')).click()
+				/* $(byXpath('//*[@id=":2h"]/div[1]')).click() */
+				sleep(5000)
+				$(byXpath('//textarea[contains(text(),"Contact information")]')).click()
+				sendKeys('FORM BY RPA ROBOT')
+				pressTab()
+				log.info("FILLING HEADINGS")
+					sendKeys('''This form has been created by rpa robot.It was done automatically without any manual input.''')
+				sleep(1000)
+				$(byXpath('//div[@data-tooltip="Add image"]')).click()
+				sleep(5000)
+				switchTo().frame($(byXpath('//iframe[@class="picker-frame"]')))
+				sleep(3000)
+				$(byXpath('//div[@role="button" and contains(text(),"Choose an image")]')).click()
+				ppap=title()
+				sleep(10000)
+				
+				
+				log.info("ADDING IMAGE")
+           			}
+           		
+           		inDesktop()
+           		{
+           			switchTo().window('[TITLE:Open]')
+           			sleep(1000)
+           			$('[CLASS:Edit]').sendKeys("C:\\RPA\\${picname}.jpg").pressEnter()
+           			
+           			//switchTo().window("[TITLE:${ppap}]")
+           		
+           		}
+           		
+           		log.info("IMAGE ADDED ${picname}.jpg")
+           		sleep(5000)
+           		println title()
+           	//	driver.navigate().refresh()
+           		inChrome(){
+           		switchTo().defaultContent()
+           		/* switchTo().window("[TITLE:${ppap}]") */
+           		println title()
+           		sendKeys("LOOK I UPLOADED AN IMAGE YAAY")
+           		
+				$(byXpath('//span[contains(text(),"Send")]')).click()
+				sleep(3000)
+				$(byXpath('//div[contains(text(),"To")]/preceding-sibling::input')).sendKeys('krishnas1502@gmail.com')
+				$(byXpath('//div[contains(text(),"Subject")]/preceding-sibling::input')).sendKeys('Google form via rpa robot')
+				$(byXpath('//div[@aria-label = "Include form in email"]')).click()
+				pressTab()
+				pressTab()
+				pressTab()
+				pressEnter()
+			
+				log.info("MAIL SEND")
+				driver.navigate().to('https://mail.google.com')
+				wait.until(ExpectedConditions.elementToBeClickable($(byXpath('//a[contains(@title,"Inbox")]')))).click()
+				sleep(2000)
+				$(byXpath('//table[@class="F cf zt"]//tr[1]')).click()
+				zoom(0.67)
+				
+				sleep(3000)
+				screen = driver.getScreenshotAs(OutputType.BYTES)
+				sleep(5000)
+				zoom(1)
+				
+				log.info("SCREENSHOT")
+           		}
+           		
+           		
+           		}
+           		
+           		catch(Exception e)
+           		{
+           		screen = driver.getScreenshotAs(OutputType.BYTES)
+           		log.info("h"+e.getStackTrace())
+           		}
+              
+                 
+            ]]></script>
+        </robot>
+    </robotics-flow>
+         
+ <var-def name="link_to_s3">
+	  <s3 bucket="wf-vr-training">
+		<s3-put path="temp.bucket/21033/google_form.png" content-type="image/png" acl="PublicRead">
+			<script return="screen"/>
+		</s3-put>
+	</s3>
+</var-def>
+         
+         
+    <export include-original-data="false">  
+        <single-column name="s3-link" value="${link_to_s3}"/>
+    </export>
+      
+</config>

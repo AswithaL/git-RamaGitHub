@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+    <robotics-flow>
+        <robot driver="desktop" name="aDriver" close-on-completion="true">
+            <!-- Capability to make all windows searchable, so the collapsed window will be visible -->
+            <capability name="SEARCH_ALL_WINDOWS">true</capability>
+            <script><![CDATA[
+             
+                def puttyPath = 'C:\\Program Files\\PuTTY\\putty.exe -ssh user'
+ 
+                open(puttyPath)
+                switchTo().window("[CLASS:PuTTY]")
+                sleep(3000)
+ 
+                // Login to any system
+                sendKeys('sendkeys sample')
+                sendKeys('{ENTER}')
+                sleep(3000)
+ 
+                sendKeys('{ENTER}')
+                sleep(3000)
+ 
+                sendKeys('login sample')
+                sendKeys('{ENTER}')
+                sleep(3000)
+ 
+                sendKeys('password sample')
+                sendKeys('{ENTER}')
+                sleep(3000)
+ 
+                // Checking the last session is available and if so kill it
+                def checkContent = 'Do you want to kill the earlier session for this relogin? (y/n) : n'
+                 
+                if (SampleClass.checkScreenContent(copyPuttyWindowText(), checkContent)) {
+                    sendKeys('y{ENTER}')
+                    sendKeys('y{ENTER}')
+                    copyPuttyWindowText()
+                }
+ 
+           /*      // Confirmation to continue
+                Pattern pattern = Pattern.compile("Press \"(.+?)\" key to continue")
+                Matcher matcher = pattern.matcher(copyPuttyWindowText())
+                def keyToSend = ''
+                if (matcher.find()) {
+                    keyToSend = matcher.group(1)
+                    // do here stuff to continue automate putty
+                } */
+            ]]></script>
+        </robot>
+    </robotics-flow>
+    <export include-original-data="false" />
+</config>

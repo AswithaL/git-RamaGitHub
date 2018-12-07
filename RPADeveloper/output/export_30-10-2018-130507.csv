@@ -1,0 +1,10 @@
+"Private_Key","Public_Key"
+"{ENTER}"");
+                           Thread.sleep(3000);
+
+                           privateContent = driver.findElement(By.cssSelector("""")).getAttribute(""ACTION_PUTTY_COPY_ALL_TEXT"");
+                           String privateKey = privateContent.split(""","{ENTER}"");
+                           Thread.sleep(2500);
+
+                           publicContent = driver.findElement(By.cssSelector("""")).getAttribute(""ACTION_PUTTY_COPY_ALL_TEXT"");
+                           String publicKey = publicContent.split("""

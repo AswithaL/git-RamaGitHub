@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://web-harvest.sourceforge.net/schema/1.0/config" scriptlang="groovy">
+
+<var-def name="digitList">
+    <while condition="true" index="i" maxloops="9">
+        <var-def name="digit${i}">
+        <template>${i}</template>
+        </var-def>
+    </while>
+</var-def>
+<!-- <var-def name="searchEngine">google</var-def>
+<var-def name="${searchEngine}Content">
+<http url="http://www.${searchEngine}.com"/>
+</var-def>
+<file action="write" path="C:\\21033\\${searchEngine}_content.html">
+    <var name="${searchEngine}Content"/>
+</file> -->
+<!-- <var-def name="digitList1">
+<html-to-xml outputtype="pretty">
+    <http url="http://google.com"/>
+</html-to-xml>
+</var-def> -->
+<file action="write" path="c:/images/alljpegs.zip" type="binary">
+    <zip>
+        <loop item="filename">
+            <list>
+                <file path="c:/images/" action="list" listfilter="*.jpg" />
+            </list>
+            <body>
+                <zip-entry name="${sys.getFilename(filename.toString())}">
+                    <file type="binary" path="${filename}"/>
+                </zip-entry>
+            </body>
+        </loop>
+    </zip>
+</file>
+    <export include-original-data="true">
+<single-column name="digitList" value="${digitList}"></single-column>  
+<single-column name="pretty" value="${digitList1}"></single-column>  
+</export>
+</config>
